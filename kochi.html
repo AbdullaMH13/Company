@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kochi Travel Itinerary</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/api/placeholder/1600/900") center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .header-content {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .itinerary-intro {
+    margin-bottom: 4rem;
+}
+
+.intro-background {
+    background-image: url("photos/kerala.jpg");
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    min-height: 400px;
+}
+
+.intro-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.intro-background h2, 
+.intro-background p {
+    position: relative;
+    z-index: 2;
+    color: white;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.intro-background h2 {
+    margin-bottom: 1rem;
+}
+        .itinerary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .itinerary-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .itinerary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .card-header i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body ul {
+            list-style-type: none;
+        }
+
+        .card-body li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .card-body li:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: #1e3a8a;
+        }
+
+        .card-body li:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-body a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .card-body a:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #059669;
+            margin-top: 0.5rem;
+        }
+
+        .note {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #f8fafc;
+            border-left: 3px solid #1e3a8a;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-icons i {
+            font-size: 1.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-icons i:hover {
+            color: #bfdbfe;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .itinerary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('keralaimg/kochi.jpg') center/cover no-repeat;"></div>
+        <div class="header-content">
+            <h1>Kochi Travel Itinerary</h1>
+            <p class="subtitle">Explore the beauty and culture of the Queen of the Arabian Sea with our curated travel guide</p>
+        </div>
+    </header>
+    
+    <main>
+        <div class="itinerary-intro">
+            <div class="intro-background">
+                <h2>Your Perfect Kochi Adventure</h2>
+                <p>Discover the perfect blend of historical charm and modern attractions in Kochi, Kerala's coastal gem. We've crafted a comprehensive itinerary to make your visit memorable.</p>
+            </div>
+        </div>
+        
+        <div class="itinerary-grid">
+            <div class="itinerary-card">
+                <div class="card-header">
+                    <i class="fas fa-hotel"></i>
+                    <h3>Stay</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Bolgatty Palace</strong></p>
+                    <p class="price">₹5000 per night</p>
+                    <a href="https://maps.app.goo.gl/rpTgJ3Z4WJ97JezT6?g_st=com.google.maps.preview.copy" target="_blank">
+                        <i class="fas fa-map-marker-alt"></i> View on Map
+                    </a>
+                    <div class="note">
+                        <i class="fas fa-info-circle"></i> Take a boat ride from Vypin to Fort Kochi for easy access.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="itinerary-card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Shopping</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <a href="https://www.google.com/maps?q=Lulu+Mall+Kochi" target="_blank">Lulu Mall</a>
+                            <p>Kerala's largest shopping mall with international brands</p>
+                        </li>
+                        <li>
+                            <a href="https://www.google.com/maps?q=Forum+Mall+Kochi" target="_blank">Forum Mall</a>
+                            <p>Modern shopping experience with entertainment options</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="itinerary-card">
+                <div class="card-header">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Lunch Spots</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <a href="https://maps.app.goo.gl/VueRH9gQFiULzQQP7?g_st=com.google.maps.preview.copy" target="_blank">Harbour Restaurant</a>
+                            <p>Fresh seafood with harbor views</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.google.com?q=Hamza's%20Naadan%20-%20Family%20Restaurants%20Kochi" target="_blank">Hamza Naadan</a>
+                            <p>Authentic Kerala cuisine</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.google.com?q=Zaatar%20Restaurant%20Kochi" target="_blank">Zaatar</a>
+                            <p>Delicious Arabian cuisine</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="itinerary-card">
+                <div class="card-header">
+                    <i class="fas fa-coffee"></i>
+                    <h3>Cafés</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <a href="https://maps.app.goo.gl/4PnAwy7xUTwxeyXi8?g_st=com.google.maps.preview.copy" target="_blank">French Toast Café</a>
+                            <p>European-style café with breakfast specialties</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/32o5pN6Y5HRKChMR7?g_st=com.google.maps.preview.copy" target="_blank">Kash Art Café</a>
+                            <p>Creative space with art exhibitions</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.google.com?q=Pepper%20House%20Fort%20Kochi" target="_blank">Pepper House Café</a>
+                            <p>Historic building with waterfront views</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/wukeMGx7hEqykYex6?g_st=com.google.maps.preview.copy" target="_blank">Gaia Café</a>
+                            <p>Eco-friendly café with organic options</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="itinerary-card">
+                <div class="card-header">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Places to Visit</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <a href="https://maps.google.com?q=Marine%20Drive%20Kochi" target="_blank">Marine Drive</a>
+                            <p>Scenic waterfront promenade (Couple Spot/Walk)</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/SF7ZckWeigeVEW2T9?g_st=com.google.maps.preview.copy" target="_blank">Jew Street</a>
+                            <p>Historic street with great photo opportunities</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/h8bhvuDtfYAzngS78?g_st=com.google.maps.preview.copy" target="_blank">Queens Walkway</a>
+                            <p>Beautiful walkway for couples</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/h8bhvuDtfYAzngS78?g_st=com.google.maps.preview.copy" target="_blank">Fort Kochi</a>
+                            <p>Historic area with convenient parking</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/8496jLjw5LqSYjz17?g_st=com.google.maps.preview.copy" target="_blank">Milano Ice Cream</a>
+                            <p>Perfect dessert spot after dinner</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Enjoy your trip to Kochi!</p>
+        <p>The perfect blend of history, culture, and natural beauty awaits you</p>
+        <div class="footer-icons">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-pinterest"></i>
+        </div>
+    </footer>
+</body>
+</html>

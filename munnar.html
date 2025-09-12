@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Munnar Travel Itinerary</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("/api/placeholder/1600/900") center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .header-content {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .intro {
+    text-align: center;
+    margin-bottom: 4rem;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), /* Light overlay */
+        url("keralaimg/munnar.jpg"); /* Your background image */
+    background-size: cover;
+    background-position: center;
+    background-color: #f5f7fa; /* Fallback color */
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    min-height: 400px;
+}
+
+
+
+        .intro h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .intro p {
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            color: #555;
+        }
+
+        .itinerary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #1a572e;
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .card-header i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body ul {
+            list-style-type: none;
+        }
+
+        .card-body li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .card-body li:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: #1a572e;
+        }
+
+        .card-body li:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-body a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .card-body a:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #059669;
+            margin-top: 0.5rem;
+        }
+
+        .note {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #f8fafc;
+            border-left: 3px solid #1a572e;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        footer {
+            background-color: #1a572e;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-icons i {
+            font-size: 1.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-icons i:hover {
+            color: #bfdbfe;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .itinerary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('keralaimg/munnar.jpg') center/cover no-repeat;"></div>
+        <div class="header-content">
+            <h1>Munnar Travel Itinerary</h1>
+            <p class="subtitle">Experience the breathtaking beauty of Kerala's most famous hill station</p>
+        </div>
+    </header>
+    
+    <main>
+        <div class="intro">
+            <h2>Your Ultimate Munnar Experience</h2>
+            <p>Nestled amidst the Western Ghats at an altitude of 6,000 ft, Munnar is a paradise of rolling hills, misty valleys, and endless tea plantations. Once a summer resort of the British government, this hill station boasts stunning landscapes, diverse flora and fauna, and a pleasant climate throughout the year.</p>
+            <p>Our carefully curated itinerary helps you discover the best of Munnar's natural beauty, cultural heritage, and culinary delights.</p>
+        </div>
+        
+        <div class="itinerary-grid">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-hotel"></i>
+                    <h3>Stay</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <strong>The Tall Trees</strong>
+                            <p class="price">₹6,500 - ₹9,500 per night</p>
+                            <a href="https://maps.app.goo.gl/8yPDNRNVvA3S9rF29" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i> View on Map
+                            </a>
+                            <p>Eco-friendly resort surrounded by rainforests</p>
+                        </li>
+                        <li>
+                            <strong>Tea County Munnar</strong>
+                            <p class="price">₹4,500 - ₹7,000 per night</p>
+                            <a href="https://maps.app.goo.gl/jfxMjxRUPKJgYYkK8" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i> View on Map
+                            </a>
+                            <p>KTDC property with panoramic valley views</p>
+                        </li>
+                    </ul>
+                    <div class="note">
+                        <i class="fas fa-info-circle"></i> Book accommodations in advance during peak season (September to May).
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Must-Visit Places</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <a href="https://maps.app.goo.gl/pxDYZdAqiuF9XSrA7" target="_blank">Tea Gardens</a>
+                            <p>Endless stretches of lush tea plantations</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/5JdcMwHGkW6VXuRk8" target="_blank">Eravikulam National Park</a>
+                            <p>Home to the endangered Nilgiri Tahr</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/4Ug3tQWrGNZNdMp56" target="_blank">Mattupetty Dam</a>
+                            <p>Tranquil lake with boating facilities</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/z1FdGEjmVXCYKqAz7" target="_blank">Top Station</a>
+                            <p>Highest point offering spectacular views</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/kcVF1VCaQ5uF7EBU7" target="_blank">Tata Tea Museum</a>
+                            <p>Learn about tea processing and history</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-hiking"></i>
+                    <h3>Activities</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <strong>Tea Plantation Tours</strong>
+                            <p>Guided walks through working tea estates</p>
+                        </li>
+                        <li>
+                            <strong>Trekking</strong>
+                            <p>Trails through Meesapulimala and Chokramudi peaks</p>
+                        </li>
+                        <li>
+                            <strong>Kathakali Performance</strong>
+                            <p>Traditional Kerala dance drama at Punarjani</p>
+                            <a href="https://maps.app.goo.gl/QvRbgzjpTnP8TdPb7" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i> View Location
+                            </a>
+                        </li>
+                        <li>
+                            <strong>Ayurvedic Spa</strong>
+                            <p>Rejuvenating treatments using local herbs</p>
+                        </li>
+                        <li>
+                            <strong>Shikara Boat Ride</strong>
+                            <p>At Kundala Lake and Mattupetty Dam</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Restaurants</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <a href="https://maps.app.goo.gl/tVcUzDnTT4R4LgYa8" target="_blank">Saravana Bhavan</a>
+                            <p>Authentic South Indian vegetarian cuisine</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/rEZ2rAqeSeFk6TXM9" target="_blank">Rapsy Restaurant</a>
+                            <p>Local Kerala specialties and seafood</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/6Tn1BNTShtTGSekM7" target="_blank">Sree Mahaveer Bhojanalay</a>
+                            <p>Pure vegetarian North Indian dishes</p>
+                        </li>
+                        <li>
+                            <a href="https://maps.app.goo.gl/oWtszQcP33Hh7jvR9" target="_blank">SN Restaurant</a>
+                            <p>Local favorite with Kerala thali options</p>
+                        </li>
+                    </ul>
+                    <div class="note">
+                        <i class="fas fa-info-circle"></i> Don't miss trying the local cardamom-infused tea and fresh spices.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>Shopping</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <strong>Munnar Market</strong>
+                            <p>Local spices, tea, and homemade chocolates</p>
+                            <a href="https://maps.app.goo.gl/yTMGN48P6G7JZ54g9" target="_blank">
+                                <i class="fas fa-map-marker-alt"></i> View Location
+                            </a>
+                        </li>
+                        <li>
+                            <strong>TATA Tea Outlet</strong>
+                            <p>Premium teas direct from the plantation</p>
+                        </li>
+                        <li>
+                            <strong>Handloom Textiles</strong>
+                            <p>Traditional Kerala fabrics and garments</p>
+                        </li>
+                        <li>
+                            <strong>Spice Garden Shops</strong>
+                            <p>Cardamom, cloves, pepper, and other spices</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>Travel Tips</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>
+                            <strong>Best Time to Visit</strong>
+                            <p>September to May for pleasant weather</p>
+                        </li>
+                        <li>
+                            <strong>Getting There</strong>
+                            <p>Nearest airport: Cochin International (105 km)</p>
+                            <p>Nearest railway station: Aluva (110 km)</p>
+                        </li>
+                        <li>
+                            <strong>Local Transport</strong>
+                            <p>Taxis and auto-rickshaws available for local travel</p>
+                            <p>Consider renting a car for flexibility</p>
+                        </li>
+                        <li>
+                            <strong>Weather</strong>
+                            <p>Pack light woolens even in summer as evenings can be cool</p>
+                            <p>Carry rain gear during monsoon (June-August)</p>
+                        </li>
+                    </ul>
+                    <div class="note">
+                        <i class="fas fa-exclamation-triangle"></i> Road conditions can be winding - take motion sickness medication if needed.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Enjoy your trip to Munnar!</p>
+        <p>The perfect blend of mountains, tea plantations, and cool weather awaits you</p>
+        <div class="footer-icons">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-instagram"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-pinterest"></i>
+        </div>
+    </footer>
+</body>
+</html>

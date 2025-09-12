@@ -1,0 +1,554 @@
+body{
+  background-color: #b94b4b; 
+  /* background-color: rgb(244, 244, 190); */
+}
+
+.topnav{
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  z-index: 1000;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #0e6372;
+  display: flex;
+  align-items: center; /* Aligns the logo and nav items vertically */
+  justify-content: flex-start; /* Makes sure the items start from the left */
+}
+
+.topnav .search-bar{
+  align-items:end;
+  padding: 8px;
+  width: 200px;
+  position: absolute;
+  right: 40px;
+  border-radius: 15px;
+  
+}
+.topnav .material-symbols-outlined{
+  width: max-content;
+  position: absolute;
+  margin-left: 10px;
+  right: 10px; 
+}
+
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: rgb(225, 34, 34);
+  border-radius: 7px;
+}
+
+.topnav a.active {
+  background-color: #dcb444;
+  color: white;
+  border-radius: 7px;
+}
+
+/* .topnav .menu {
+  display: none;
+} */
+
+.menu-toggle {
+  display: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px){
+  .topnav {
+    height: 14%;
+    
+  }
+  .topnav img{
+    position: absolute;
+    top: 15%;
+    height: 14%;
+  }
+  .topnav .menu{
+    position: absolute;
+    top: 0%;
+    left: 10%;
+    text-align: center;
+    height: 14%;
+  }
+  .topnav .search-bar {
+    position: absolute;
+    top: 50%; /* Adjust if needed */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    
+}
+.topnav .material-symbols-outlined{
+  position: absolute;
+    top: 50%; /* Adjust if needed */
+    right: 2%;
+    transform: translateX(-50%);
+    width: 100%;
+    margin: 0;
+  }
+  h1{
+    margin: auto;
+  }
+
+  .container-wrapper{
+    position: absolute;
+  }
+}
+
+
+
+/* Apply box-sizing and other styles specifically within the slideshow-container */
+.slideshow-container  {
+  box-sizing: border-box;
+  
+}
+
+body {
+  font-family: Verdana, sans-serif;
+  margin: 0;
+}
+
+/* Hide slides inside the slideshow container */
+.slideshow-container .mySlides fade {
+  display:none;
+}
+
+/* Align images inside the slideshow container vertically to the middle */
+.slideshow-container img {
+  vertical-align: middle;
+}
+
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 800px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 10px;
+  width: 10px;
+  margin: 0 2px;
+  background-color: #000000;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+
+h1{
+  text-align: center;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  color: #e2820e;
+  border-top: 2px solid #CCC;
+  border-bottom: 2px solid #CCC;
+  padding: 20px;
+  }
+
+/* Styling for the card container */
+.card-container {
+  display: grid;                   /* Use grid layout */
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 20px;                        /* Space between the cards */
+  padding: 20px;                    /* Padding around the container */
+  max-width: 1200px;                 /* Max width of the container */
+  margin: 0 auto;                   /* Center the container */
+}
+
+/* Styling for individual cards */
+.card {
+  background-color: #fff;          /* White background */
+  border: 1px solid #ddd;          /* Light gray border */
+  border-radius: 8px;              /* Rounded corners */
+  padding: 20px;                   /* Padding inside the card */
+  text-align: center;              /* Center text */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  transition: transform 0.3s;       /* Smooth scale effect on hover */
+}
+
+/* Styling for images in cards */
+.card img {
+  width: 100%;                     /* Ensure images take full width of the card */
+  border-radius: 5px;              /* Round the image corners */
+  object-fit: cover;               /* Cover the area of the image without stretching */
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: scale(1.05);          /* Slightly increase the size of the card on hover */
+}
+
+
+/* Contact Form Styles */
+.contact {
+  
+  width: 50%; /* Controls the width of the contact form */
+  margin: 0 auto; /* Horizontally centers the contact form */
+  padding: 40px; /* Adds some padding inside the container */
+  background-color: #f9f9f9; /* Optional: background color for the form */
+  border-radius: 8px; /* Optional: rounded corners */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Optional: slight shadow for better visual */
+  opacity: 0; /* Initially hidden */
+  transform: translateY(50px); /* Start below the screen */
+  animation: fadeInPopUp 1.5s ease-out forwards; /* Animation for fade-in and pop-up */
+}
+
+.back-link  {
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #4e7ed1; /* Green background */
+  color:white; /* White text */
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none; /* Removes the underline */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Floating Label and Input Fields */
+.contact  {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+  transition: transform 0.3s ease, font-size 0.3s ease;
+  background-color:whitesmoke;
+}
+
+.contact input,
+.contact textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  color: #333;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.Description{
+  color: #000000;
+}
+
+.contact input:focus,
+.contact textarea:focus {
+  border-color: #0c5ad9; /* Blue border on focus */
+  background-color: #e6f7ff; /* Light blue background */
+  outline: none; /* Remove outline */
+}
+
+.contact input::placeholder,
+.contact textarea::placeholder {
+  color: #bbb;
+  transition: color 0.3s ease;
+}
+
+.contact input:focus::placeholder,
+.contact textarea:focus::placeholder {
+  
+  color: #0c5ad9; /* Change placeholder color on focus */
+}
+
+/* Button Styles */
+.contact button {
+  padding: 14px 30px;
+  background-color: #0c5ad9;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.contact button:hover {
+  background-color: #054f90; /* Darker shade on hover */
+  transform: translateY(-4px); /* Lift the button on hover */
+}
+
+.contact button:active {
+  transform: translateY(2px); /* Slight press effect */
+}
+
+/* Animation for Form's Entrance */
+@keyframes fadeInPopUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Heading Styles */
+.contact h1 {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+/* Form Container Flexbox */
+.contact form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adding Media Query for Responsiveness */
+@media (max-width: 768px) {
+  .contact {
+    width: 80%;
+    padding: 20px;
+  }
+  .contact h1 {
+    font-size: 20px;
+  }
+  .contact input,
+  .contact textarea {
+    font-size: 14px;
+  }
+}
+
+
+
+/* Booking */
+.container {
+  display: flex;
+  border: 2px solid #b94b4b;
+  background-color:#E16A54;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.image {
+  flex: 1;
+  padding: 20px;
+  align-items: center;
+  line-height: normal;
+  object-fit: cover;
+}
+
+.image img {
+  max-width: 100%;
+  height: fit-content;
+  border-radius: 8px;
+  padding: 0%;
+}
+
+.details {
+  flex: 5;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.box {
+  width: 100%;
+  height: fit-content;
+  background-color:  #F39E60;
+  border: 1px solid #86bee7;
+  padding: 35px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(9, 8, 8, 0.05);
+  animation: bounce 0.5s ease-out;
+}
+
+/* Button style for the Visit Here link */
+/* .button-link {
+  display: inline-block; 
+  position: absolute;
+  right: 4%;
+  margin: 5px 0;
+  padding: 10px 20px;
+  margin: 5px 0;
+  background-color: #d2d2d2;
+  color: rgb(11, 11, 11);
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+} */
+.button-link{
+display: inline-block; 
+position: absolute;
+right: 4%;
+color: rgb(0, 0, 0);
+border: 2px solid rgb(0, 195, 255);
+border-radius: 7px;
+padding: 10px 20px;
+font-family: Verdana, Geneva, Tahoma, sans-serif;
+font-size: 14px;
+background: rgb(34, 127, 158);
+cursor: pointer;
+overflow: hidden;
+transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+/* .button-link:hover {
+  background-color: #d2c036;
+} */
+.button-link:hover{
+  background-color: #000;;
+  color: white;
+  border-color: white;
+  box-shadow: 0 0 15px rgb(0, 194, 253);
+}
+.stars {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px white;
+  opacity: 1;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-in-out;
+}
+.stars.large {
+  width: 10px;
+  height: 10px;
+}
+
+
+
+h2 {
+  margin-top: 0;
+  color:  white;
+}
+
+
+/* about page h3 */
+.h3{
+  color: #e6f7ff;
+  text-align: center;
+  font-size: 30px;
+  font-style: italic;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.about{
+  color: #000000;
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 40px;
+}
+.Welcome{
+  text-align: center;
+  font-style: italic;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 40px;
+  color: seashell;
+}
+
+
+ul{
+  color: #ddd;
+}
+
+a{
+  color: #000000;
+  text-decoration: none;
+}
+
+
+footer {
+  
+  justify-content: space-around;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  width: 100%;
+}
+

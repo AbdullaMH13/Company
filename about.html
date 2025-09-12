@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!--div class="topnav">
+        <img src="logo.jpg" width="10%" alt="the coffee logo">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="booking.html">Explore</a>
+        <a href="contact.html">Suggestion</a>
+    </div-->
+    <div id="header"></div>
+
+    <script>
+        fetch("header.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header").innerHTML = data;
+            });
+    </script>
+    
+
+    <br>
+    <br>
+    <br>
+    <h3 class="h3">"Embark on the Adventure of a Lifetime – Travel the World with Us!"</h3>
+    <p class="about">
+        Are you ready to travel the world and explore the most breathtaking destinations? Whether you're seeking an adventure trip filled with excitement or a relaxing luxury getaway, we offer exclusive travel experiences that cater to every type of traveler. Immerse yourself in diverse cultures, uncover hidden gems, and create memories that will last a lifetime. With our help, your dream adventure awaits – from stunning beaches to ancient landmarks. Join us and start your exciting adventure today!
+    </p>
+    <br><br><br>
+    <h3 class="Welcome">Welcome You All </h3>
+    <br><br><br>
+    <footer>
+        <p> Travelo &copy;2025</p>
+    </footer>
+</body>
+</html>

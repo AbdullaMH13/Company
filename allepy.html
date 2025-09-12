@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Alleppey Travel Itinerary</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://tse2.mm.bing.net/th?id=OIP.rfnW8aKPswzt5VArAJ681AHaEs&pid=Api') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .header-content {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 4rem;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+                url('https://tse1.mm.bing.net/th?id=OIP.FU6t1bS0APqx4ApIdZ6w5wHaE8&pid=Api');
+            background-size: cover;
+            background-position: center;
+            background-color: #f5f7fa;
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            min-height: 400px;
+        }
+
+        .intro h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .intro p {
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            color: #555;
+        }
+
+        .itinerary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #1a572e;
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .card-header i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body ul {
+            list-style-type: none;
+        }
+
+        .card-body li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .card-body li:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: #1a572e;
+        }
+
+        .card-body li:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-body a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .card-body a:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #059669;
+            margin-top: 0.5rem;
+        }
+
+        .note {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #f8fafc;
+            border-left: 3px solid #1a572e;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .food-adventure {
+            margin-top: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card-food, .card-adventure {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-food:hover, .card-adventure:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header-food, .card-header-adventure {
+            background-color: #1a572e;
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .card-header-food i, .card-header-adventure i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-header-food h3, .card-header-adventure h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-body-food, .card-body-adventure {
+            padding: 1.5rem;
+        }
+
+        footer {
+            background-color: #1a572e;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-icons i {
+            font-size: 1.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-icons i:hover {
+            color: #bfdbfe;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            .itinerary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .food-adventure {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <h1>Alleppey Travel Itinerary</h1>
+            <p class="subtitle">Discover the Serenity of Kerala's Backwaters</p>
+        </div>
+    </header>
+    
+    <main>
+        <div class="intro">
+            <h2>Your Ultimate Alleppey Experience</h2>
+            <p>Alleppey, known as the 'Venice of the East,' is famous for its picturesque backwaters, tranquil beaches, and unique houseboat experiences. Explore the lush landscapes and local culture through this carefully curated itinerary.</p>
+        </div>
+        
+        <div class="itinerary-grid">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Day 1: Exploring Alleppey</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Morning: Alleppey Beach</strong> - Enjoy a walk along the serene Alleppey Beach and visit the historic Alappuzha Lighthouse.</li>
+                        <li><strong>Afternoon: Backwater Cruise</strong> - Embark on a houseboat or shikara ride through the backwaters.</li>
+                        <li><strong>Evening: Marari Beach</strong> - Relax by the sea at Marari Beach, famous for its coconut palms and golden sands.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-map-signs"></i>
+                    <h3>Day 2: Cultural and Natural Attractions</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Morning: Krishnapuram Palace</strong> - Explore this 16th-century palace and its archaeological museum.</li>
+                        <li><strong>Afternoon: Pathiramanal Island</strong> - Visit this small island known for its bird species and rich biodiversity.</li>
+                        <li><strong>Evening: Kuttanad Region</strong> - Witness the unique farming practices in the 'Rice Bowl of Kerala.'</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>Additional Activities</h3>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><strong>Coir Industry Visit</strong> - Discover the traditional coir weaving industry in Alleppey.</li>
+                        <li><strong>Toddy Shop Experience</strong> - Taste the local palm wine at a toddy shop.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Spots -->
+        <div class="food-adventure">
+            <div class="card-food">
+                <div class="card-header-food">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Top Food Spots in Alleppey</h3>
+                </div>
+                <div class="card-body-food">
+                    <ul>
+                        <li><strong>Amma's Restaurant</strong> - Famous for its traditional Kerala Sadya and local dishes.</li>
+                        <li><strong>The Lighthouse Restaurant</strong> - Offering seafood delicacies with a view of the beach.</li>
+                        <li><strong>Thaff Restaurant</strong> - Known for its aromatic biryanis and Kerala-style fish curry.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Adventure Activities -->
+            <div class="card-adventure">
+                <div class="card-header-adventure">
+                    <i class="fas fa-hiking"></i>
+                    <h3>Adventure Activities in Alleppey</h3>
+                </div>
+                <div class="card-body-adventure">
+                    <ul>
+                        <li><strong>Kayaking in the Backwaters</strong> - Paddle through the calm backwaters for an adventurous experience.</li>
+                        <li><strong>Cycling Tour in Kuttanad</strong> - Explore the scenic paddy fields and traditional village life.</li>
+                        <li><strong>Houseboat Adventure</strong> - Enjoy a unique night stay in a traditional houseboat on the backwaters.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Enjoy your trip to Alleppey, where culture, nature, and adventure await you!</p>
+        <div class="footer-icons">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-twitter"></i>
+            <i class="fab fa-instagram"></i>
+        </div>
+    </footer>
+</body>
+</html>

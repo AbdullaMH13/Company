@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala - God's Own Country</title>
+    <link rel="stylesheet" href="kerala.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+</head>
+<body>
+    <header>
+        <div id="header"></div>
+
+        <script>
+            fetch("header.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("header").innerHTML = data;
+                });
+        </script>
+        
+    </header>
+
+    <!-- Add a Back Button -->
+    
+
+    <br><br>
+
+    <section id="intro">
+        <div class="back-button-container">
+            <button onclick="window.history.back()" class="back-button"> &larr;</button>
+        </div>
+        <div class="intro-content">
+            <h2>Welcome to Kerala</h2>
+            <p>Kerala, known as "God's Own Country", is a tropical paradise on the southwestern coast of India. Famous for its backwaters, beaches, hill stations, and rich culture, Kerala offers an unforgettable experience.</p>
+        </div>
+    </section>
+
+    <section id="tourist">
+        <h2>Top Tourist Destinations in Kerala</h2>
+        <div class="tourist-spots">
+            <div class="spot">
+                <a href="itinerary-template.html" target="_blank">
+                <img src="photos/kerala.jpg" alt="Alleppey Backwaters">
+                <h3>Alleppey</h3>
+                <p>Famous for its tranquil backwaters and houseboats, Alleppey is a must-visit for nature lovers.</p>
+                </a>
+            </div>
+            <div class="spot">
+                <a href="kochitest.html" target="_blank">
+                <img src="keralaimg/kochi/kochi.jpg" alt="Kochi">
+                <h3>Kochi</h3>
+                <p>Kochi, also known as Cochin, is a vibrant city rich in culture, with its historic architecture, beautiful backwaters, and scenic surroundings. It’s a perfect blend of old and new.</p>
+                </a>
+            </div>
+
+            <div class="spot">
+                <a href="munnar.html" target="_blank">
+                <img src="keralaimg/munnar.jpg" alt="Munnar Hill Station">
+                <h3>Munnar</h3>
+                <p>A scenic hill station known for its lush tea gardens and beautiful mountain views.</p>
+                </a>
+            </div>
+            <div class="spot">
+                <a href="kovalam.html" target="_blank">
+                <img src="keralaimg/kovalam.jpg" alt="Kovalam Beach">
+                <h3>Kovalam</h3>
+                <p>One of Kerala's most famous beaches, perfect for sunbathing and water sports.</p>
+                </a>
+            </div>
+            
+            <!-- New Section for Varkala -->
+            <div class="spot">
+                <a href="varkala.html" target="_blank">
+                <img src="keralaimg/varkala.jpg" alt="Varkala Beach">
+                <h3>Varkala</h3>
+                <p>Varkala is known for its stunning cliffs, scenic beaches, and the Papanasam Beach which is considered sacred. It’s a perfect blend of spiritual, natural, and beach tourism.</p>
+                </a>
+            </div>
+
+            <div class="spot">
+                <a href="kozhikode.html" target="_blank">
+                <img src="keralaimg/kozhikode.jpg" alt="Kozhikode Beach">
+                <h3>Kozhikode</h3>
+                <p>Kozhikode, also known as Calicut, is a historic city famous for its beautiful beaches, rich cultural heritage, and iconic landmarks like the Kozhikode Beach and the Mananchira Square. It is known for its delicious Malabar cuisine, including the famous Kozhikode biryani. The city offers a perfect mix of history, nature, and culinary delights.</p>
+                </a>
+            </div>
+            
+            
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>If you are planning to visit Kerala and need more information, feel free to reach out to us!</p>
+        <a href="mailto:info@keralatravel.com" class="btn">Email Us</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Kerala Tourism. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

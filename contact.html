@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="topnav">
+          <!-- Logo -->
+          <img src="logo.jpg" width="10%" alt="the coffee logo">
+      
+          <!-- Search Icon -->
+          <span class="material-symbols-outlined">search</span>
+      
+          <!-- Menu links (hidden by default on mobile) -->
+            <div id="header"></div>
+
+            <script>
+                fetch("header.html")
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById("header").innerHTML = data;
+                    });
+            </script>
+
+      
+          <!-- Search Bar -->
+          <input type="search" id="searchInput" placeholder="search" class="search-bar">
+      
+          <!-- Menu Toggle for mobile -->
+          <span class="menu-toggle" id="menuToggle">&copy</span>
+        </div>
+      </nav>
+    <br><br>
+    <br><br>
+    <br>
+    <div class="contact">
+        <h1 class="back-link">Form For Suggestion</h1>
+        <br>
+        <form action="">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+            <br><br>
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email">
+            <br><br>
+            <label for="location">Location</label>
+            <input type="text" name="email" id="email">
+            <br><br>
+            <p class="Description">Description</p>
+            <textarea name="Description" id="" cols="30" rows="10" placeholder="Your Description about new place"></textarea>
+            <button id="glowButton">Submit</button>
+        </form>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <footer>
+        <p> Travelo &copy;2025</p>
+    </footer>
+
+</body>
+</html>
