@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Munnar Travel Guide</title>
+  <link rel="stylesheet" href="kerala.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      /* background: linear-gradient(135deg, #c8e6c9, #a5d6a7); */
+      background: #f2c6a2;
+      color: #2e7d32; 
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(rgba(46, 125, 50, 0.1), rgba(46, 125, 50, 0.2));
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: #1b5e20;
+      text-transform: uppercase;
+      font-size: 60px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    } 
+
+    section {
+      padding: 2rem;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1b5e20;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      font-size: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      justify-items: center;
+    }
+
+    .card {
+      text-align: center;
+      /* background: rgba(255, 255, 255, 0.9); 
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s; */
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #ddd;
+      transition: transform 0.3s;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .card p {
+      margin-top: 0.5rem;
+      font-weight: bold;
+      font-size: 18px;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div id="header"></div>
+        <script>
+            fetch("header.html")
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("header").innerHTML = data;
+                });
+        </script>
+    <h1>Munnar</h1>
+    <p style="font-size: 1.2rem; font-style: italic;">The Tea Garden Paradise of Kerala</p>
+  </header>
+
+  <section>
+    <h2>Must Visit</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar.jpg" alt="Tea Gardens">
+        <p>Tea Gardens & Plantations</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/eravikulam.jpg" alt="Eravikulam National Park">
+        <p>Eravikulam National Park</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/mattupetty_dam.jpg" alt="Mattupetty Dam">
+        <p>Mattupetty Dam</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/top_station.jpg" alt="Top Station">
+        <p>Top Station</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/echo_point.jpg" alt="Echo Point">
+        <p>Echo Point</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/kundala_lake.jpg" alt="Kundala Lake">
+        <p>Kundala Lake</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/anamudi_peak.jpg" alt="Anamudi Peak">
+        <p>Anamudi Peak</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/rose_garden.jpg" alt="Rose Garden">
+        <p>Rose Garden</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Adventure & Nature</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/trekking.jpg" alt="Trekking">
+        <p>Trekking Adventures</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/tea_museum.jpg" alt="Tea Museum">
+        <p>Tea Museum</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/spice_plantation.jpg" alt="Spice Plantation">
+        <p>Spice Plantation Tours</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/elephant_safari.jpg" alt="Elephant Safari">
+        <p>Elephant Safari <br>at Thekkady</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Unique Local Experiences</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/tea_tasting.jpg" alt="Tea Tasting">
+        <p>Tea Tasting Sessions</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/cycling.jpg" alt="Cycling">
+        <p>Cycling Through <br>Tea Estates</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/sunrise.jpg" alt="Sunrise Point">
+        <p>Sunrise at <br>Top Station</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/campfire.jpg" alt="Campfire">
+        <p>Mountain Campfire <br>Experiences</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Food section 1 -->
+  <section>
+    <h2>Food to Try</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/food/appam_stew.jpg" alt="Appam with Stew">
+        <p>Appam with Vegetable Stew <br>
+            From Saravana Bhavan
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/kerala_meals.jpg" alt="Kerala Meals">
+        <p>Traditional Kerala Meals <br>
+            From Rapsy Restaurant
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/puttu_kadala.jpg" alt="Puttu Kadala">
+        <p>Puttu & Kadala Curry <br>
+            From Local Tea Shops
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/banana_chips.jpg" alt="Banana Chips">
+        <p>Fresh Banana Chips <br>
+         From Munnar Spice Market</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Food section 2 -->
+  <section>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/food/tea.jpg" alt="Fresh Tea">
+        <p>Fresh Mountain Tea <br>
+           From Tea Gardens
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/fish_curry.jpg" alt="Fish Curry">
+        <p>Fish Curry & Rice <br>
+            From Guru Hotel
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/chicken_roast.jpg" alt="Chicken Roast">
+        <p>Kerala Chicken Roast <br>
+            From Hotel Hillview
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/porotta.jpg" alt="Porotta">
+        <p>Porotta & Beef Curry <br>
+         From Al Buhari Restaurant</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Food section 3 -->
+  <section>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/food/dosa.jpg" alt="Masala Dosa">
+        <p>Masala Dosa <br>
+           From Sree Mahaveer Bhojanalaya
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/biryani.jpg" alt="Biryani">
+        <p>Chicken Biryani <br>
+            From Hotel Copper Castle
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/honey.jpg" alt="Wild Honey">
+        <p>Wild Mountain Honey <br>
+            From Local Markets
+        </p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/food/cardamom.jpg" alt="Cardamom">
+        <p>Fresh Cardamom & Spices <br>
+         From Spice Plantations</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Instagram Spots</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/tea_garden_selfie.jpg" alt="Tea Garden Selfie">
+        <p>Tea Garden Panoramic Views</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/misty_mountains.jpg" alt="Misty Mountains">
+        <p>Misty Mountain Mornings</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/neelakurinji.jpg" alt="Neelakurinji Flowers">
+        <p>Neelakurinji Flower Blooms</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/sunset_point.jpg" alt="Sunset Point">
+        <p>Sunset at Top Station</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/waterfalls.jpg" alt="Waterfalls">
+        <p>Lakkam & Attukad Waterfalls</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/valley_view.jpg" alt="Valley Views">
+        <p>Valley Views from Echo Point</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/instagram/boat_ride.jpg" alt="Boat Ride">
+        <p>Boating at Mattupetty Dam</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Shopping & Souvenirs</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="keralaimg/munnar/shopping/tea_packets.jpg" alt="Tea Packets">
+        <p>Premium Tea Varieties</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/shopping/spices.jpg" alt="Spices">
+        <p>Organic Spices & Oils</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/shopping/handloom.jpg" alt="Handloom">
+        <p>Traditional Handloom Products</p>
+      </div>
+      <div class="card">
+        <img src="keralaimg/munnar/shopping/chocolates.jpg" alt="Chocolates">
+        <p>Homemade Chocolates</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
