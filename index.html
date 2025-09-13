@@ -17,20 +17,14 @@
       <span class="material-symbols-outlined">search</span>
   
       <!-- Menu links (hidden by default on mobile) -->
-      <!-- div class="menu" id="menu">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="booking.html">Explore</a>
-        <a href="contact.html">Suggestion</a>
-      </div-->
       <div id="header"></div>
-
-<script>
-    fetch("header.html")
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("header").innerHTML = data;
-        });
+      <script>
+          fetch("header.html")
+              .then(response => response.text())
+              .then(data => {
+                  document.getElementById("header").innerHTML = data;
+              });
+      </script>
 </script>
 
   

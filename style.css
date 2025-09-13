@@ -9,8 +9,6 @@ body{
   left: 0%;
   width: 100%;
   z-index: 1000;
-}
-.topnav {
   overflow: hidden;
   background-color: #0e6372;
   display: flex;
@@ -237,6 +235,7 @@ h1{
   padding: 20px;                    /* Padding around the container */
   max-width: 1200px;                 /* Max width of the container */
   margin: 0 auto;                   /* Center the container */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* responsive columns */
 }
 
 /* Styling for individual cards */
