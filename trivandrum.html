@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kozhikode Travel Guide</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trivandrum Travel Guide</title>
 <link rel="stylesheet" href="kerala.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
   
@@ -13,6 +13,7 @@
       margin: 0;
       background: #f2c6a2;
       color: #333;
+      line-height: 1.6;
     }
 
     header {
@@ -50,8 +51,8 @@
     }
 
     .card img {
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       object-fit: cover;
       border-radius: 50%;
       border: 3px solid #ddd;
@@ -69,19 +70,12 @@
       font-weight: bold;
       font-size: 18px;
     }
-    .small-img {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-    border-radius: 50%;
-}
   </style>
 </head>
 
 <body>
 <header>
     <div id="header"></div>
-
         <script>
             fetch("header.html")
                 .then(response => response.text())
@@ -89,7 +83,7 @@
                     document.getElementById("header").innerHTML = data;
                 });
         </script>
-    <h1>Kozhikode</h1>
+    <h1>Trivandrum</h1>
   </header>
 
 
@@ -98,20 +92,20 @@
   <h2>Must Visit</h2>
   <div class="grid">
     <div class="card">
-      <img src="keralaimg/kozhikode/kozhikode.jpg" alt="Kappad Beach">
-      <p>Kappad Beach</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Sree_Padmanabhaswamy_Temple.jpg" alt="Padmanabhaswamy Temple">
+      <p>Padmanabhaswamy Temple</p>
     </div>
     <div class="card">
-      <img src="keralaimg/kozhikode/kozhikode.jpg" alt="Kozhikode Beach">
-      <p>Kozhikode Beach</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Kovalam_beach_trivandrum.jpg" alt="Kovalam Beach">
+      <p>Kovalam Beach</p>
     </div>
     <div class="card">
-      <img class="small-img" src="keralaimg/kozhikode/mannchira square.jpeg" alt="Mananchira Square">
-      <p>Mananchira Square</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/49/Napier_Museum_Trivandrum.jpg" alt="Napier Museum">
+      <p>Napier Museum</p>
     </div>
     <div class="card">
-      <img  src="keralaimg/kozhikode/Pazhassi Raja Museum.jpeg" alt="Pazhassi Raja Museum">
-      <p>Pazhassi Raja Museum</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Veli_Tourist_Village.jpg" alt="Veli Tourist Village">
+      <p>Veli Tourist Village</p>
     </div>
   </div>
 </section>
@@ -121,13 +115,20 @@
   <h2>Unique Local Experiences</h2>
   <div class="grid">
     <div class="card">
-      <img src="keralaimg/kozhikode/Sweet Meat Street.jpeg" alt="Sweet Meat Street">
-      <p>Sweet Meat Street</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Varkala_Cliff_view.jpg" alt="Varkala Cliff">
+      <p>Varkala Cliff Walk</p>
     </div>
-    
     <div class="card">
-      <img src="keralaimg/kozhikode/Beach Sunset.jpeg" alt="Beach Sunset">
-      <p>Beach Sunset</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Kuthiramalika_Palace.jpg" alt="Kuthiramalika Palace">
+      <p>Kuthiramalika Palace</p>
+    </div>
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Ponmudi_Hills.jpg" alt="Ponmudi Hills">
+      <p>Ponmudi Hills</p>
+    </div>
+    <div class="card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Shankumugham_Beach.jpg" alt="Shankumugham Beach">
+      <p>Shankumugham Beach</p>
     </div>
   </div>
 </section>
@@ -137,20 +138,20 @@
   <h2>Food to Try</h2>
   <div class="grid">
     <div class="card">
-      <img src="keralaimg/kozhikode/food/biryani.jpg" alt="Malabar Biryani">
-      <p>Malabar Biryani <br> Paragon</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Sadya_meal.jpg" alt="Kerala Sadya">
+      <p>Kerala Sadya</p>
     </div>
     <div class="card">
-      <img src="keralaimg/kozhikode/food/halwa.jpg" alt="Kozhikode Halwa">
-      <p>Kozhikode Halwa</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Seafood_kerala.jpg" alt="Seafood">
+      <p>Fresh Seafood</p>
     </div>
     <div class="card">
-      <img src="keralaimg/kozhikode/food/seafood.jpg" alt="Seafood">
-      <p>Seafood Special</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Puttu_kadala.jpg" alt="Puttu Kadala">
+      <p>Puttu & Kadala Curry</p>
     </div>
     <div class="card">
-      <img src="keralaimg/kozhikode/food/snacks.jpg" alt="Local Snacks">
-      <p>Local Snacks</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Kerala_snacks.jpg" alt="Kerala Snacks">
+      <p>Traditional Snacks</p>
     </div>
   </div>
 </section>
@@ -160,16 +161,16 @@
   <h2>Instagram Spots</h2>
   <div class="grid">
     <div class="card">
-      <img src="keralaimg/kozhikode/beach_evening.jpg" alt="Kozhikode Beach Evening">
-      <p>Kozhikode Beach</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Kovalam_beach_trivandrum.jpg" alt="Kovalam Sunset">
+      <p>Kovalam Sunset</p>
     </div>
     <div class="card">
-      <img src="keralaimg/kozhikode/kappad.jpg" alt="Kappad Beach">
-      <p>Kappad Beach</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/Varkala_Cliff_view.jpg" alt="Varkala Cliff">
+      <p>Varkala Cliff</p>
     </div>
     <div class="card">
-      <img src="keralaimg/kozhikode/mananchira.jpg" alt="Mananchira Square">
-      <p>Mananchira Square</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Shankumugham_Beach.jpg" alt="Shankumugham Beach">
+      <p>Shankumugham Beach</p>
     </div>
   </div>
 </section>
