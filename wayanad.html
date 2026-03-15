@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alleppey Travel Guide · Travelo</title>
+  <title>Wayanad Travel Guide · Travelo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -13,6 +13,8 @@
     html { scroll-behavior:smooth; }
     body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; }
     ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+
+    /* NAV */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; backdrop-filter:blur(18px) saturate(180%); background:rgba(250,247,242,0.82); border-bottom:1px solid rgba(184,146,74,0.15); }
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,2.5vw,1.8rem); font-weight:300; letter-spacing:.12em; color:var(--ink); text-decoration:none; }
     .nav-logo span { color:var(--gold); }
@@ -22,11 +24,13 @@
     .nav-links a:hover::after { width:100%; }
     .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
     .hamburger span { display:block; width:24px; height:1.5px; background:var(--ink); }
+
+    /* HERO */
     .hero { position:relative; height:100svh; min-height:600px; display:flex; align-items:flex-end; padding:0 5vw 10vh; overflow:hidden; }
     .hero-bg { position:absolute; inset:0; }
     .hero-bg img { width:100%; height:100%; object-fit:cover; animation:kenburns 12s ease forwards; }
     @keyframes kenburns { from{transform:scale(1.07)} to{transform:scale(1.0)} }
-    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(13,13,13,.80) 0%,rgba(13,13,13,.22) 50%,rgba(13,13,13,.08) 100%); }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(13,13,13,.82) 0%,rgba(13,13,13,.22) 50%,rgba(13,13,13,.08) 100%); }
     .hero-content { position:relative; z-index:2; max-width:700px; animation:fadeUp .9s .2s both; }
     @keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
     .hero-breadcrumb { display:flex; align-items:center; gap:.6rem; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:1.2rem; }
@@ -46,11 +50,15 @@
     .scroll-hint { position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%); z-index:3; display:flex; flex-direction:column; align-items:center; gap:.5rem; color:rgba(255,255,255,.45); font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; }
     .scroll-line { width:1px; height:48px; background:linear-gradient(to bottom,var(--gold),transparent); animation:scrollPulse 1.8s ease-in-out infinite; }
     @keyframes scrollPulse { 0%,100%{opacity:.3;transform:scaleY(.6)} 50%{opacity:1;transform:scaleY(1)} }
+
+    /* MARQUEE */
     .marquee-wrap { background:var(--gold); overflow:hidden; padding:.9rem 0; user-select:none; }
     .marquee-track { display:flex; gap:3rem; width:max-content; animation:marquee 22s linear infinite; }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
     .marquee-item { display:flex; align-items:center; gap:1rem; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--white); white-space:nowrap; }
     .marquee-dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.5); }
+
+    /* SHARED */
     section { padding:100px 5vw; }
     .section-label { font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
     .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4.5vw,3.4rem); font-weight:300; line-height:1.15; color:var(--ink); }
@@ -59,6 +67,8 @@
     .section-header { margin-bottom:3.5rem; }
     .back-btn { display:inline-flex; align-items:center; gap:.5rem; color:var(--muted); font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border:none; background:none; cursor:pointer; transition:color .25s; margin-bottom:2rem; }
     .back-btn:hover { color:var(--gold); } .back-btn:hover svg { transform:translateX(-3px); } .back-btn svg { transition:transform .25s; }
+
+    /* CIRCLE GRID */
     .circle-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:2.5rem 2rem; }
     .circle-card { display:flex; flex-direction:column; align-items:center; gap:1rem; cursor:pointer; }
     .circle-img-wrap { position:relative; width:170px; height:170px; border-radius:50%; overflow:hidden; box-shadow:0 6px 24px rgba(0,0,0,.12); border:3px solid transparent; background:linear-gradient(var(--cream),var(--cream)) padding-box, linear-gradient(135deg,var(--gold),#e8d5a8) border-box; transition:transform .4s, box-shadow .4s; }
@@ -67,6 +77,8 @@
     .circle-card:hover .circle-img-wrap img { transform:scale(1.1); }
     .circle-label { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:400; color:var(--ink); text-align:center; line-height:1.3; }
     .circle-sublabel { font-size:.72rem; color:var(--muted); text-align:center; margin-top:-.5rem; }
+
+    /* ITINERARY CARDS */
     .itin-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.8rem; }
     .itin-card { background:var(--white); box-shadow:0 2px 20px rgba(0,0,0,.06); overflow:hidden; transition:transform .35s, box-shadow .35s; }
     .itin-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.12); }
@@ -81,6 +93,13 @@
     .itin-bullet { width:8px; height:8px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:.45rem; }
     .itin-list-title { font-size:.88rem; font-weight:500; color:var(--ink); margin-bottom:.25rem; }
     .itin-list-desc { font-size:.78rem; color:var(--muted); line-height:1.65; }
+    .itin-price { display:inline-block; margin-top:.3rem; font-size:.75rem; font-weight:500; color:#1a572e; background:rgba(26,87,46,.07); padding:.15rem .6rem; }
+    .itin-link { display:inline-flex; align-items:center; gap:.35rem; font-size:.72rem; color:var(--gold); text-decoration:none; letter-spacing:.08em; text-transform:uppercase; margin-top:.4rem; transition:color .2s; }
+    .itin-link:hover { color:#a07840; }
+    .itin-note { margin-top:1.2rem; padding:.85rem 1rem; background:rgba(184,146,74,.06); border-left:3px solid var(--gold); font-size:.75rem; color:var(--muted); line-height:1.65; display:flex; gap:.6rem; }
+    .itin-note i { color:var(--gold); flex-shrink:0; margin-top:.1rem; }
+
+    /* FOOD GRID */
     .food-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1.5rem; }
     .food-card { background:var(--white); overflow:hidden; box-shadow:0 2px 16px rgba(0,0,0,.06); transition:transform .35s, box-shadow .35s; }
     .food-card:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(0,0,0,.12); }
@@ -89,6 +108,8 @@
     .food-card-body { padding:1.1rem 1.2rem 1.3rem; }
     .food-card-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:400; color:var(--ink); margin-bottom:.3rem; }
     .food-card-from { font-size:.72rem; color:var(--gold); letter-spacing:.1em; text-transform:uppercase; }
+
+    /* INSTAGRAM GRID */
     .insta-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; }
     .insta-item { position:relative; overflow:hidden; aspect-ratio:1; }
     .insta-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s; }
@@ -97,12 +118,18 @@
     .insta-item:hover .insta-overlay { background:rgba(13,13,13,.45); }
     .insta-label { font-family:'Cormorant Garamond',serif; font-size:1rem; color:white; text-align:center; padding:1rem; opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s; }
     .insta-item:hover .insta-label { opacity:1; transform:translateY(0); }
+
+    /* STATS */
     .stats-bar { background:var(--ink); color:var(--white); display:flex; justify-content:space-around; flex-wrap:wrap; gap:2rem; padding:60px 5vw; }
     .stat-item { text-align:center; }
     .stat-num { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--gold); line-height:1; }
     .stat-label { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-top:.5rem; }
+
+    /* CONTACT */
     .contact-section { background:var(--sand); text-align:center; }
     .contact-section p { font-size:.9rem; color:var(--muted); max-width:480px; margin:0 auto 2rem; line-height:1.7; }
+
+    /* FOOTER */
     footer { background:#080808; color:rgba(255,255,255,.55); padding:60px 5vw 30px; }
     .footer-top { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,.08); }
     .footer-brand-name { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--white); letter-spacing:.1em; margin-bottom:.8rem; }
@@ -116,13 +143,19 @@
     .footer-social a { width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.5); text-decoration:none; font-size:.85rem; transition:border-color .25s, color .25s; }
     .footer-social a:hover { border-color:var(--gold); color:var(--gold); }
     .footer-bottom { padding-top:1.8rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; font-size:.75rem; }
+
+    /* MOBILE MENU */
     .mobile-menu { position:fixed; inset:0; z-index:200; background:var(--ink); display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2.4rem; opacity:0; pointer-events:none; transition:opacity .35s; }
     .mobile-menu.open { opacity:1; pointer-events:all; }
     .mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3.2rem); font-weight:300; color:var(--white); text-decoration:none; transition:color .2s; }
     .mobile-menu a:hover { color:var(--gold); }
     .mobile-close { position:absolute; top:1.8rem; right:5vw; background:none; border:none; cursor:pointer; font-size:1.8rem; color:var(--white); }
+
+    /* REVEAL */
     .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s, transform .7s; }
     .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* RESPONSIVE */
     @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .insta-grid{grid-template-columns:repeat(2,1fr);} .footer-top{grid-template-columns:1fr 1fr;} }
     @media(max-width:600px){ section{padding:70px 5vw;} .circle-grid{grid-template-columns:repeat(2,1fr); gap:1.8rem 1rem;} .circle-img-wrap{width:130px;height:130px;} .food-grid{grid-template-columns:1fr 1fr;} .insta-grid{grid-template-columns:repeat(2,1fr);} .footer-top{grid-template-columns:1fr; gap:2rem;} .itin-grid{grid-template-columns:1fr;} }
     @media(max-width:380px){ .food-grid{grid-template-columns:1fr;} }
@@ -130,17 +163,25 @@
 </head>
 <body>
 
+<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
-  <a href="index.html">Home</a><a href="kerala.html">Kerala</a>
-  <a href="#">Experiences</a><a href="hotel.html">Hotels</a><a href="contact.html">Contact</a>
+  <a href="index.html">Home</a>
+  <a href="kerala.html">Kerala</a>
+  <a href="#">Experiences</a>
+  <a href="hotel.html">Hotels</a>
+  <a href="contact.html">Contact</a>
 </div>
 
+<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">Trave<span>lo</span></a>
   <ul class="nav-links">
-    <li><a href="index.html">Home</a></li><li><a href="kerala.html">Kerala</a></li>
-    <li><a href="#">Experiences</a></li><li><a href="hotel.html">Hotels</a></li><li><a href="contact.html">Contact</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="kerala.html">Kerala</a></li>
+    <li><a href="#">Experiences</a></li>
+    <li><a href="hotel.html">Hotels</a></li>
+    <li><a href="contact.html">Contact</a></li>
   </ul>
   <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
@@ -148,21 +189,21 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=1800&q=80" alt="Alleppey Backwaters">
+    <img src="https://images.unsplash.com/photo-1619468129361-605ebea04b44?w=1800&q=80" alt="Wayanad Forest">
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-breadcrumb">
       <a href="index.html">Home</a><span>›</span>
       <a href="kerala.html">Kerala</a><span>›</span>
-      <span>Alleppey</span>
+      <span>Wayanad</span>
     </div>
-    <p class="hero-tagline">Venice of the East · Backwaters · Kerala</p>
-    <h1 class="hero-title">Alleppey<br><em>Float Through Paradise</em></h1>
-    <p class="hero-sub">Glittering backwater canals, iconic houseboats drifting under coconut palms, golden beaches and the unhurried rhythm of village life — Alleppey is Kerala's most enchanting escape.</p>
+    <p class="hero-tagline">Highland District · Western Ghats · Kerala</p>
+    <h1 class="hero-title">Wayanad<br><em>Into the Wild Green</em></h1>
+    <p class="hero-sub">Mist-shrouded forests, thundering waterfalls, ancient tribal caves and sprawling tea and coffee estates — Wayanad is Kerala's most untamed and breathtaking highland retreat.</p>
     <div class="hero-btns">
       <a href="#must-visit" class="btn-primary">
-        Explore Alleppey
+        Explore Wayanad
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
       <a href="contact.html" class="btn-ghost">Plan My Trip</a>
@@ -174,22 +215,22 @@
 <!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <div class="marquee-item"><span>Houseboat Stay</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Backwater Cruise</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Alleppey Beach</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Marari Beach</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Pathiramanal Island</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Krishnapuram Palace</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kayaking</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kuttanad Rice Bowl</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Houseboat Stay</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Backwater Cruise</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Alleppey Beach</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Marari Beach</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Pathiramanal Island</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Krishnapuram Palace</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kayaking</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kuttanad Rice Bowl</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Chembra Peak</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Edakkal Caves</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Soochipara Falls</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Banasura Sagar Dam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Wayanad Wildlife Sanctuary</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Pookode Lake</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Coffee Plantations</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Meenmutty Falls</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Chembra Peak</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Edakkal Caves</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Soochipara Falls</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Banasura Sagar Dam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Wayanad Wildlife Sanctuary</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Pookode Lake</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Coffee Plantations</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Meenmutty Falls</span><span class="marquee-dot"></span></div>
   </div>
 </div>
 
@@ -200,42 +241,42 @@
     Back
   </button>
   <div class="section-header reveal">
-    <p class="section-label">Backwaters & Landmarks</p>
+    <p class="section-label">Forests, Falls & Peaks</p>
     <h2 class="section-title">Must <em>Visit</em></h2>
-    <p class="section-sub">From serene backwater canals to bird-rich islands and historic palaces — Alleppey's landmarks are pure Kerala magic.</p>
+    <p class="section-sub">Ancient caves with prehistoric carvings, misty mountain peaks and the largest earthen dam in India — Wayanad's landmarks are extraordinary.</p>
   </div>
   <div class="circle-grid reveal">
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=400&q=80" alt="Alleppey Backwaters"></div>
-      <p class="circle-label">Alleppey Backwaters</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=80" alt="Chembra Peak"></div>
+      <p class="circle-label">Chembra Peak</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=400&q=80" alt="Alleppey Lighthouse"></div>
-      <p class="circle-label">Alleppey Lighthouse</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1609340219469-aabb8c0ea7f3?w=400&q=80" alt="Edakkal Caves"></div>
+      <p class="circle-label">Edakkal Caves</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80" alt="Marari Beach"></div>
-      <p class="circle-label">Marari Beach</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?w=400&q=80" alt="Soochipara Falls"></div>
+      <p class="circle-label">Soochipara Falls</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1609340219469-aabb8c0ea7f3?w=400&q=80" alt="Krishnapuram Palace"></div>
-      <p class="circle-label">Krishnapuram Palace</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1504006833117-8886a355efbf?w=400&q=80" alt="Banasura Sagar Dam"></div>
+      <p class="circle-label">Banasura Sagar Dam</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?w=400&q=80" alt="Pathiramanal Island"></div>
-      <p class="circle-label">Pathiramanal Island</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?w=400&q=80" alt="Wayanad Wildlife Sanctuary"></div>
+      <p class="circle-label">Wildlife Sanctuary</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400&q=80" alt="Kuttanad Region"></div>
-      <p class="circle-label">Kuttanad Region</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400&q=80" alt="Pookode Lake"></div>
+      <p class="circle-label">Pookode Lake</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=400&q=80" alt="Alleppey Beach"></div>
-      <p class="circle-label">Alleppey Beach</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=400&q=80" alt="Meenmutty Falls"></div>
+      <p class="circle-label">Meenmutty Falls</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400&q=80" alt="Vembanad Lake"></div>
-      <p class="circle-label">Vembanad Lake</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Coffee & Tea Estates"></div>
+      <p class="circle-label">Coffee & Tea Estates</p>
     </div>
   </div>
 </section>
@@ -243,8 +284,8 @@
 <!-- STATS -->
 <div class="stats-bar">
   <div class="stat-item reveal"><div class="stat-num">8</div><div class="stat-label">Must-See Spots</div></div>
-  <div class="stat-item reveal"><div class="stat-num">1500km</div><div class="stat-label">Canal Network</div></div>
-  <div class="stat-item reveal"><div class="stat-num">Oct–Mar</div><div class="stat-label">Best Season</div></div>
+  <div class="stat-item reveal"><div class="stat-num">2100ft</div><div class="stat-label">Average Altitude</div></div>
+  <div class="stat-item reveal"><div class="stat-num">Oct–May</div><div class="stat-label">Best Season</div></div>
   <div class="stat-item reveal"><div class="stat-num">6</div><div class="stat-label">Unique Experiences</div></div>
 </div>
 
@@ -253,38 +294,38 @@
   <div class="section-header reveal">
     <p class="section-label">Things To Do</p>
     <h2 class="section-title">Unique Local <em>Experiences</em></h2>
-    <p class="section-sub">Paddle through canals, drift on a houseboat at sunset or cycle through Kerala's paddy fields — Alleppey is an experience like no other.</p>
+    <p class="section-sub">Trek to heart-shaped lakes, explore prehistoric caves, spot wild elephants and wake up inside misty rainforest homestays.</p>
   </div>
   <div class="circle-grid reveal">
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=400&q=80" alt="Houseboat Stay"></div>
-      <p class="circle-label">Houseboat Stay</p>
-      <p class="circle-sublabel">Overnight on Backwaters</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=80" alt="Chembra Peak Trek"></div>
+      <p class="circle-label">Chembra Peak Trek</p>
+      <p class="circle-sublabel">Heart-Shaped Lake Trail</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=400&q=80" alt="Kayaking"></div>
-      <p class="circle-label">Kayaking</p>
-      <p class="circle-sublabel">Backwater Canals</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?w=400&q=80" alt="Jungle Safari"></div>
+      <p class="circle-label">Jungle Safari</p>
+      <p class="circle-sublabel">Muthanga Wildlife Reserve</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400&q=80" alt="Shikara Cruise"></div>
-      <p class="circle-label">Shikara Cruise</p>
-      <p class="circle-sublabel">Vembanad Lake</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400&q=80" alt="Boating at Pookode Lake"></div>
+      <p class="circle-label">Boating at Pookode Lake</p>
+      <p class="circle-sublabel">Freshwater Forest Lake</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Cycling Tour"></div>
-      <p class="circle-label">Cycling Tour</p>
-      <p class="circle-sublabel">Kuttanad Paddy Fields</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Plantation Walk"></div>
+      <p class="circle-label">Plantation Walk</p>
+      <p class="circle-sublabel">Coffee & Spice Estates</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?w=400&q=80" alt="Bird Watching"></div>
-      <p class="circle-label">Bird Watching</p>
-      <p class="circle-sublabel">Pathiramanal Island</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=400&q=80" alt="Waterfall Trekking"></div>
+      <p class="circle-label">Waterfall Trekking</p>
+      <p class="circle-sublabel">Soochipara & Meenmutty</p>
     </div>
     <div class="circle-card">
-      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=400&q=80" alt="Coir Industry Visit"></div>
-      <p class="circle-label">Coir Industry Visit</p>
-      <p class="circle-sublabel">Traditional Weaving</p>
+      <div class="circle-img-wrap"><img src="https://images.unsplash.com/photo-1545063328-c8e3faffa16f?w=400&q=80" alt="Tribal Village Visit"></div>
+      <p class="circle-label">Tribal Village Visit</p>
+      <p class="circle-sublabel">Adivasi Heritage Tour</p>
     </div>
   </div>
 </section>
@@ -293,118 +334,192 @@
 <section style="background:var(--cream);">
   <div class="section-header reveal">
     <p class="section-label">Day by Day</p>
-    <h2 class="section-title">Your Alleppey <em>Itinerary</em></h2>
-    <p class="section-sub">A curated 2-day plan to experience the best of Alleppey's backwaters, beaches and culture.</p>
+    <h2 class="section-title">Your Wayanad <em>Itinerary</em></h2>
+    <p class="section-sub">A curated 3-day plan to experience the best of Wayanad's forests, peaks, waterfalls and tribal heritage.</p>
   </div>
   <div class="itin-grid reveal">
+
     <div class="itin-card">
       <div class="itin-card-head">
-        <div class="itin-icon"><i class="fas fa-map-marked-alt"></i></div>
-        <h3>Day 1 — Exploring Alleppey</h3>
+        <div class="itin-icon"><i class="fas fa-mountain"></i></div>
+        <h3>Day 1 — Peaks & Caves</h3>
       </div>
       <div class="itin-card-body">
         <ul class="itin-list">
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Morning — Alleppey Beach</p><p class="itin-list-desc">Begin with a peaceful walk along Alleppey Beach and visit the historic Alappuzha Lighthouse standing tall over the shore.</p></div>
+            <div><p class="itin-list-title">Morning — Chembra Peak Trek</p><p class="itin-list-desc">Start early for the iconic Chembra Peak trek. The trail leads to a heart-shaped lake near the summit — one of the most romantic views in all of Kerala.</p></div>
           </li>
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Afternoon — Backwater Cruise</p><p class="itin-list-desc">Embark on a classic houseboat or shikara ride through the emerald backwaters — a journey through an entirely different Kerala.</p></div>
+            <div><p class="itin-list-title">Afternoon — Edakkal Caves</p><p class="itin-list-desc">Explore these ancient caves with rare Neolithic pictorial writings carved into rock — a window into civilisations over 6,000 years old.</p></div>
           </li>
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Evening — Marari Beach</p><p class="itin-list-desc">Unwind at serene Marari Beach, famous for its coconut palms, golden sands and the warmth of a Kerala sunset.</p></div>
+            <div><p class="itin-list-title">Evening — Lakkidi Viewpoint</p><p class="itin-list-desc">Watch the sun dip below the misty Ghats from Lakkidi, the gateway to Wayanad — the clouds roll in spectacularly at dusk.</p></div>
           </li>
         </ul>
       </div>
     </div>
+
     <div class="itin-card">
       <div class="itin-card-head">
-        <div class="itin-icon"><i class="fas fa-map-signs"></i></div>
-        <h3>Day 2 — Culture & Nature</h3>
+        <div class="itin-icon"><i class="fas fa-water"></i></div>
+        <h3>Day 2 — Falls & Wildlife</h3>
       </div>
       <div class="itin-card-body">
         <ul class="itin-list">
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Morning — Krishnapuram Palace</p><p class="itin-list-desc">Explore this magnificent 16th-century palace and its fascinating archaeological museum filled with Kerala heritage.</p></div>
+            <div><p class="itin-list-title">Morning — Soochipara Falls</p><p class="itin-list-desc">Trek through dense shola forest to reach the three-tiered Soochipara waterfall — a magical cascade perfect for a refreshing swim.</p></div>
           </li>
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Afternoon — Pathiramanal Island</p><p class="itin-list-desc">Take a boat to this tiny island paradise teeming with rare migratory birds and rich natural biodiversity.</p></div>
+            <div><p class="itin-list-title">Afternoon — Muthanga Jungle Safari</p><p class="itin-list-desc">Embark on a jeep safari through Muthanga Wildlife Reserve, home to wild elephants, tigers, leopards and over 200 species of birds.</p></div>
           </li>
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Evening — Kuttanad Region</p><p class="itin-list-desc">Witness the unique below-sea-level farming in the 'Rice Bowl of Kerala' — paddy fields as far as the eye can see.</p></div>
+            <div><p class="itin-list-title">Evening — Pookode Lake Boating</p><p class="itin-list-desc">End the day with a serene boat ride on Pookode Lake, a freshwater lake surrounded by evergreen forest at 770m elevation.</p></div>
           </li>
         </ul>
       </div>
     </div>
+
     <div class="itin-card">
       <div class="itin-card-head">
-        <div class="itin-icon"><i class="fas fa-plus-circle"></i></div>
-        <h3>Additional Activities</h3>
+        <div class="itin-icon"><i class="fas fa-leaf"></i></div>
+        <h3>Day 3 — Plantations & Dam</h3>
       </div>
       <div class="itin-card-body">
         <ul class="itin-list">
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Coir Industry Visit</p><p class="itin-list-desc">Discover Alleppey's famous coir weaving industry and watch artisans transform coconut husk into beautiful textiles.</p></div>
+            <div><p class="itin-list-title">Morning — Coffee Plantation Walk</p><p class="itin-list-desc">Walk through fragrant coffee and spice estates with a local guide — learn how Wayanad's legendary coffee is grown, harvested and processed.</p></div>
           </li>
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Toddy Shop Experience</p><p class="itin-list-desc">Taste the famous local palm wine at an authentic toddy shop — a uniquely Kerala cultural experience.</p></div>
+            <div><p class="itin-list-title">Afternoon — Banasura Sagar Dam</p><p class="itin-list-desc">Visit India's largest earthen dam and take a boat ride across its vast reservoir dotted with small islands — stunning at any time of year.</p></div>
           </li>
           <li>
             <div class="itin-bullet"></div>
-            <div><p class="itin-list-title">Kayaking in the Canals</p><p class="itin-list-desc">Paddle solo through quiet village canals at your own pace for a deeply peaceful backwater adventure.</p></div>
+            <div><p class="itin-list-title">Evening — Tribal Heritage Village</p><p class="itin-list-desc">Visit an Adivasi tribal village to experience traditional art, music, forest knowledge and the warm hospitality of Wayanad's indigenous communities.</p></div>
+          </li>
+        </ul>
+        <div class="itin-note">
+          <i class="fas fa-info-circle"></i>
+          Book jungle safari permits in advance — spots are limited and fill quickly during peak season.
+        </div>
+      </div>
+    </div>
+
+    <div class="itin-card">
+      <div class="itin-card-head">
+        <div class="itin-icon"><i class="fas fa-hotel"></i></div>
+        <h3>Where to Stay</h3>
+      </div>
+      <div class="itin-card-body">
+        <ul class="itin-list">
+          <li>
+            <div class="itin-bullet"></div>
+            <div>
+              <p class="itin-list-title">Vythiri Resort</p>
+              <p class="itin-list-desc">Luxury treehouse and cottage stay nestled deep in a private rainforest — one of Wayanad's most iconic properties.</p>
+              <p class="itin-price">₹8,000 – ₹18,000 / night</p>
+            </div>
+          </li>
+          <li>
+            <div class="itin-bullet"></div>
+            <div>
+              <p class="itin-list-title">Wayanad Nature Resorts</p>
+              <p class="itin-list-desc">Eco-friendly cottages surrounded by pepper and coffee plantations with stunning valley views.</p>
+              <p class="itin-price">₹4,500 – ₹8,000 / night</p>
+            </div>
+          </li>
+          <li>
+            <div class="itin-bullet"></div>
+            <div>
+              <p class="itin-list-title">Rainforest Homestays</p>
+              <p class="itin-list-desc">Experience authentic Wayanad living with local families — wake up to bird calls, plantation breakfasts and misty mornings.</p>
+              <p class="itin-price">₹2,000 – ₹4,000 / night</p>
+            </div>
+          </li>
+        </ul>
+        <div class="itin-note">
+          <i class="fas fa-info-circle"></i>
+          Book at least 2 weeks in advance during Oct–Jan peak season.
+        </div>
+      </div>
+    </div>
+
+    <div class="itin-card">
+      <div class="itin-card-head">
+        <div class="itin-icon"><i class="fas fa-info-circle"></i></div>
+        <h3>Travel Tips</h3>
+      </div>
+      <div class="itin-card-body">
+        <ul class="itin-list">
+          <li>
+            <div class="itin-bullet"></div>
+            <div><p class="itin-list-title">Best Time to Visit</p><p class="itin-list-desc">October to May for pleasant weather. Post-monsoon (Oct–Nov) is spectacular — waterfalls are at their fullest and the forests are emerald green.</p></div>
+          </li>
+          <li>
+            <div class="itin-bullet"></div>
+            <div><p class="itin-list-title">Getting There</p><p class="itin-list-desc">Nearest airport: Calicut International (Kozhikode), 90km. Nearest railway: Kozhikode station with taxi connections to Wayanad.</p></div>
+          </li>
+          <li>
+            <div class="itin-bullet"></div>
+            <div><p class="itin-list-title">Local Transport</p><p class="itin-list-desc">Renting a car or bike is strongly recommended — destinations are spread across the district and public transport is limited.</p></div>
+          </li>
+          <li>
+            <div class="itin-bullet"></div>
+            <div><p class="itin-list-title">What to Pack</p><p class="itin-list-desc">Light layers for cool evenings, trekking shoes, insect repellent and a rain jacket — even in dry season, mist and drizzle are common.</p></div>
           </li>
         </ul>
       </div>
     </div>
+
   </div>
 </section>
 
 <!-- FOOD -->
 <section id="food" style="background:var(--sand);">
   <div class="section-header reveal">
-    <p class="section-label">Backwater Flavours</p>
+    <p class="section-label">Forest Flavours</p>
     <h2 class="section-title">Food to <em>Try</em></h2>
-    <p class="section-sub">From Kerala Sadya on a banana leaf to freshly caught Karimeen — Alleppey's food is as rich as its waterways.</p>
+    <p class="section-sub">From bamboo rice and wild honey to estate-fresh coffee and tribal delicacies — Wayanad's cuisine is deeply rooted in its forests and farms.</p>
   </div>
   <div class="food-grid reveal">
     <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80" alt="Kerala Sadya">
-      <div class="food-card-body"><p class="food-card-name">Kerala Sadya</p><p class="food-card-from">From · Amma's Restaurant</p></div>
+      <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=500&q=80" alt="Wayanad Black Coffee">
+      <div class="food-card-body"><p class="food-card-name">Wayanad Black Coffee</p><p class="food-card-from">From · Estate Cafés</p></div>
     </div>
     <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=500&q=80" alt="Seafood Delicacies">
-      <div class="food-card-body"><p class="food-card-name">Seafood Delicacies</p><p class="food-card-from">From · The Lighthouse Restaurant</p></div>
+      <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80" alt="Kerala Meals">
+      <div class="food-card-body"><p class="food-card-name">Kerala Meals & Fish Curry</p><p class="food-card-from">From · Local Restaurants</p></div>
     </div>
     <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80" alt="Kerala Fish Biryani">
-      <div class="food-card-body"><p class="food-card-name">Kerala Fish Biryani</p><p class="food-card-from">From · Thaff Restaurant</p></div>
+      <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80" alt="Bamboo Rice Puttu">
+      <div class="food-card-body"><p class="food-card-name">Bamboo Rice Puttu</p><p class="food-card-from">From · Tribal Eateries</p></div>
     </div>
     <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=500&q=80" alt="Puttu & Kadala">
-      <div class="food-card-body"><p class="food-card-name">Puttu & Kadala Curry</p><p class="food-card-from">From · Local Tea Houses</p></div>
-    </div>
-    <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=500&q=80" alt="Karimeen Pollichathu">
-      <div class="food-card-body"><p class="food-card-name">Karimeen Pollichathu</p><p class="food-card-from">From · Houseboat Kitchen</p></div>
-    </div>
-    <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=500&q=80" alt="Fresh Tender Coconut">
-      <div class="food-card-body"><p class="food-card-name">Fresh Tender Coconut</p><p class="food-card-from">From · Beach Vendors</p></div>
+      <img src="https://images.unsplash.com/photo-1540713434306-58505cf1b6fc?w=500&q=80" alt="Wild Honey & Spices">
+      <div class="food-card-body"><p class="food-card-name">Wild Forest Honey</p><p class="food-card-from">From · Tribal Markets</p></div>
     </div>
     <div class="food-card">
       <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Appam & Stew">
-      <div class="food-card-body"><p class="food-card-name">Appam & Vegetable Stew</p><p class="food-card-from">From · Local Restaurants</p></div>
+      <div class="food-card-body"><p class="food-card-name">Appam & Chicken Stew</p><p class="food-card-from">From · Homestay Kitchens</p></div>
     </div>
     <div class="food-card">
-      <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=500&q=80" alt="Pazham Pori & Chai">
-      <div class="food-card-body"><p class="food-card-name">Pazham Pori & Chai</p><p class="food-card-from">From · Backwater Shacks</p></div>
+      <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80" alt="Malabar Biryani">
+      <div class="food-card-body"><p class="food-card-name">Malabar Biryani</p><p class="food-card-from">From · Kalpetta Restaurants</p></div>
+    </div>
+    <div class="food-card">
+      <img src="https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=500&q=80" alt="Fresh Spices">
+      <div class="food-card-body"><p class="food-card-name">Fresh Cardamom & Pepper</p><p class="food-card-from">From · Spice Estates</p></div>
+    </div>
+    <div class="food-card">
+      <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=500&q=80" alt="Plantation Breakfast">
+      <div class="food-card-body"><p class="food-card-name">Estate Plantation Breakfast</p><p class="food-card-from">From · Resort Restaurants</p></div>
     </div>
   </div>
 </section>
@@ -414,33 +529,33 @@
   <div class="section-header reveal">
     <p class="section-label">Photo Worthy</p>
     <h2 class="section-title"><em>Instagram</em> Spots</h2>
-    <p class="section-sub">From misty morning houseboats to sunset-lit canals — Alleppey is one of the most photogenic places on earth.</p>
+    <p class="section-sub">Misty forest mornings, cascading waterfalls and the heart-shaped lake of Chembra — Wayanad is endlessly frame-worthy.</p>
   </div>
 </section>
 <div class="insta-grid reveal">
   <div class="insta-item">
-    <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=800&q=80" alt="Houseboat on Backwaters">
-    <div class="insta-overlay"><p class="insta-label">Houseboat on Backwaters</p></div>
+    <img src="https://images.unsplash.com/photo-1619468129361-605ebea04b44?w=800&q=80" alt="Misty Wayanad Forest">
+    <div class="insta-overlay"><p class="insta-label">Misty Wayanad Forest</p></div>
   </div>
   <div class="insta-item">
-    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80" alt="Sunset Canal Reflections">
-    <div class="insta-overlay"><p class="insta-label">Sunset Canal Reflections</p></div>
+    <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80" alt="Chembra Peak Summit">
+    <div class="insta-overlay"><p class="insta-label">Chembra Peak Summit</p></div>
   </div>
   <div class="insta-item">
-    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" alt="Marari Beach Golden Hour">
-    <div class="insta-overlay"><p class="insta-label">Marari Beach Golden Hour</p></div>
+    <img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=800&q=80" alt="Soochipara Waterfall">
+    <div class="insta-overlay"><p class="insta-label">Soochipara Waterfall</p></div>
   </div>
   <div class="insta-item">
-    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" alt="Vembanad Lake at Dawn">
-    <div class="insta-overlay"><p class="insta-label">Vembanad Lake at Dawn</p></div>
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Coffee Estate at Dawn">
+    <div class="insta-overlay"><p class="insta-label">Coffee Estate at Dawn</p></div>
   </div>
   <div class="insta-item">
-    <img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?w=800&q=80" alt="Pathiramanal Bird Island">
-    <div class="insta-overlay"><p class="insta-label">Pathiramanal Bird Island</p></div>
+    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80" alt="Pookode Lake Reflections">
+    <div class="insta-overlay"><p class="insta-label">Pookode Lake Reflections</p></div>
   </div>
   <div class="insta-item">
-    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Kuttanad Paddy Fields">
-    <div class="insta-overlay"><p class="insta-label">Kuttanad Paddy Fields</p></div>
+    <img src="https://images.unsplash.com/photo-1471506480208-91b3a4cc78be?w=800&q=80" alt="Wild Elephant Sighting">
+    <div class="insta-overlay"><p class="insta-label">Wild Elephant Sighting</p></div>
   </div>
 </div>
 <div style="padding:60px 5vw; background:var(--cream);"></div>
@@ -448,8 +563,8 @@
 <!-- CONTACT -->
 <section class="contact-section reveal">
   <p class="section-label">Plan Your Visit</p>
-  <h2 class="section-title">Ready to Explore<br><em>Alleppey?</em></h2>
-  <p>Let our travel experts craft your perfect Alleppey escape — houseboats, backwaters and the soul of Kerala await you.</p>
+  <h2 class="section-title">Ready to Explore<br><em>Wayanad?</em></h2>
+  <p>Let our travel experts craft your perfect Wayanad escape — misty forests, ancient caves and wild adventures await.</p>
   <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
     <a href="mailto:info@keralatravel.com" class="btn-primary">
       Email Us
@@ -473,21 +588,21 @@
       </div>
     </div>
     <div class="footer-col">
-      <h4>Alleppey</h4>
+      <h4>Wayanad</h4>
       <ul>
-        <li><a href="#">Backwaters</a></li>
-        <li><a href="#">Houseboat Stay</a></li>
-        <li><a href="#">Marari Beach</a></li>
-        <li><a href="#">Krishnapuram Palace</a></li>
+        <li><a href="#">Chembra Peak</a></li>
+        <li><a href="#">Edakkal Caves</a></li>
+        <li><a href="#">Soochipara Falls</a></li>
+        <li><a href="#">Banasura Sagar Dam</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Kerala</h4>
       <ul>
         <li><a href="kerala.html">Overview</a></li>
-        <li><a href="kochi.html">Kochi</a></li>
         <li><a href="munnar.html">Munnar</a></li>
-        <li><a href="kovalam.html">Kovalam</a></li>
+        <li><a href="alleppey.html">Alleppey</a></li>
+        <li><a href="kozhikode.html">Kozhikode</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -502,17 +617,18 @@
   </div>
   <div class="footer-bottom">
     <p>© 2025 Travelo. All Rights Reserved.</p>
-    <p style="color:rgba(255,255,255,.3); font-size:.7rem; letter-spacing:.1em;">ALLEPPEY · FLOAT THROUGH PARADISE</p>
+    <p style="color:rgba(255,255,255,.3); font-size:.7rem; letter-spacing:.1em;">WAYANAD · INTO THE WILD GREEN</p>
   </div>
 </footer>
 
 <script>
-  const menu = document.getElementById('mobileMenu');
+  const menu   = document.getElementById('mobileMenu');
   const burger = document.getElementById('hamburger');
-  const close = document.getElementById('mobileClose');
+  const close  = document.getElementById('mobileClose');
   burger.addEventListener('click', () => menu.classList.add('open'));
-  close.addEventListener('click', () => menu.classList.remove('open'));
+  close.addEventListener('click',  () => menu.classList.remove('open'));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });

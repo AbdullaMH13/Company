@@ -1,148 +1,1029 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traveller</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search" />
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu" /> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travelo — Discover India</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Variables ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink:    #0d0d0d;
+      --sand:   #f5f0e8;
+      --gold:   #b8924a;
+      --cream:  #faf7f2;
+      --muted:  #888070;
+      --white:  #ffffff;
+      --nav-h:  72px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--sand); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      backdrop-filter: blur(18px) saturate(180%);
+      background: rgba(250,247,242,0.82);
+      border-bottom: 1px solid rgba(184,146,74,0.15);
+      transition: background .3s;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+      font-weight: 300;
+      letter-spacing: .12em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none; font-weight: 400;
+      position: relative; padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--gold);
+      transition: width .3s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-search {
+      display: flex; align-items: center; gap: .6rem;
+      background: transparent;
+      border: 1px solid rgba(184,146,74,0.35);
+      border-radius: 30px; padding: .4rem 1rem;
+      transition: border-color .3s;
+    }
+    .nav-search:focus-within { border-color: var(--gold); }
+    .nav-search input {
+      border: none; background: transparent; outline: none;
+      font-family: 'DM Sans', sans-serif; font-size: .8rem;
+      color: var(--ink); width: 140px;
+    }
+    .nav-search input::placeholder { color: var(--muted); }
+    .nav-search svg { stroke: var(--muted); flex-shrink: 0; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 1.5px;
+      background: var(--ink); transition: .3s;
+    }
+
+    /* ── DROPDOWN ── */
+    .nav-item { position: relative; }
+    .nav-item > a { display: flex; align-items: center; gap: .35rem; }
+    .caret {
+      width: 9px; height: 9px; stroke: var(--muted);
+      transition: transform .3s, stroke .3s; flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .nav-item:hover > a .caret { transform: rotate(180deg); stroke: var(--gold); }
+
+    .dropdown {
+      position: absolute; top: calc(100% + 1.6rem); left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: var(--white);
+      box-shadow: 0 20px 60px rgba(0,0,0,.13);
+      border-top: 2px solid var(--gold);
+      min-width: 580px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      opacity: 0; pointer-events: none;
+      transition: opacity .28s ease, transform .28s ease;
+      z-index: 300;
+    }
+    .nav-item:hover .dropdown {
+      opacity: 1; pointer-events: all;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .drop-item {
+      display: flex; align-items: center; gap: .9rem;
+      padding: 1rem 1.2rem;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(13,13,13,.05);
+      transition: background .2s;
+    }
+    .drop-item:hover { background: var(--sand); }
+    .drop-thumb {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid transparent;
+      background: linear-gradient(var(--white),var(--white)) padding-box,
+                  linear-gradient(135deg,var(--gold),#e8d5a8) border-box;
+      transition: transform .3s;
+    }
+    .drop-item:hover .drop-thumb { transform: scale(1.1); }
+    .drop-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .95rem; font-weight: 400; color: var(--ink); line-height: 1.2;
+      transition: color .2s;
+    }
+    .drop-tag {
+      font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); margin-top: .15rem;
+    }
+    .drop-item:hover .drop-name { color: var(--gold); }
+
+    .drop-footer {
+      grid-column: span 3;
+      padding: .8rem 1.2rem;
+      background: var(--sand);
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid rgba(13,13,13,.06);
+    }
+    .drop-footer-label { font-size: .68rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+    .drop-footer-link {
+      font-size: .68rem; color: var(--gold); letter-spacing: .12em; text-transform: uppercase;
+      text-decoration: none; display: flex; align-items: center; gap: .4rem;
+      transition: gap .2s;
+    }
+    .drop-footer-link:hover { gap: .7rem; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; height: 100svh; min-height: 600px;
+      display: flex; align-items: flex-end; padding: 0 5vw 8vh;
+      overflow: hidden;
+    }
+
+    .hero-slides { position: absolute; inset: 0; }
+    .hero-slide {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity 1.4s ease;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide img {
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.06);
+      animation: none;
+    }
+    .hero-slide.active img {
+      animation: kenburns 8s ease forwards;
+    }
+    @keyframes kenburns {
+      from { transform: scale(1.06); }
+      to   { transform: scale(1.0); }
+    }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(13,13,13,.72) 0%,
+        rgba(13,13,13,.18) 50%,
+        rgba(13,13,13,.08) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative; z-index: 2; max-width: 680px;
+      animation: fadeUp .9s .2s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-label {
+      font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.05; font-weight: 300;
+      color: var(--white); margin-bottom: 1.4rem;
+    }
+    .hero-title em { font-style: italic; color: #e8d5a8; }
+    .hero-sub {
+      font-size: .9rem; color: rgba(255,255,255,.72);
+      max-width: 460px; line-height: 1.7; margin-bottom: 2.4rem;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2rem;
+      background: var(--gold); color: var(--white);
+      font-family: 'DM Sans', sans-serif; font-size: .8rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background .25s, transform .2s;
+    }
+    .btn-primary:hover { background: #a07840; transform: translateY(-1px); }
+    .btn-primary svg { transition: transform .25s; }
+    .btn-primary:hover svg { transform: translateX(4px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2rem;
+      background: transparent; color: var(--white);
+      font-family: 'DM Sans', sans-serif; font-size: .8rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid rgba(255,255,255,.45); cursor: pointer;
+      transition: border-color .25s, background .25s;
+    }
+    .btn-ghost:hover { border-color: var(--gold); background: rgba(184,146,74,.12); }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Slide dots */
+    .hero-dots {
+      position: absolute; bottom: 2.4rem; right: 5vw; z-index: 3;
+      display: flex; gap: .6rem;
+    }
+    .hero-dots button {
+      width: 28px; height: 3px; border: none; background: rgba(255,255,255,.35);
+      cursor: pointer; transition: background .3s, width .3s;
+    }
+    .hero-dots button.active { background: var(--gold); width: 48px; }
+
+    /* Slide counter */
+    .hero-counter {
+      position: absolute; top: calc(var(--nav-h) + 2rem); right: 5vw; z-index: 3;
+      font-family: 'Cormorant Garamond', serif; font-size: .85rem;
+      color: rgba(255,255,255,.55); letter-spacing: .08em;
+    }
+    .hero-counter strong { color: var(--white); font-weight: 400; }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--gold); overflow: hidden;
+      padding: .9rem 0; user-select: none;
+    }
+    .marquee-track {
+      display: flex; gap: 3rem; width: max-content;
+      animation: marquee 26s linear infinite;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--white); white-space: nowrap;
+    }
+    .marquee-dot {
+      width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.5);
+    }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 100px 5vw; }
+
+    .section-label {
+      font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 300;
+      line-height: 1.15; color: var(--ink);
+    }
+    .section-title em { font-style: italic; }
+    .section-sub {
+      font-size: .88rem; color: var(--muted);
+      max-width: 520px; line-height: 1.75; margin-top: .9rem;
+    }
+    .section-header { margin-bottom: 3.5rem; }
+
+    /* ── FEATURED (2-col) ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .featured-main { grid-row: span 2; }
+
+    .feat-card {
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .feat-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .7s ease;
+      display: block;
+    }
+    .feat-card:hover img { transform: scale(1.07); }
+    .feat-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,.75) 0%, transparent 55%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.8rem;
+    }
+    .feat-card-tag {
+      font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .5rem;
+    }
+    .feat-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 300;
+      color: var(--white); line-height: 1.2;
+    }
+    .feat-card-meta {
+      font-size: .75rem; color: rgba(255,255,255,.6);
+      margin-top: .5rem; display: flex; gap: 1rem;
+    }
+    .featured-main .feat-card { height: 560px; }
+    .featured-side .feat-card { height: 279px; }
+
+    /* ── DESTINATIONS GRID ── */
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .dest-card {
+      position: relative; border-radius: 4px; overflow: hidden;
+      cursor: pointer; group: true;
+      text-decoration: none;
+    }
+    .dest-card img {
+      width: 100%; height: 300px; object-fit: cover;
+      transition: transform .6s ease;
+      display: block;
+    }
+    .dest-card:hover img { transform: scale(1.08); }
+
+    .dest-card-body {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,13,.8) 0%, rgba(13,13,13,0) 50%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.4rem;
+      transition: background .4s;
+    }
+    .dest-card:hover .dest-card-body {
+      background: linear-gradient(to top, rgba(13,13,13,.88) 0%, rgba(13,13,13,.2) 70%);
+    }
+
+    .dest-num {
+      position: absolute; top: 1rem; left: 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .75rem; color: rgba(255,255,255,.45); letter-spacing: .1em;
+    }
+    .dest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 300; color: var(--white);
+      margin-bottom: .3rem;
+    }
+    .dest-desc {
+      font-size: .75rem; color: rgba(255,255,255,.65);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity .35s, transform .35s;
+    }
+    .dest-card:hover .dest-desc {
+      opacity: 1; transform: translateY(0);
+    }
+
+    .dest-arrow {
+      position: absolute; bottom: 1.4rem; right: 1.4rem;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--gold); display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: scale(.7);
+      transition: opacity .3s, transform .3s;
+    }
+    .dest-card:hover .dest-arrow { opacity: 1; transform: scale(1); }
+    .dest-arrow svg { stroke: white; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--ink); color: var(--white);
+      display: flex; justify-content: space-around; flex-wrap: wrap;
+      gap: 2rem; padding: 60px 5vw;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300;
+      color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); margin-top: .5rem;
+    }
+
+    /* ── EXPERIENCE (editorial 2-col) ── */
+    .exp-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw; align-items: center;
+    }
+    .exp-img-wrap {
+      position: relative;
+    }
+    .exp-img-wrap img {
+      width: 100%; height: 520px; object-fit: cover;
+      display: block;
+    }
+    .exp-badge {
+      position: absolute; bottom: -1.8rem; right: -1.8rem;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: var(--gold);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      text-align: center; color: var(--white);
+    }
+    .exp-badge .big { font-size: 2.2rem; line-height: 1; }
+    .exp-badge .sm  { font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; }
+
+    .exp-text .section-title { margin-bottom: 1.4rem; }
+    .exp-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+    .exp-list li {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding-bottom: 1rem; border-bottom: 1px solid rgba(13,13,13,.08);
+    }
+    .exp-list li:last-child { border-bottom: none; }
+    .exp-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: rgba(184,146,74,.1); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: .1rem;
+    }
+    .exp-icon svg { stroke: var(--gold); }
+    .exp-list-title { font-size: .88rem; font-weight: 500; margin-bottom: .2rem; }
+    .exp-list-sub   { font-size: .78rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── TESTIMONIAL ── */
+    .testimonial-section {
+      background: var(--sand); text-align: center;
+    }
+    .testimonial-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 3.5vw, 2.4rem); font-weight: 300; font-style: italic;
+      max-width: 780px; margin: 0 auto; line-height: 1.5;
+      color: var(--ink);
+    }
+    .testimonial-quote::before { content: '\201C'; color: var(--gold); }
+    .testimonial-quote::after  { content: '\201D'; color: var(--gold); }
+    .testimonial-author {
+      margin-top: 1.8rem; font-size: .78rem; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── NEWSLETTER ── */
+    .newsletter-section {
+      background: var(--ink); color: var(--white); text-align: center;
+    }
+    .newsletter-section .section-title { color: var(--white); }
+    .newsletter-form {
+      display: flex; gap: .6rem; max-width: 480px; margin: 2.4rem auto 0;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .newsletter-form input {
+      flex: 1; min-width: 220px;
+      padding: .85rem 1.2rem; border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.05); color: var(--white);
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; outline: none;
+      transition: border-color .3s;
+    }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,.4); }
+    .newsletter-form input:focus { border-color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #080808; color: rgba(255,255,255,.55);
+      padding: 60px 5vw 30px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .footer-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; color: var(--white);
+      letter-spacing: .1em; margin-bottom: .8rem;
+    }
+    .footer-brand-name span { color: var(--gold); }
+    .footer-desc { font-size: .8rem; line-height: 1.8; max-width: 280px; }
+    .footer-col h4 {
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--white); margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-col ul li a {
+      font-size: .8rem; color: rgba(255,255,255,.5);
+      text-decoration: none; transition: color .25s;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      padding-top: 1.8rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: .75rem;
+    }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 200;
+      background: var(--ink); color: var(--white);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 2.4rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 8vw, 3.2rem); font-weight: 300;
+      color: var(--white); text-decoration: none;
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close {
+      position: absolute; top: 1.8rem; right: 5vw;
+      background: none; border: none; cursor: pointer;
+      font-size: 1.8rem; color: var(--white);
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-search { display: none; }
+
+      .featured-grid { grid-template-columns: 1fr; }
+      .featured-main { grid-row: span 1; }
+      .featured-main .feat-card { height: 320px; }
+      .featured-side { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+      .featured-side .feat-card { height: 220px; }
+
+      .exp-layout { grid-template-columns: 1fr; }
+      .exp-img-wrap img { height: 340px; }
+      .exp-badge { right: .5rem; bottom: -1rem; width: 110px; height: 110px; }
+      .exp-badge .big { font-size: 1.7rem; }
+
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 70px 5vw; }
+      .dest-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .dest-card img { height: 220px; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-content { max-width: 100%; }
+      .featured-side { grid-template-columns: 1fr; }
+      .featured-side .feat-card { height: 230px; }
+    }
+
+    @media (max-width: 380px) {
+      .dest-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <nav>
-    <div class="topnav">
-      <!-- Logo -->
-      <img src="logo.jpg" width="10%" alt="the coffee logo">
-  
-      <!-- Search Icon -->
-      <span class="material-symbols-outlined">search</span>
-  
-      <!-- Menu links (hidden by default on mobile) -->
-      <div id="header"></div>
-      <script>
-          fetch("header.html")
-              .then(response => response.text())
-              .then(data => {
-                  document.getElementById("header").innerHTML = data;
-              });
-      </script>
-</script>
 
-  
-      <!-- Search Bar -->
-      <input type="search" id="searchInput" placeholder="search" class="search-bar">
-  
-      <!-- Menu Toggle for mobile -->
-      <span class="menu-toggle" id="menuToggle">&copy</span>
+<!-- ── MOBILE MENU ── -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#">Destinations</a>
+  <a href="#">Experiences</a>
+  <a href="hotel.html">Hotels</a>
+  <a href="#">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">Trave<span>lo</span></a>
+
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#">Experiences</a></li>
+    <li><a href="hotel.html">Hotels</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+
+  <div class="nav-search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" placeholder="Search destinations…" id="searchInput">
+  </div>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-slides" id="heroSlides">
+    <div class="hero-slide active">
+      <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1800&q=80" alt="Kerala backwaters">
     </div>
-  </nav>
-    <br>
-    <br>
-    <h1>"Travel The World With Us"</h1>
-    <br>
-    <div class="slideshow-container">
+    <div class="hero-slide">
+      <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1800&q=80" alt="Kashmir mountains">
+    </div>
+    <div class="hero-slide">
+      <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1800&q=80" alt="Rajasthan palace">
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
 
-      <div class="mySlides fade">
-        <div class="numbertext">1 / 3</div>
-        <a href="https://www.tajhotels.com/en-in/hotels/taj-bekal-kerala/restaurants/backwater-cafe">
-        <img src="photos/img1.jpg" style="width:100%">
-        </a>
-        <div class="text">Caption Text</div>
-      </div>
-      
-      <div class="mySlides fade">
-        <div class="numbertext">2 / 3</div>
-        <a href="https://www.thegranddragonladakh.com/">
-        <img src="photos/img2.jpg" style="width:100%">
+  <div class="hero-counter"><strong id="slideNum">01</strong> / 03</div>
+
+  <div class="hero-content">
+    <p class="hero-label">Discover the soul of India</p>
+    <h1 class="hero-title">Travel the World<br><em>With Us</em></h1>
+    <p class="hero-sub">Curated journeys through India's most breathtaking landscapes — from misty Himalayan peaks to sun-drenched coastal shores.</p>
+    <div class="hero-btns">
+      <a href="#destinations" class="btn-primary">
+        Explore Destinations
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-        <div class="text">Caption Two</div>
+      <a href="#about" class="btn-ghost">Our Story</a>
+    </div>
+  </div>
+
+  <div class="hero-dots" id="heroDots">
+    <button class="active" onclick="goSlide(0)"></button>
+    <button onclick="goSlide(1)"></button>
+    <button onclick="goSlide(2)"></button>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack">
+    <!-- duplicated for seamless loop -->
+    <div class="marquee-item"><span>Kerala</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kashmir</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Rajasthan</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Goa</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Tamil Nadu</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Himachal Pradesh</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Karnataka</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Uttarakhand</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Maharashtra</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kerala</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kashmir</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Rajasthan</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Goa</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Tamil Nadu</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Himachal Pradesh</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Karnataka</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Uttarakhand</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Maharashtra</span><span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- ── FEATURED ── -->
+<section>
+  <div class="section-header reveal">
+    <p class="section-label">Editor's Picks</p>
+    <h2 class="section-title">Journeys that<br><em>stay with you</em></h2>
+  </div>
+  <div class="featured-grid reveal">
+    <div class="featured-main">
+      <a href="kerala.html" class="feat-card" style="display:block; height:100%;">
+        <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=900&q=80" alt="Kerala">
+        <div class="feat-card-overlay">
+          <p class="feat-card-tag">South India · Backwaters</p>
+          <h3 class="feat-card-title">Kerala — God's<br>Own Country</h3>
+          <p class="feat-card-meta"><span>7 Days</span><span>·</span><span>From ₹28,000</span></p>
+        </div>
+      </a>
+    </div>
+    <div class="featured-side">
+      <div class="feat-card">
+        <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=700&q=80" alt="Kashmir">
+        <div class="feat-card-overlay">
+          <p class="feat-card-tag">North India · Mountains</p>
+          <h3 class="feat-card-title">Kashmir</h3>
+          <p class="feat-card-meta"><span>5 Days</span></p>
+        </div>
       </div>
-      
-      <div class="mySlides fade">
-        <div class="numbertext">3 / 3</div>
-        <img src="photos/img3.jpg" style="width:100%">
-        <div class="text">Caption Three</div>
-      </div>
-      
-      <a class="prev" onclick="plusSlides(-1)">❮</a>
-      <a class="next" onclick="plusSlides(1)">❯</a>
-      <div style="text-align:center">
-        <span class="dot" onclick="currentSlide(1)"></span> 
-        <span class="dot" onclick="currentSlide(2)"></span> 
-        <span class="dot" onclick="currentSlide(3)"></span> 
+      <div class="feat-card">
+        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=700&q=80" alt="Rajasthan">
+        <div class="feat-card-overlay">
+          <p class="feat-card-tag">West India · Heritage</p>
+          <h3 class="feat-card-title">Rajasthan</h3>
+          <p class="feat-card-meta"><span>8 Days</span></p>
+        </div>
       </div>
     </div>
-    <br>
-      <h1>"The world is a book, and those who do not travel read only one page."</h1>
-      <br>
-      <br>
-      <div class="card-container">
-        <div class="card">
-          <a href="kerala.html" target="_blank">
-          <img src="photos/img1.jpg" alt="Card 1">
-          <h3>Kerala</h3>
-          <p>Click To Explore.</p>
-        </a>
-        </div>
-        <div class="card">
-          <a href="https://tourism.jk.gov.in/#/landing">
-          <img src="photos/img4.jpg" alt="Card 2">
-          <h3>Kashmir</h3>
-          <p> Click To Explore.</p>
-        </a>
-        </div>
-        <div class="card">
-          <img src="photos/img3.jpg" alt="Card 3">
-          <h3>Karnataka</h3>
-          <p>Click To Explore.</p>
-        </div>
-        <div class="card">
-          <img src="photos/img3.jpg" alt="Card 4">
-          <h3>Goa</h3>
-          <p>Click To Explore.</p>
-        </div>
-        <div class="card">
-          <img src="photos/img2.jpg" alt="Card 5">
-          <h3>Tamil Nadu</h3>
-          <p>Click To Explore.</p>
-        </div>
-        <div class="card">
-          <img src="photos/img1.jpg" alt="Card 6">
-          <h3>Himachal Pradesh</h3>
-          <p>Click To Explore.</p>
-        </div>
-        <div class="card">
-          <img src="photos/img4.jpg" alt="Card 7">
-          <h3>Rajasthan</h3>
-          <p>Click To Explore.</p>
-        </div>
-        <div class="card">
-          <img src="photos/hotel1.jpg" alt="Card 8">
-          <h3>Maharashtra</h3>
-          <p>Click To Explore.</p>
-        </div>
-        <div class="card">
-          <img src="photos/img3.jpg" alt="Card 9">
-          <h3>Uttarakhand</h3>
-          <p>Click To Explore.</p>
-        </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-num">9+</div>
+    <div class="stat-label">Destinations</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">12k</div>
+    <div class="stat-label">Happy Travellers</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">98%</div>
+    <div class="stat-label">Satisfaction Rate</div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-num">8</div>
+    <div class="stat-label">Years of Experience</div>
+  </div>
+</div>
+
+<!-- ── DESTINATIONS ── -->
+<section id="destinations">
+  <div class="section-header reveal">
+    <p class="section-label">Explore India</p>
+    <h2 class="section-title">All <em>Destinations</em></h2>
+    <p class="section-sub">The world is a book — we help you read every page of India's extraordinary story.</p>
+  </div>
+  <div class="dest-grid">
+
+    <a href="kerala.html" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80" alt="Kerala">
+      <div class="dest-card-body">
+        <span class="dest-num">01</span>
+        <p class="dest-name">Kerala</p>
+        <p class="dest-desc">Backwaters, spices & tranquil beaches</p>
       </div>
-      
-      <br>
-      <br>
-      <footer>
-        <div>
-          <p>Travelo 	&copy;</p>
-          <ul>
-              <li>About Us</li>
-              <li>Careers</li>
-              <li>Privacy Policy</li>
-              <a href="contact.html">
-              <li>Contact Us</li>
-            </a>
-          </ul>
-        </div>
-      </footer>
-    
-    <script src="script.js"></script>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="https://tourism.jk.gov.in/" target="_blank" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80" alt="Kashmir">
+      <div class="dest-card-body">
+        <span class="dest-num">02</span>
+        <p class="dest-name">Kashmir</p>
+        <p class="dest-desc">Snow-capped peaks & Dal Lake serenity</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=600&q=80" alt="Rajasthan">
+      <div class="dest-card-body">
+        <span class="dest-num">03</span>
+        <p class="dest-name">Rajasthan</p>
+        <p class="dest-desc">Forts, deserts & royal grandeur</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80" alt="Goa">
+      <div class="dest-card-body">
+        <span class="dest-num">04</span>
+        <p class="dest-name">Goa</p>
+        <p class="dest-desc">Sun, sea & Portuguese heritage</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=600&q=80" alt="Tamil Nadu">
+      <div class="dest-card-body">
+        <span class="dest-num">05</span>
+        <p class="dest-name">Tamil Nadu</p>
+        <p class="dest-desc">Temples, culture & coastal beauty</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Himachal Pradesh">
+      <div class="dest-card-body">
+        <span class="dest-num">06</span>
+        <p class="dest-name">Himachal Pradesh</p>
+        <p class="dest-desc">Alpine meadows & adventure trails</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80" alt="Karnataka">
+      <div class="dest-card-body">
+        <span class="dest-num">07</span>
+        <p class="dest-name">Karnataka</p>
+        <p class="dest-desc">Hampi ruins & Coorg coffee trails</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=600&q=80" alt="Uttarakhand">
+      <div class="dest-card-body">
+        <span class="dest-num">08</span>
+        <p class="dest-name">Uttarakhand</p>
+        <p class="dest-desc">Yoga, rivers & the roof of India</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+    <a href="#" class="dest-card reveal">
+      <img src="https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=600&q=80" alt="Maharashtra">
+      <div class="dest-card-body">
+        <span class="dest-num">09</span>
+        <p class="dest-name">Maharashtra</p>
+        <p class="dest-desc">Caves, coasts & city energy</p>
+      </div>
+      <div class="dest-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="about" style="background:var(--sand);">
+  <div class="exp-layout">
+    <div class="exp-img-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=900&q=80" alt="travel experience">
+      <div class="exp-badge">
+        <span class="big">8+</span>
+        <span class="sm">Years of<br>Excellence</span>
+      </div>
+    </div>
+    <div class="exp-text reveal">
+      <p class="section-label">Why Travelo</p>
+      <h2 class="section-title">Crafting <em>Unforgettable</em><br>Experiences</h2>
+      <p class="section-sub">We don't just plan trips — we curate stories. Every itinerary is handcrafted to reflect your travel personality.</p>
+      <ul class="exp-list">
+        <li>
+          <div class="exp-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <p class="exp-list-title">Trusted & Secure</p>
+            <p class="exp-list-sub">Fully insured itineraries with 24/7 traveller support across all destinations.</p>
+          </div>
+        </li>
+        <li>
+          <div class="exp-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <p class="exp-list-title">Expert Local Guides</p>
+            <p class="exp-list-sub">Authentic cultural immersion with knowledgeable guides who truly know their land.</p>
+          </div>
+        </li>
+        <li>
+          <div class="exp-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div>
+            <p class="exp-list-title">Handpicked Stays</p>
+            <p class="exp-list-sub">Boutique hotels and heritage properties personally vetted for quality and character.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIAL ── -->
+<section class="testimonial-section">
+  <div class="reveal">
+    <p class="section-label" style="text-align:center">What Travellers Say</p>
+    <p class="testimonial-quote">The world is a book, and those who do not travel read only one page. Travelo helped us write our most beautiful chapter.</p>
+    <p class="testimonial-author">— Priya & Arjun Menon, Kerala Backwaters Tour</p>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<section class="newsletter-section">
+  <div class="reveal">
+    <p class="section-label" style="color:var(--gold)">Stay Inspired</p>
+    <h2 class="section-title" style="color:white">Get travel stories<br><em>in your inbox</em></h2>
+    <p class="section-sub" style="color:rgba(255,255,255,.5); margin: .9rem auto 0; text-align:center;">Destination guides, exclusive deals and insider tips — once a month, no spam.</p>
+    <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+      <input type="email" placeholder="Your email address" required>
+      <button type="submit" class="btn-primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Trave<span>lo</span></div>
+      <p class="footer-desc">Curating India's finest travel experiences since 2016. Your journey, our passion.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Destinations</h4>
+      <ul>
+        <li><a href="#">Kerala</a></li>
+        <li><a href="#">Kashmir</a></li>
+        <li><a href="#">Rajasthan</a></li>
+        <li><a href="#">Goa</a></li>
+        <li><a href="#">Himachal</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Travelo. All rights reserved.</p>
+    <p style="color:rgba(255,255,255,.3); font-size:.7rem; letter-spacing:.1em;">DISCOVER · EXPLORE · REMEMBER</p>
+  </div>
+</footer>
+
+<script>
+  /* ── Hero Slideshow ── */
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('#heroDots button');
+  const numEl  = document.getElementById('slideNum');
+  let cur = 0, timer;
+
+  function goSlide(n) {
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+    numEl.textContent = String(cur + 1).padStart(2, '0');
+  }
+
+  function startAuto() {
+    timer = setInterval(() => goSlide(cur + 1), 5500);
+  }
+  function resetAuto() {
+    clearInterval(timer); startAuto();
+  }
+
+  dots.forEach((d, i) => d.addEventListener('click', () => { goSlide(i); resetAuto(); }));
+  startAuto();
+
+  /* ── Mobile Menu ── */
+  const menu    = document.getElementById('mobileMenu');
+  const burger  = document.getElementById('hamburger');
+  const close   = document.getElementById('mobileClose');
+  burger.addEventListener('click', () => menu.classList.add('open'));
+  close.addEventListener('click',  () => menu.classList.remove('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  /* ── Scroll Reveal ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+
+  /* ── Newsletter ── */
+  function handleNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Subscribed!';
+    btn.style.background = '#2d7a4f';
+    setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; e.target.reset(); }, 3000);
+  }
+</script>
 </body>
 </html>

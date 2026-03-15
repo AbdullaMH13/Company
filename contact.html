@@ -1,71 +1,489 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suggest a Place · Travelo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root { --ink:#0d0d0d; --sand:#f5f0e8; --gold:#b8924a; --cream:#faf7f2; --muted:#888070; --white:#ffffff; --nav-h:72px; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; min-height:100vh; }
+    ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; backdrop-filter:blur(18px) saturate(180%); background:rgba(250,247,242,0.92); border-bottom:1px solid rgba(184,146,74,0.15); }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,2.5vw,1.8rem); font-weight:300; letter-spacing:.12em; color:var(--ink); text-decoration:none; }
+    .nav-logo span { color:var(--gold); }
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+    .nav-links a { font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ink); text-decoration:none; font-weight:400; position:relative; padding-bottom:2px; }
+    .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--gold); transition:width .3s; }
+    .nav-links a:hover::after { width:100%; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { display:block; width:24px; height:1.5px; background:var(--ink); }
+
+    /* MOBILE MENU */
+    .mobile-menu { position:fixed; inset:0; z-index:200; background:var(--ink); display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2.4rem; opacity:0; pointer-events:none; transition:opacity .35s; }
+    .mobile-menu.open { opacity:1; pointer-events:all; }
+    .mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3.2rem); font-weight:300; color:var(--white); text-decoration:none; transition:color .2s; }
+    .mobile-menu a:hover { color:var(--gold); }
+    .mobile-close { position:absolute; top:1.8rem; right:5vw; background:none; border:none; cursor:pointer; font-size:1.8rem; color:var(--white); }
+
+    /* PAGE HERO STRIP */
+    .page-hero {
+      margin-top:var(--nav-h);
+      background:var(--ink);
+      padding:70px 5vw 60px;
+      position:relative; overflow:hidden;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1619468129361-605ebea04b44?w=1400&q=60') center/cover no-repeat;
+      opacity:.12;
+    }
+    .page-hero-inner { position:relative; z-index:1; max-width:700px; }
+    .page-hero-label { font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+    .page-hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.4rem,6vw,4.5rem); font-weight:300; color:var(--white); line-height:1.1; }
+    .page-hero-title em { font-style:italic; color:#e8d5a8; }
+    .page-hero-sub { font-size:.88rem; color:rgba(255,255,255,.6); max-width:480px; line-height:1.75; margin-top:1rem; }
+
+    /* MAIN LAYOUT */
+    .page-body {
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:4rem;
+      max-width:1200px;
+      margin:0 auto;
+      padding:80px 5vw 100px;
+      align-items:start;
+    }
+
+    /* FORM CARD */
+    .form-card {
+      background:var(--white);
+      box-shadow:0 4px 40px rgba(0,0,0,.07);
+      padding:3rem 3rem 3.5rem;
+    }
+    .form-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:1.9rem; font-weight:300; color:var(--ink);
+      margin-bottom:.4rem;
+    }
+    .form-title em { font-style:italic; }
+    .form-subtitle { font-size:.82rem; color:var(--muted); line-height:1.6; margin-bottom:2.5rem; }
+
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; }
+    .form-group { display:flex; flex-direction:column; gap:.5rem; margin-bottom:1.4rem; }
+    .form-group label {
+      font-size:.7rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--ink); font-weight:500;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      border:1px solid rgba(13,13,13,.15);
+      background:var(--cream);
+      padding:.85rem 1rem;
+      font-family:'DM Sans',sans-serif;
+      font-size:.85rem; color:var(--ink);
+      outline:none;
+      transition:border-color .25s, background .25s;
+      width:100%;
+      resize:none;
+      appearance:none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color:var(--muted); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color:var(--gold);
+      background:var(--white);
+    }
+    .form-group select {
+      cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888070' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 1rem center;
+      padding-right:2.5rem;
+    }
+
+    /* RATING */
+    .star-group { display:flex; gap:.4rem; margin-top:.2rem; }
+    .star-group input[type="radio"] { display:none; }
+    .star-group label {
+      font-size:1.5rem; cursor:pointer; color:#ddd;
+      transition:color .2s; letter-spacing:0;
+      text-transform:none;
+    }
+    .star-group input[type="radio"]:checked ~ label,
+    .star-group label:hover,
+    .star-group label:hover ~ label { color:var(--gold); }
+    .star-group { flex-direction:row-reverse; justify-content:flex-end; }
+    .star-group label:hover,
+    .star-group label:hover ~ label { color:var(--gold); }
+    .star-group input[type="radio"]:checked ~ label { color:#ddd; }
+    .star-group input[type="radio"]:checked + label,
+    .star-group input[type="radio"]:checked + label ~ label { color:var(--gold); }
+
+    /* PHOTO UPLOAD */
+    .upload-area {
+      border:2px dashed rgba(184,146,74,.35);
+      background:rgba(184,146,74,.03);
+      padding:2rem;
+      text-align:center;
+      cursor:pointer;
+      transition:border-color .25s, background .25s;
+      position:relative;
+    }
+    .upload-area:hover { border-color:var(--gold); background:rgba(184,146,74,.06); }
+    .upload-area input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+    .upload-icon { font-size:1.8rem; color:var(--gold); margin-bottom:.6rem; }
+    .upload-text { font-size:.8rem; color:var(--muted); line-height:1.6; }
+    .upload-text strong { color:var(--gold); }
+
+    /* SUBMIT BTN */
+    .btn-submit {
+      width:100%; padding:1rem;
+      background:var(--ink); color:var(--white);
+      border:none; cursor:pointer;
+      font-family:'DM Sans',sans-serif; font-size:.82rem;
+      letter-spacing:.18em; text-transform:uppercase;
+      display:flex; align-items:center; justify-content:center; gap:.7rem;
+      transition:background .25s, transform .2s;
+      margin-top:.5rem;
+    }
+    .btn-submit:hover { background:var(--gold); transform:translateY(-1px); }
+    .btn-submit i { font-size:.85rem; }
+
+    /* SUCCESS MESSAGE */
+    .success-msg {
+      display:none;
+      background:rgba(184,146,74,.08);
+      border:1px solid rgba(184,146,74,.3);
+      padding:1.2rem 1.4rem;
+      margin-top:1.5rem;
+      align-items:center; gap:.8rem;
+      font-size:.82rem; color:var(--ink);
+    }
+    .success-msg.show { display:flex; }
+    .success-msg i { color:var(--gold); font-size:1rem; flex-shrink:0; }
+
+    /* SIDEBAR */
+    .sidebar { display:flex; flex-direction:column; gap:1.5rem; }
+
+    .info-card {
+      background:var(--white);
+      box-shadow:0 2px 20px rgba(0,0,0,.05);
+      padding:1.8rem 2rem;
+    }
+    .info-card-title {
+      font-family:'Cormorant Garamond',serif;
+      font-size:1.2rem; font-weight:400; color:var(--ink);
+      margin-bottom:1.2rem; padding-bottom:.8rem;
+      border-bottom:1px solid rgba(13,13,13,.07);
+    }
+    .info-list { list-style:none; display:flex; flex-direction:column; gap:.9rem; }
+    .info-list li { display:flex; gap:.8rem; align-items:flex-start; font-size:.8rem; color:var(--muted); line-height:1.55; }
+    .info-list li i { color:var(--gold); font-size:.8rem; margin-top:.2rem; flex-shrink:0; }
+
+    /* WHAT HAPPENS STEPS */
+    .step-list { list-style:none; display:flex; flex-direction:column; gap:1.2rem; }
+    .step-item { display:flex; gap:1rem; align-items:flex-start; }
+    .step-num {
+      width:28px; height:28px; border-radius:50%;
+      background:var(--gold); color:var(--white);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.7rem; font-weight:500; flex-shrink:0;
+    }
+    .step-text { font-size:.8rem; color:var(--muted); line-height:1.6; }
+    .step-text strong { color:var(--ink); display:block; font-size:.82rem; margin-bottom:.15rem; }
+
+    /* STAT CHIPS */
+    .stat-chips { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .stat-chip { background:var(--sand); padding:1rem; text-align:center; }
+    .stat-chip-num { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--gold); line-height:1; }
+    .stat-chip-label { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+
+    /* FOOTER */
+    footer { background:#080808; color:rgba(255,255,255,.55); padding:40px 5vw 28px; }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; font-size:.75rem; }
+    .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; color:var(--white); letter-spacing:.1em; }
+    .footer-brand span { color:var(--gold); }
+
+    /* REVEAL */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s, transform .7s; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .nav-links { display:none; } .hamburger { display:flex; }
+      .page-body { grid-template-columns:1fr; gap:2.5rem; }
+      .sidebar { order:-1; display:grid; grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:600px){
+      .form-card { padding:2rem 1.5rem; }
+      .form-row { grid-template-columns:1fr; }
+      .sidebar { grid-template-columns:1fr; }
+      .stat-chips { grid-template-columns:1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <div class="topnav">
-          <!-- Logo -->
-          <img src="logo.jpg" width="10%" alt="the coffee logo">
-      
-          <!-- Search Icon -->
-          <span class="material-symbols-outlined">search</span>
-      
-          <!-- Menu links (hidden by default on mobile) -->
-            <div id="header"></div>
 
-            <script>
-                fetch("header.html")
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("header").innerHTML = data;
-                    });
-            </script>
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="index.html">Home</a>
+  <a href="kerala.html">Kerala</a>
+  <a href="#">Experiences</a>
+  <a href="hotel.html">Hotels</a>
+  <a href="contact.html">Contact</a>
+</div>
 
-      
-          <!-- Search Bar -->
-          <input type="search" id="searchInput" placeholder="search" class="search-bar">
-      
-          <!-- Menu Toggle for mobile -->
-          <span class="menu-toggle" id="menuToggle">&copy</span>
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Trave<span>lo</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="kerala.html">Kerala</a></li>
+    <li><a href="#">Experiences</a></li>
+    <li><a href="hotel.html">Hotels</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <p class="page-hero-label">Community · Suggestions</p>
+    <h1 class="page-hero-title">Know a hidden gem?<br><em>Tell us about it.</em></h1>
+    <p class="page-hero-sub">Help fellow travellers discover India's best-kept secrets. Submit a place you love and we'll review it for the Travelo collection.</p>
+  </div>
+</div>
+
+<!-- MAIN BODY -->
+<div class="page-body">
+
+  <!-- FORM -->
+  <div class="form-card reveal">
+    <h2 class="form-title">Suggest a <em>Place</em></h2>
+    <p class="form-subtitle">Fill in the details below and our editorial team will review your suggestion within 5–7 days.</p>
+
+    <form id="suggestionForm" onsubmit="handleSubmit(event)" novalidate>
+
+      <!-- Name + Email -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="e.g. Arjun Menon" required>
         </div>
-      </nav>
-    <br><br>
-    <br><br>
-    <br>
-    <div class="contact">
-        <h1 class="back-link">Form For Suggestion</h1>
-        <br>
-        <form action="">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name">
-            <br><br>
-            <label for="email">Email</label>
-            <input type="text" name="email" id="email">
-            <br><br>
-            <label for="location">Location</label>
-            <input type="text" name="email" id="email">
-            <br><br>
-            <p class="Description">Description</p>
-            <textarea name="Description" id="" cols="30" rows="10" placeholder="Your Description about new place"></textarea>
-            <button id="glowButton">Submit</button>
-        </form>
-    </div>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <footer>
-        <p> Travelo &copy;2025</p>
-    </footer>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+      </div>
 
+      <!-- Place Name -->
+      <div class="form-group">
+        <label for="place">Place Name</label>
+        <input type="text" id="place" name="place" placeholder="e.g. Thusharagiri Waterfalls" required>
+      </div>
+
+      <!-- Location + Category -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="location">Location / District</label>
+          <input type="text" id="location" name="location" placeholder="e.g. Kozhikode, Kerala">
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category">
+            <option value="" disabled selected>Select a category</option>
+            <option>Beach</option>
+            <option>Hill Station</option>
+            <option>Waterfall</option>
+            <option>Wildlife & Nature</option>
+            <option>Heritage & Culture</option>
+            <option>Backwaters</option>
+            <option>Adventure</option>
+            <option>Food & Dining</option>
+            <option>Temple / Spiritual</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Rating -->
+      <div class="form-group">
+        <label>Your Rating</label>
+        <div class="star-group" id="starGroup">
+          <input type="radio" id="s5" name="rating" value="5"><label for="s5" title="5 stars">★</label>
+          <input type="radio" id="s4" name="rating" value="4"><label for="s4" title="4 stars">★</label>
+          <input type="radio" id="s3" name="rating" value="3"><label for="s3" title="3 stars">★</label>
+          <input type="radio" id="s2" name="rating" value="2"><label for="s2" title="2 stars">★</label>
+          <input type="radio" id="s1" name="rating" value="1"><label for="s1" title="1 star">★</label>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Tell Us About This Place</label>
+        <textarea id="description" name="description" rows="5" placeholder="What makes this place special? Best time to visit, how to get there, what to see or do — the more detail, the better!" required></textarea>
+      </div>
+
+      <!-- Photo Upload -->
+      <div class="form-group">
+        <label>Upload a Photo <span style="color:var(--muted); text-transform:none; letter-spacing:0; font-size:.72rem;">(optional)</span></label>
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="photoUpload" name="photo" accept="image/*" onchange="handleFile(event)">
+          <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <div class="upload-text" id="uploadText">
+            <strong>Click to upload</strong> or drag and drop<br>
+            JPG, PNG or WEBP · Max 5MB
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit">
+        <i class="fas fa-paper-plane"></i>
+        Submit Suggestion
+      </button>
+
+      <!-- Success -->
+      <div class="success-msg" id="successMsg">
+        <i class="fas fa-check-circle"></i>
+        <span>Thank you! Your suggestion has been received. Our team will review it within 5–7 days.</span>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Stats -->
+    <div class="info-card reveal">
+      <p class="info-card-title">Community Impact</p>
+      <div class="stat-chips">
+        <div class="stat-chip"><div class="stat-chip-num">240+</div><div class="stat-chip-label">Suggestions</div></div>
+        <div class="stat-chip"><div class="stat-chip-num">38</div><div class="stat-chip-label">Published</div></div>
+        <div class="stat-chip"><div class="stat-chip-num">12k</div><div class="stat-chip-label">Travellers</div></div>
+        <div class="stat-chip"><div class="stat-chip-num">9</div><div class="stat-chip-label">Destinations</div></div>
+      </div>
+    </div>
+
+    <!-- What Happens Next -->
+    <div class="info-card reveal">
+      <p class="info-card-title">What Happens Next?</p>
+      <ul class="step-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>We receive your suggestion</strong>Our editorial team is notified immediately.</div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Review & research</strong>We verify the place and research additional details.</div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>We get in touch</strong>If shortlisted, we'll email you within 7 days.</div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Published on Travelo</strong>Your discovery goes live for thousands of travellers!</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Guidelines -->
+    <div class="info-card reveal">
+      <p class="info-card-title">Submission Guidelines</p>
+      <ul class="info-list">
+        <li><i class="fas fa-check"></i>Suggest places you have personally visited</li>
+        <li><i class="fas fa-check"></i>Be specific — include the district or nearest city</li>
+        <li><i class="fas fa-check"></i>Photos greatly increase the chance of being featured</li>
+        <li><i class="fas fa-check"></i>Hidden gems and off-the-beaten-path spots are prioritised</li>
+        <li><i class="fas fa-times" style="color:#c0392b;"></i>No duplicate submissions for existing Travelo destinations</li>
+        <li><i class="fas fa-times" style="color:#c0392b;"></i>No sponsored or commercial listings</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-brand">Trave<span>lo</span></div>
+    <p>© 2025 Travelo. All rights reserved.</p>
+    <p style="color:rgba(255,255,255,.3); font-size:.7rem; letter-spacing:.1em;">DISCOVER · EXPLORE · REMEMBER</p>
+  </div>
+</footer>
+
+<script>
+  /* NAV */
+  const menu   = document.getElementById('mobileMenu');
+  const burger = document.getElementById('hamburger');
+  const close  = document.getElementById('mobileClose');
+  burger.addEventListener('click', () => menu.classList.add('open'));
+  close.addEventListener('click',  () => menu.classList.remove('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  /* REVEAL */
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => io.observe(r));
+
+  /* FORM SUBMIT */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('suggestionForm');
+    const btn  = form.querySelector('.btn-submit');
+    const msg  = document.getElementById('successMsg');
+
+    /* basic validation */
+    const required = form.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(el => {
+      el.style.borderColor = '';
+      if (!el.value.trim()) { el.style.borderColor = '#e74c3c'; valid = false; }
+    });
+    if (!valid) return;
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-check"></i> Submitted!';
+      btn.style.background = 'var(--gold)';
+      msg.classList.add('show');
+      form.reset();
+      document.getElementById('uploadText').innerHTML = '<strong>Click to upload</strong> or drag and drop<br>JPG, PNG or WEBP · Max 5MB';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Suggestion';
+        btn.style.background = '';
+        btn.disabled = false;
+        msg.classList.remove('show');
+      }, 5000);
+    }, 1400);
+  }
+
+  /* FILE UPLOAD LABEL */
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (file) {
+      document.getElementById('uploadText').innerHTML =
+        `<strong>${file.name}</strong><br><span style="color:var(--gold)">✓ File selected</span>`;
+    }
+  }
+</script>
 </body>
 </html>
