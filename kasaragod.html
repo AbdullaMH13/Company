@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kasaragod — Land of Forts & Beaches · Travelo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink:   #0d0d0d;
+      --sand:  #f5f0e8;
+      --gold:  #b8924a;
+      --cream: #faf7f2;
+      --muted: #888070;
+      --white: #ffffff;
+      --nav-h: 72px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--sand); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      backdrop-filter: blur(18px) saturate(180%);
+      background: rgba(250,247,242,0.82);
+      border-bottom: 1px solid rgba(184,146,74,0.15);
+    }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.4rem,2.5vw,1.8rem); font-weight: 300; letter-spacing: .12em; color: var(--ink); text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; color: var(--ink); text-decoration: none; font-weight: 400; position: relative; padding-bottom: 2px; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width .3s ease; }
+    .nav-links a:hover::after { width: 100%; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--ink); transition: .3s; }
+
+    /* HERO */
+    .hero { position: relative; height: 100svh; min-height: 600px; display: flex; align-items: flex-end; padding: 0 5vw 10vh; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 12s ease forwards; }
+    @keyframes kenburns { from { transform: scale(1.07); } to { transform: scale(1.0); } }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,13,13,.80) 0%, rgba(13,13,13,.25) 50%, rgba(13,13,13,.08) 100%); }
+    .hero-content { position: relative; z-index: 2; max-width: 700px; animation: fadeUp .9s .2s both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-breadcrumb { display: flex; align-items: center; gap: .6rem; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 1.2rem; }
+    .hero-breadcrumb a { color: var(--gold); text-decoration: none; }
+    .hero-breadcrumb span { color: rgba(255,255,255,.3); }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.2rem,8vw,6rem); line-height: 1.0; font-weight: 300; color: var(--white); margin-bottom: .5rem; }
+    .hero-title em { font-style: italic; color: #e8d5a8; }
+    .hero-tagline { font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.4rem; }
+    .hero-sub { font-size: .9rem; color: rgba(255,255,255,.72); max-width: 500px; line-height: 1.75; margin-bottom: 2.4rem; }
+    .btn-primary { display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 2rem; background: var(--gold); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background .25s, transform .2s; }
+    .btn-primary:hover { background: #a07840; transform: translateY(-1px); }
+    .btn-primary svg { transition: transform .25s; }
+    .btn-primary:hover svg { transform: translateX(4px); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 2rem; background: transparent; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(255,255,255,.45); cursor: pointer; transition: border-color .25s, background .25s; }
+    .btn-ghost:hover { border-color: var(--gold); background: rgba(184,146,74,.12); }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .scroll-hint { position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; flex-direction: column; align-items: center; gap: .5rem; color: rgba(255,255,255,.45); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 1.8s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity:.3; transform: scaleY(.6); } 50% { opacity:1; transform: scaleY(1); } }
+    .back-btn { display: inline-flex; align-items: center; gap: .5rem; color: var(--muted); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; border: none; background: none; cursor: pointer; transition: color .25s; }
+    .back-btn:hover { color: var(--gold); }
+    .back-btn svg { transition: transform .25s; }
+    .back-btn:hover svg { transform: translateX(-3px); }
+
+    /* MARQUEE */
+    .marquee-wrap { background: var(--gold); overflow: hidden; padding: .9rem 0; user-select: none; }
+    .marquee-track { display: flex; gap: 3rem; width: max-content; animation: marquee 24s linear infinite; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .marquee-item { display: flex; align-items: center; gap: 1rem; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--white); white-space: nowrap; }
+    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.5); }
+
+    /* SECTIONS */
+    section { padding: 100px 5vw; }
+    .section-label { font-size: .7rem; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,4.5vw,3.4rem); font-weight: 300; line-height: 1.15; color: var(--ink); }
+    .section-title em { font-style: italic; }
+    .section-sub { font-size: .88rem; color: var(--muted); max-width: 540px; line-height: 1.75; margin-top: .9rem; }
+
+    /* INTRO */
+    .intro-section { background: var(--sand); }
+    .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; align-items: center; }
+    .intro-img { position: relative; }
+    .intro-img img { width: 100%; height: 460px; object-fit: cover; display: block; }
+    .intro-img-badge { position: absolute; bottom: 1.5rem; right: -1rem; background: var(--ink); color: var(--white); padding: 1rem 1.4rem; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; }
+    .intro-img-badge span { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; display: block; margin-bottom: .2rem; }
+    .intro-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2.5rem; }
+    .highlight-chip { display: flex; align-items: center; gap: .7rem; padding: .9rem 1rem; background: rgba(184,146,74,.08); border: 1px solid rgba(184,146,74,.18); }
+    .highlight-chip svg { stroke: var(--gold); flex-shrink: 0; }
+    .highlight-chip span { font-size: .78rem; font-weight: 400; color: var(--ink); }
+
+    /* STATS */
+    .stats-bar { background: var(--ink); color: var(--white); display: flex; justify-content: space-around; flex-wrap: wrap; gap: 2rem; padding: 60px 5vw; }
+    .stat-item { text-align: center; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem,5vw,4rem); font-weight: 300; color: var(--gold); line-height: 1; }
+    .stat-label { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-top: .5rem; }
+
+    /* SPOTS */
+    .spots-section { background: var(--cream); }
+    .spots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1.8rem; margin-top: 3.5rem; }
+    .spot-card { position: relative; overflow: hidden; cursor: pointer; text-decoration: none; display: block; background: var(--white); box-shadow: 0 2px 20px rgba(0,0,0,.06); transition: box-shadow .35s, transform .35s; }
+    .spot-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.13); transform: translateY(-4px); }
+    .spot-card img { width: 100%; height: 240px; object-fit: cover; display: block; transition: transform .6s ease; }
+    .spot-card:hover img { transform: scale(1.07); }
+    .spot-card-body { padding: 1.4rem 1.6rem 1.6rem; }
+    .spot-card-num { font-family: 'Cormorant Garamond', serif; font-size: .72rem; color: var(--gold); letter-spacing: .15em; margin-bottom: .4rem; }
+    .spot-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 300; color: var(--ink); margin-bottom: .6rem; line-height: 1.2; }
+    .spot-card-desc { font-size: .78rem; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .spot-card-footer { padding: .9rem 1.6rem; border-top: 1px solid rgba(13,13,13,.06); display: flex; align-items: center; justify-content: space-between; }
+    .spot-card-tag { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); }
+    .spot-card-arrow { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(.6); transition: opacity .3s, transform .3s; }
+    .spot-card:hover .spot-card-arrow { opacity: 1; transform: scale(1); }
+    .spot-card-arrow svg { stroke: white; }
+
+    /* FOOD SECTION */
+    .food-section { background: var(--sand); }
+    .food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 1.6rem; margin-top: 3rem; }
+    .food-card { background: var(--white); box-shadow: 0 2px 20px rgba(0,0,0,.05); transition: box-shadow .35s, transform .35s; }
+    .food-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.11); transform: translateY(-4px); }
+    .food-card-img-wrap { overflow: hidden; }
+    .food-card-img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform .6s ease; }
+    .food-card:hover .food-card-img { transform: scale(1.06); }
+    .food-card-body { padding: 1.2rem 1.4rem 1rem; }
+    .food-card-region { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: .35rem; }
+    .food-card-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: var(--ink); line-height: 1.2; margin-bottom: .5rem; }
+    .food-card-desc { font-size: .76rem; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .food-card-footer { padding: .8rem 1.4rem; border-top: 1px solid rgba(13,13,13,.06); display: flex; align-items: center; justify-content: space-between; }
+    .food-tag { font-size: .62rem; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); }
+
+    /* EXPERIENCE STRIP */
+    .exp-section { background: var(--cream); }
+    .exp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+    .exp-card { background: var(--white); padding: 1.8rem 1.6rem; box-shadow: 0 2px 14px rgba(0,0,0,.05); border-top: 2px solid transparent; transition: box-shadow .3s, transform .3s, border-color .3s; }
+    .exp-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,.1); transform: translateY(-3px); border-top-color: var(--gold); }
+    .exp-icon { width: 40px; height: 40px; background: rgba(184,146,74,.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .exp-icon svg { stroke: var(--gold); }
+    .exp-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; color: var(--ink); margin-bottom: .4rem; }
+    .exp-desc { font-size: .75rem; color: var(--muted); line-height: 1.65; }
+
+    /* BEST TIME BANNER */
+    .besttime-section { background: var(--ink); color: var(--white); padding: 80px 5vw; }
+    .besttime-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; align-items: center; }
+    .besttime-months { display: grid; grid-template-columns: repeat(4,1fr); gap: .8rem; margin-top: 2rem; }
+    .month-pill { padding: .6rem .5rem; text-align: center; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.4); transition: all .2s; }
+    .month-pill.best { background: var(--gold); border-color: var(--gold); color: var(--white); }
+    .month-pill.good { border-color: rgba(184,146,74,.4); color: rgba(184,146,74,.9); }
+    .besttime-tips { display: flex; flex-direction: column; gap: 1.2rem; }
+    .tip-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .tip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: .45rem; }
+    .tip-text { font-size: .84rem; color: rgba(255,255,255,.65); line-height: 1.7; }
+
+    /* CONTACT */
+    .contact-section { background: var(--sand); text-align: center; }
+    .contact-section .section-title { margin-bottom: .8rem; }
+    .contact-section p { font-size: .9rem; color: var(--muted); max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+
+    /* FOOTER */
+    footer { background: #080808; color: rgba(255,255,255,.55); padding: 60px 5vw 30px; }
+    .footer-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .footer-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--white); letter-spacing: .1em; margin-bottom: .8rem; }
+    .footer-brand-name span { color: var(--gold); }
+    .footer-desc { font-size: .8rem; line-height: 1.8; max-width: 280px; }
+    .footer-col h4 { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--white); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+    .footer-col ul li a { font-size: .8rem; color: rgba(255,255,255,.5); text-decoration: none; transition: color .25s; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom { padding-top: 1.8rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: .75rem; }
+
+    /* MOBILE MENU */
+    .mobile-menu { position: fixed; inset: 0; z-index: 200; background: var(--ink); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2.4rem; opacity: 0; pointer-events: none; transition: opacity .35s; }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,8vw,3.2rem); font-weight: 300; color: var(--white); text-decoration: none; transition: color .2s; }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-close { position: absolute; top: 1.8rem; right: 5vw; background: none; border: none; cursor: pointer; font-size: 1.8rem; color: var(--white); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .nav-links { display: none; } .hamburger { display: flex; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .intro-img img { height: 320px; }
+      .intro-img-badge { right: 0; }
+      .besttime-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 70px 5vw; }
+      .spots-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .spot-card img { height: 180px; }
+      .intro-highlights { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .besttime-months { grid-template-columns: repeat(3,1fr); }
+    }
+    @media (max-width: 420px) { .spots-grid { grid-template-columns: 1fr; } }
+
+    /* COMMUNITY PICKS */
+    .community-header { display:flex; align-items:center; gap:1.2rem; margin:3rem 0 1.8rem; }
+    .community-label { display:inline-flex; align-items:center; gap:.45rem; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); white-space:nowrap; font-weight:500; }
+    .community-line { flex:1; height:1px; background:rgba(184,146,74,.22); }
+    .cp-badge { position:absolute; top:.85rem; left:.85rem; z-index:2; display:inline-flex; align-items:center; gap:.3rem; background:var(--gold); color:var(--white); font-family:'DM Sans',sans-serif; font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; font-weight:500; padding:.28rem .72rem; }
+    .cp-dish-badge { display:inline-flex; align-items:center; gap:.3rem; background:var(--gold); color:var(--white); font-family:'DM Sans',sans-serif; font-size:.56rem; letter-spacing:.13em; text-transform:uppercase; font-weight:500; padding:.24rem .62rem; margin-bottom:.5rem; }
+    @keyframes cpRise { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+    .cp-card { animation:cpRise .55s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="index.html">Home</a>
+  <a href="kerala.html">Kerala</a>
+  <a href="#">Experiences</a>
+  <a href="hotel.html">Hotels</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Trave<span>lo</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="kerala.html">Kerala</a></li>
+    <li><a href="#">Experiences</a></li>
+    <li><a href="hotel.html">Hotels</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1590077428593-a55bb07c4665?w=1800&q=80" alt="Bekal Fort Kasaragod">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-breadcrumb">
+      <a href="index.html">Home</a><span>›</span>
+      <a href="kerala.html">Kerala</a><span>›</span>
+      <span>Kasaragod</span>
+    </div>
+    <p class="hero-tagline">North Kerala · Coastal &amp; Fort Country</p>
+    <h1 class="hero-title">Kasaragod<br><em>Land of Forts &amp; Shores</em></h1>
+    <p class="hero-sub">Kerala's northernmost frontier — where the Arabian Sea meets ancient fortresses, where seven languages blend into one culture, and where pristine beaches stretch endlessly beneath a tropical sky.</p>
+    <div class="hero-btns">
+      <a href="#spots" class="btn-primary">
+        Explore Places
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="contact.html" class="btn-ghost">Plan My Trip</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span>Bekal Fort</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kappil Beach</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Ananthapura Temple</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Chandragiri Fort</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Valiyaparamba Backwaters</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Malik Deenar Mosque</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Ranipuram Trekking</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Bekal Fort</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kappil Beach</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Ananthapura Temple</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Chandragiri Fort</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Valiyaparamba Backwaters</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Malik Deenar Mosque</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Ranipuram Trekking</span><span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro-section" id="intro">
+  <button class="back-btn" onclick="window.history.back()" style="margin-bottom:2.5rem;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Kerala
+  </button>
+  <div class="intro-grid">
+    <div class="intro-img reveal">
+      <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=900&q=80" alt="Kasaragod coast">
+      <div class="intro-img-badge">
+        <span>7</span>
+        Languages spoken
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="section-label">Welcome to Kasaragod</p>
+      <h2 class="section-title">Where History<br><em>Meets the Sea</em></h2>
+      <p class="section-sub">Kasaragod is a land of extraordinary diversity — the only district in India where seven languages coexist harmoniously. From the imposing Bekal Fort overlooking the Arabian Sea to the tranquil Valiyaparamba backwaters, every corner tells a story steeped in centuries of culture, trade and coastal heritage.</p>
+      <div class="intro-highlights">
+        <div class="highlight-chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Bekal Fort</span>
+        </div>
+        <div class="highlight-chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Seven Languages</span>
+        </div>
+        <div class="highlight-chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Backwater Cruises</span>
+        </div>
+        <div class="highlight-chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Cashew Groves</span>
+        </div>
+        <div class="highlight-chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span>Pristine Beaches</span>
+        </div>
+        <div class="highlight-chip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          <span>Malabar Cuisine</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item reveal"><div class="stat-num">7</div><div class="stat-label">Languages</div></div>
+  <div class="stat-item reveal"><div class="stat-num">98km</div><div class="stat-label">Coastline</div></div>
+  <div class="stat-item reveal"><div class="stat-num">5</div><div class="stat-label">Historic Forts</div></div>
+  <div class="stat-item reveal"><div class="stat-num">1200+</div><div class="stat-label">Years of History</div></div>
+</div>
+
+<!-- SPOTS -->
+<section class="spots-section" id="spots">
+  <div class="section-header reveal">
+    <p class="section-label">Must-Visit Places</p>
+    <h2 class="section-title">Places to <em>Discover</em><br>in Kasaragod</h2>
+    <p class="section-sub">From ancient forts overlooking the sea to sacred lake temples — Kasaragod's gems are unlike anywhere else in Kerala.</p>
+  </div>
+  <div class="spots-grid">
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1590077428593-a55bb07c4665?w=700&q=80" alt="Bekal Fort">
+      <div class="spot-card-body">
+        <p class="spot-card-num">01 — Fort</p>
+        <h3 class="spot-card-title">Bekal Fort</h3>
+        <p class="spot-card-desc">Kerala's largest fort, built in the 17th century on a promontory jutting into the Arabian Sea. The observation tower offers breathtaking 360° views of the coastline, backwaters and horizon.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">History · Coastal</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="Kappil Beach">
+      <div class="spot-card-body">
+        <p class="spot-card-num">02 — Beach</p>
+        <h3 class="spot-card-title">Kappil Beach</h3>
+        <p class="spot-card-desc">A rare and magical confluence where the Kappil backwater lake meets the Arabian Sea. The wooden bridge stretching over the water is one of Kerala's most photographed landmarks.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">Beach · Backwaters</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1609132718484-cc90df3417f8?w=700&q=80" alt="Ananthapura Lake Temple">
+      <div class="spot-card-body">
+        <p class="spot-card-num">03 — Temple</p>
+        <h3 class="spot-card-title">Ananthapura Lake Temple</h3>
+        <p class="spot-card-desc">The only lake temple in Kerala, believed to be the original seat of Ananthapadmanabha. The temple sits on a small island surrounded by a sacred lake, home to a guardian crocodile that has lived there for centuries.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">Spiritual · Unique</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=700&q=80" alt="Valiyaparamba Backwaters">
+      <div class="spot-card-body">
+        <p class="spot-card-num">04 — Backwaters</p>
+        <h3 class="spot-card-title">Valiyaparamba Backwaters</h3>
+        <p class="spot-card-desc">One of Kerala's four major backwater systems — a serene network of islands, canals and coconut groves far less crowded than Alleppey. Houseboat stays here feel truly off the beaten path.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">Backwaters · Peaceful</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80" alt="Chandragiri Fort">
+      <div class="spot-card-body">
+        <p class="spot-card-num">05 — Fort</p>
+        <h3 class="spot-card-title">Chandragiri Fort</h3>
+        <p class="spot-card-desc">A 17th century fort perched above the confluence of the Chandragiri River and the Arabian Sea. The views from the ramparts at sunset are among the most dramatic in all of Kerala.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">History · Sunset</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=700&q=80" alt="Ranipuram">
+      <div class="spot-card-body">
+        <p class="spot-card-num">06 — Hill Station</p>
+        <h3 class="spot-card-title">Ranipuram</h3>
+        <p class="spot-card-desc">Often called the Ooty of Kasaragod, Ranipuram rises to 750 metres with grassy meadows, shola forests and mist-covered trekking trails rarely visited by tourists — a true hidden highland.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">Trekking · Nature</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=700&q=80" alt="Malik Deenar Mosque">
+      <div class="spot-card-body">
+        <p class="spot-card-num">07 — Heritage</p>
+        <h3 class="spot-card-title">Malik Deenar Mosque</h3>
+        <p class="spot-card-desc">One of India's oldest mosques, believed to have been built by Malik Ibn Dinar, a companion of Prophet Muhammad, in the 7th century. An extraordinary piece of living history on the Malabar coast.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">Heritage · Spiritual</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+    <a href="#" class="spot-card reveal">
+      <img src="https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?w=700&q=80" alt="Bekal Beach">
+      <div class="spot-card-body">
+        <p class="spot-card-num">08 — Beach</p>
+        <h3 class="spot-card-title">Bekal Beach</h3>
+        <p class="spot-card-desc">A long, unspoiled beach stretching beside the fort, framed by casuarina trees and gentle waves. Far quieter than Kerala's famous southern beaches, perfect for long early morning walks.</p>
+      </div>
+      <div class="spot-card-footer">
+        <span class="spot-card-tag">Beach · Relaxed</span>
+        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Community spot picks -->
+  <div id="cpSpotsContainer"></div>
+</section>
+
+<!-- FOOD SECTION -->
+<section class="food-section" id="food">
+  <div class="reveal">
+    <p class="section-label">Flavour Trail · Kasaragod</p>
+    <h2 class="section-title">Taste of the <em>North</em></h2>
+    <p class="section-sub">Kasaragod sits at the crossroads of Kerala, Karnataka and Tulu cultures — a culinary meeting point where coconut, spice and tradition create dishes you won't find anywhere else.</p>
+  </div>
+  <div class="food-grid">
+
+    <div class="food-card reveal">
+      <div class="food-card-img-wrap">
+        <img class="food-card-img" src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80" alt="Pathiri">
+      </div>
+      <div class="food-card-body">
+        <p class="food-card-region">Breakfast · Kasaragod</p>
+        <h3 class="food-card-name">Pathiri</h3>
+        <p class="food-card-desc">Thin, soft rice flour flatbreads — a Malabar Muslim staple. Eaten with spiced chicken or mutton curry, the texture is delicate and unlike anything else in Kerala.</p>
+      </div>
+      <div class="food-card-footer"><span class="food-tag">Malabar · Traditional</span></div>
+    </div>
+
+    <div class="food-card reveal">
+      <div class="food-card-img-wrap">
+        <img class="food-card-img" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Fish Gassi">
+      </div>
+      <div class="food-card-body">
+        <p class="food-card-region">Coastal · Kasaragod</p>
+        <h3 class="food-card-name">Fish Gassi</h3>
+        <p class="food-card-desc">A Tulu-influenced coconut fish curry with a deep, roasted spice base. Richer and smokier than Kerala's typical fish curry — a legacy of Kasaragod's cross-cultural cooking.</p>
+      </div>
+      <div class="food-card-footer"><span class="food-tag">Seafood · Tulu</span></div>
+    </div>
+
+    <div class="food-card reveal">
+      <div class="food-card-img-wrap">
+        <img class="food-card-img" src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=600&q=80" alt="Neer Dosa">
+      </div>
+      <div class="food-card-body">
+        <p class="food-card-region">Breakfast · Tulu Influence</p>
+        <h3 class="food-card-name">Neer Dosa</h3>
+        <p class="food-card-desc">Paper-thin, lacy white rice crepes — softer and more delicate than regular dosa, with a melt-in-the-mouth texture. Served with coconut chutney and egg curry in most Kasaragod homes.</p>
+      </div>
+      <div class="food-card-footer"><span class="food-tag">Vegetarian · Light</span></div>
+    </div>
+
+    <div class="food-card reveal">
+      <div class="food-card-img-wrap">
+        <img class="food-card-img" src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" alt="Halwa">
+      </div>
+      <div class="food-card-body">
+        <p class="food-card-region">Sweets · Kasaragod</p>
+        <h3 class="food-card-name">Kasaragod Halwa</h3>
+        <p class="food-card-desc">Similar to Kozhikode halwa but with its own local character — intensely sweet, dense and jewel-coloured, made with wheat starch, coconut oil and generous ghee. A gift worth carrying home.</p>
+      </div>
+      <div class="food-card-footer"><span class="food-tag">Dessert · Specialty</span></div>
+    </div>
+
+  </div>
+
+  <!-- Community food picks -->
+  <div id="cpFoodContainer"></div>
+</section>
+
+<!-- EXPERIENCES -->
+<section class="exp-section" id="experiences">
+  <div class="reveal">
+    <p class="section-label">What To Do</p>
+    <h2 class="section-title">Experiences in <em>Kasaragod</em></h2>
+    <p class="section-sub">Beyond sightseeing — Kasaragod offers experiences that connect you with the land, the sea and the people who call this remarkable frontier home.</p>
+  </div>
+  <div class="exp-grid">
+
+    <div class="exp-card reveal">
+      <div class="exp-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      </div>
+      <h3 class="exp-title">Fort Trail Walk</h3>
+      <p class="exp-desc">Walk the full perimeter of Bekal Fort at sunrise. The moat, the observation tower and the views of the sea at golden hour are unforgettable.</p>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3 class="exp-title">Backwater Kayaking</h3>
+      <p class="exp-desc">Paddle through the Valiyaparamba islands at dawn — through mangroves, past fishing villages and under canopies of coconut palms in near-total silence.</p>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <h3 class="exp-title">Yakshagana Performance</h3>
+      <p class="exp-desc">Watch a live Yakshagana — the elaborate classical dance-theatre of the Tulu people. Elaborate costumes, percussion and mythology merge in a spectacle unique to this region.</p>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <h3 class="exp-title">Ranipuram Trek</h3>
+      <p class="exp-desc">A moderate 6km trek through dense forest to the summit at 750m. The grasslands at the top feel like a different world — cool, misty and utterly isolated.</p>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      </div>
+      <h3 class="exp-title">Malabar Cooking Class</h3>
+      <p class="exp-desc">Learn to make pathiri, fish gassi and coconut chutney in a local home. Kasaragod's cross-cultural cuisine is best understood with your hands in the spice jar.</p>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="exp-title">Cashew Farm Visit</h3>
+      <p class="exp-desc">Visit a traditional cashew estate during harvest season (Feb–May) and see the full process from fruit to nut, with tasting of fresh cashew feni and jaggery.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- BEST TIME TO VISIT -->
+<section class="besttime-section" id="best-time">
+  <div class="besttime-grid">
+    <div class="reveal">
+      <p class="section-label" style="color:var(--gold);">When to Visit</p>
+      <h2 class="section-title" style="color:var(--white);">Best Time to <em style="color:#e8d5a8;">Explore</em></h2>
+      <p style="font-size:.88rem; color:rgba(255,255,255,.6); line-height:1.75; margin-top:.9rem; max-width:440px;">Kasaragod is beautiful year-round but the winter months offer the most pleasant climate for exploring forts and beaches.</p>
+      <div class="besttime-months">
+        <div class="month-pill">Jan</div>
+        <div class="month-pill best">Feb</div>
+        <div class="month-pill best">Mar</div>
+        <div class="month-pill good">Apr</div>
+        <div class="month-pill">May</div>
+        <div class="month-pill">Jun</div>
+        <div class="month-pill">Jul</div>
+        <div class="month-pill">Aug</div>
+        <div class="month-pill good">Sep</div>
+        <div class="month-pill best">Oct</div>
+        <div class="month-pill best">Nov</div>
+        <div class="month-pill best">Dec</div>
+      </div>
+      <div style="display:flex; gap:1.5rem; margin-top:1.2rem; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:.5rem; font-size:.72rem; color:rgba(255,255,255,.5);">
+          <div style="width:12px; height:12px; background:var(--gold);"></div> Best season
+        </div>
+        <div style="display:flex; align-items:center; gap:.5rem; font-size:.72rem; color:rgba(255,255,255,.5);">
+          <div style="width:12px; height:12px; border:1px solid rgba(184,146,74,.5);"></div> Good season
+        </div>
+      </div>
+    </div>
+    <div class="besttime-tips reveal">
+      <div class="tip-item">
+        <div class="tip-dot"></div>
+        <p class="tip-text"><strong style="color:var(--white);">Oct – Feb</strong> — Peak season. Cool and dry, perfect for beaches, fort walks and trekking. Book accommodation early during Christmas and New Year.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-dot"></div>
+        <p class="tip-text"><strong style="color:var(--white);">Feb – Apr</strong> — Cashew harvest season. The best time to visit the estates and experience the region's most iconic agricultural tradition.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-dot"></div>
+        <p class="tip-text"><strong style="color:var(--white);">Jun – Sep</strong> — Monsoon season. The fort and backwaters take on a dramatic, moody character. Fewer tourists, lower prices, lush greenery.</p>
+      </div>
+      <div class="tip-item">
+        <div class="tip-dot"></div>
+        <p class="tip-text"><strong style="color:var(--white);">Theyyam season</strong> runs Nov – May in nearby Kannur. Combine both destinations for the full north Kerala experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="reveal">
+    <p class="section-label">Plan Your Visit</p>
+    <h2 class="section-title">Ready to Explore<br><em>Kasaragod?</em></h2>
+    <p>Our Kerala travel experts will craft your perfect Kasaragod itinerary — from fort walks at sunrise to backwater nights under the stars.</p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="mailto:info@travelo.com" class="btn-primary" style="background:var(--ink); color:var(--white);">
+        Email Us
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </a>
+      <a href="contact.html" class="btn-ghost" style="color:var(--ink); border-color:rgba(13,13,13,.25);">View All Packages</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Trave<span>lo</span></div>
+      <p class="footer-desc">Curating India's finest travel experiences since 2016. Your journey, our passion.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Kasaragod</h4>
+      <ul>
+        <li><a href="#">Bekal Fort</a></li>
+        <li><a href="#">Kappil Beach</a></li>
+        <li><a href="#">Ananthapura Temple</a></li>
+        <li><a href="#">Valiyaparamba</a></li>
+        <li><a href="#">Ranipuram</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Kerala</h4>
+      <ul>
+        <li><a href="kerala.html">All Districts</a></li>
+        <li><a href="kochi.html">Kochi</a></li>
+        <li><a href="munnar.html">Munnar</a></li>
+        <li><a href="wayanad.html">Wayanad</a></li>
+        <li><a href="kozhikode.html">Kozhikode</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Kasaragod · Travelo. All Rights Reserved.</p>
+    <p style="color:rgba(255,255,255,.3); font-size:.7rem; letter-spacing:.1em;">LAND OF FORTS &amp; SHORES</p>
+  </div>
+</footer>
+
+<script>
+  const menu   = document.getElementById('mobileMenu');
+  const burger = document.getElementById('hamburger');
+  const closeB = document.getElementById('mobileClose');
+  burger.addEventListener('click', () => menu.classList.add('open'));
+  closeB.addEventListener('click', () => menu.classList.remove('open'));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+</script>
+
+<!-- COMMUNITY PICKS — live from Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+  var SUPABASE_URL      = 'https://mqxpcxvyfeefriaehbev.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_rrTAjrtL7hrQj_YupZgbWw_QFed0sgT';
+  var PAGE_STATE        = 'Kerala';
+  var PAGE_DISTRICT     = 'Kasaragod';   /* change per district page */
+  var FOOD_CATS         = ['Food & Dining'];
+
+  var db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  db.from('suggestions')
+    .select('*')
+    .eq('status',   'approved')
+    .eq('state',    PAGE_STATE)
+    .eq('district', PAGE_DISTRICT)
+    .order('submitted_at', { ascending: false })
+    .then(function(res) {
+      if (res.error) { console.error('[Travelo CP]', res.error.message); return; }
+      var data = res.data || [];
+      console.log('[Travelo CP] Fetched', data.length, 'approved rows for', PAGE_DISTRICT);
+      if (!data.length) return;
+
+      /* ── GROUP by place name (case-insensitive trim) ── */
+      var grouped = {};
+      data.forEach(function(r) {
+        var key = (r.place || '').trim().toLowerCase();
+        if (!grouped[key]) {
+          grouped[key] = { rows: [], representative: r };
+        }
+        grouped[key].rows.push(r);
+      });
+
+      /* ── MERGE each group into a single card object ── */
+      var merged = Object.keys(grouped).map(function(key) {
+        var g     = grouped[key];
+        var rep   = g.representative;
+        var rows  = g.rows;
+
+        /* Average rating (ignore nulls) */
+        var rated = rows.filter(function(r) { return r.rating; });
+        var avgRating = rated.length
+          ? Math.round((rated.reduce(function(s,r){ return s + r.rating; }, 0) / rated.length) * 10) / 10
+          : null;
+
+        /* Summarise descriptions — unique sentences joined */
+        var descs = rows
+          .map(function(r) { return (r.description || '').trim(); })
+          .filter(function(d, i, arr) { return d && arr.indexOf(d) === i; });
+        var summary = descs.length === 1
+          ? descs[0]
+          : descs.join(' ').slice(0, 220) + (descs.join(' ').length > 220 ? '…' : '');
+
+        /* Use photo from first row that has one */
+        var photo = null;
+        rows.forEach(function(r) { if (!photo && r.photo_url) photo = r.photo_url; });
+
+        return {
+          place:       rep.place,
+          district:    rep.district || rep.state,
+          state:       rep.state,
+          category:    rep.category,
+          description: summary,
+          photo_url:   photo,
+          rating:      avgRating,
+          count:       rows.length
+        };
+      });
+
+      var spots = merged.filter(function(r) { return FOOD_CATS.indexOf(r.category) === -1; });
+      var food  = merged.filter(function(r) { return FOOD_CATS.indexOf(r.category) !== -1; });
+      if (spots.length) renderSpots(spots);
+      if (food.length)  renderFood(food);
+    });
+
+  /* ── RENDER SPOT CARDS ── */
+  function renderSpots(items) {
+    var c = document.getElementById('cpSpotsContainer');
+    if (!c) return;
+    c.innerHTML = makeHeader('Community Picks \u2014 Destinations')
+      + '<div class="spots-grid" id="cpSpotsGrid" style="margin-top:1.2rem;"></div>';
+    var g = document.getElementById('cpSpotsGrid');
+    items.forEach(function(r, i) {
+      var img = r.photo_url || 'https://images.unsplash.com/photo-1590077428593-a55bb07c4665?w=700&q=80';
+      var card = document.createElement('div');
+      card.className = 'spot-card cp-card';
+      card.style.animationDelay = (i * 0.1) + 's';
+      card.innerHTML = '<div class="cp-badge">'
+        + '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+        + ' Community Pick</div>'
+        + '<div style="overflow:hidden;"><img src="' + e(img) + '" alt="' + e(r.place)
+        + '" style="width:100%;height:240px;object-fit:cover;display:block;transition:transform .6s ease;"></div>'
+        + '<div class="spot-card-body">'
+        + '<p class="spot-card-num">Community \u00b7 ' + e(r.district) + (r.count > 1 ? ' \u00b7 ' + r.count + ' reviews' : '') + '</p>'
+        + '<h3 class="spot-card-title">' + e(r.place) + '</h3>'
+        + '<p class="spot-card-desc">' + e(r.description) + '</p>'
+        + '</div>'
+        + '<div class="spot-card-footer">'
+        + '<span class="spot-card-tag">' + e(r.category) + (r.rating ? ' \u00b7 ' + starText(r.rating) : '') + '</span>'
+        + '<div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>'
+        + '</div>';
+      var im = card.querySelector('img');
+      card.addEventListener('mouseenter', function() { im.style.transform = 'scale(1.07)'; });
+      card.addEventListener('mouseleave', function() { im.style.transform = ''; });
+      g.appendChild(card);
+    });
+    observe(g.querySelectorAll('.spot-card'));
+  }
+
+  /* ── RENDER FOOD CARDS ── */
+  function renderFood(items) {
+    var c = document.getElementById('cpFoodContainer');
+    if (!c) return;
+    c.innerHTML = makeHeader('Community Picks \u2014 Food & Dining', '3rem 0 1.8rem')
+      + '<div class="food-grid" id="cpFoodGrid"></div>';
+    var g = document.getElementById('cpFoodGrid');
+    items.forEach(function(r, i) {
+      var img = r.photo_url || 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80';
+      var card = document.createElement('div');
+      card.className = 'food-card cp-card';
+      card.style.animationDelay = (i * 0.1) + 's';
+      card.innerHTML = '<div class="food-card-img-wrap"><img class="food-card-img" src="' + e(img) + '" alt="' + e(r.place) + '"></div>'
+        + '<div class="food-card-body">'
+        + '<div class="cp-dish-badge"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Community Pick</div>'
+        + '<p class="food-card-region">' + e(r.category) + ' \u00b7 ' + e(r.district) + '</p>'
+        + '<h3 class="food-card-name">' + e(r.place) + '</h3>'
+        + '<p class="food-card-desc">' + e(r.description) + '</p>'
+        + '</div>'
+        + '<div class="food-card-footer">'
+        + '<div style="display:flex;align-items:center;gap:.4rem;">'
+        + starHtml(r.rating)
+        + (r.rating ? '<span style="font-size:.75rem;font-weight:500;color:var(--ink);">' + r.rating.toFixed(1) + '</span>' : '')
+        + (r.count > 1 ? '<span style="font-size:.68rem;color:var(--muted);">\u00b7 ' + r.count + ' reviews</span>' : '')
+        + '</div>'
+        + '<span class="food-tag">Community</span>'
+        + '</div>';
+      g.appendChild(card);
+    });
+    observe(g.querySelectorAll('.food-card'));
+  }
+
+  /* ── HELPERS ── */
+  function makeHeader(label, margin) {
+    return '<div class="community-header" style="margin:' + (margin || '2.5rem 0 1.8rem') + '">'
+      + '<div class="community-line"></div>'
+      + '<span class="community-label">'
+      + '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+      + ' ' + label + '</span>'
+      + '<div class="community-line"></div></div>';
+  }
+  function e(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function starText(r) {
+    if (!r) return '';
+    var s = '';
+    for (var i=0;i<Math.round(r);i++) s += '&#9733;';
+    for (var j=Math.round(r);j<5;j++) s += '&#9734;';
+    return s;
+  }
+  function starHtml(rating) {
+    if (!rating) return '<span style="color:var(--muted);font-size:.75rem">\u2014</span>';
+    var html = '<div style="display:flex;gap:1px;">';
+    for (var i=0;i<5;i++) {
+      html += '<div style="width:10px;height:10px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:' + (i < Math.round(rating) ? 'var(--gold)' : 'rgba(184,146,74,.2)') + ';"></div>';
+    }
+    return html + '</div>';
+  }
+  function observe(cards) {
+    if (!('IntersectionObserver' in window)) { cards.forEach(function(c){c.classList.add('visible');}); return; }
+    var ob = new IntersectionObserver(function(entries) {
+      entries.forEach(function(en) { if(en.isIntersecting){en.target.classList.add('visible');ob.unobserve(en.target);} });
+    }, { threshold: 0.08 });
+    cards.forEach(function(c) { ob.observe(c); });
+  }
+
+})();
+</script>
+</body>
+</html>

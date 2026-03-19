@@ -8,389 +8,214 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --ink:   #0d0d0d;
-      --sand:  #f5f0e8;
-      --gold:  #b8924a;
-      --cream: #faf7f2;
-      --muted: #888070;
-      --white: #ffffff;
-      --nav-h: 72px;
+      --ink:#0d0d0d; --sand:#f5f0e8; --gold:#b8924a;
+      --cream:#faf7f2; --muted:#888070; --white:#ffffff; --nav-h:72px;
     }
-
     html { scroll-behavior: smooth; }
+    body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; }
+    ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
 
-    body {
-      background: var(--cream);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-    }
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; backdrop-filter:blur(18px) saturate(180%); background:rgba(250,247,242,0.82); border-bottom:1px solid rgba(184,146,74,0.15); }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,2.5vw,1.8rem); font-weight:300; letter-spacing:.12em; color:var(--ink); text-decoration:none; }
+    .nav-logo span { color:var(--gold); }
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+    .nav-links a { font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; color:var(--ink); text-decoration:none; font-weight:400; position:relative; padding-bottom:2px; }
+    .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--gold); transition:width .3s ease; }
+    .nav-links a:hover::after { width:100%; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .hamburger span { display:block; width:24px; height:1.5px; background:var(--ink); transition:.3s; }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--sand); }
-    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+    /* HERO */
+    .hero { position:relative; height:100svh; min-height:600px; display:flex; align-items:flex-end; padding:0 5vw 10vh; overflow:hidden; }
+    .hero-bg { position:absolute; inset:0; }
+    .hero-bg img { width:100%; height:100%; object-fit:cover; animation:kenburns 12s ease forwards; }
+    @keyframes kenburns { from { transform:scale(1.07); } to { transform:scale(1.0); } }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(13,13,13,.78) 0%, rgba(13,13,13,.22) 50%, rgba(13,13,13,.1) 100%); }
+    .hero-content { position:relative; z-index:2; max-width:700px; animation:fadeUp .9s .2s both; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+    .hero-breadcrumb { display:flex; align-items:center; gap:.6rem; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:1.2rem; }
+    .hero-breadcrumb a { color:var(--gold); text-decoration:none; }
+    .hero-breadcrumb span { color:rgba(255,255,255,.3); }
+    .hero-title { font-family:'Cormorant Garamond',serif; font-size:clamp(3.2rem,8vw,6rem); line-height:1.0; font-weight:300; color:var(--white); margin-bottom:.5rem; }
+    .hero-title em { font-style:italic; color:#e8d5a8; }
+    .hero-tagline { font-size:.78rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1.4rem; }
+    .hero-sub { font-size:.9rem; color:rgba(255,255,255,.72); max-width:480px; line-height:1.75; margin-bottom:2.4rem; }
+    .btn-primary { display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 2rem; background:var(--gold); color:var(--white); font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; border:none; cursor:pointer; transition:background .25s, transform .2s; }
+    .btn-primary:hover { background:#a07840; transform:translateY(-1px); }
+    .btn-primary svg { transition:transform .25s; }
+    .btn-primary:hover svg { transform:translateX(4px); }
+    .btn-ghost { display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 2rem; background:transparent; color:var(--white); font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; border:1px solid rgba(255,255,255,.45); cursor:pointer; transition:border-color .25s, background .25s; }
+    .btn-ghost:hover { border-color:var(--gold); background:rgba(184,146,74,.12); }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+    .scroll-hint { position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%); z-index:3; display:flex; flex-direction:column; align-items:center; gap:.5rem; color:rgba(255,255,255,.45); font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; }
+    .scroll-line { width:1px; height:48px; background:linear-gradient(to bottom, var(--gold), transparent); animation:scrollPulse 1.8s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100% { opacity:.3; transform:scaleY(.6); } 50% { opacity:1; transform:scaleY(1); } }
+    .back-btn { display:inline-flex; align-items:center; gap:.5rem; color:var(--muted); font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; border:none; background:none; cursor:pointer; transition:color .25s; }
+    .back-btn:hover { color:var(--gold); }
+    .back-btn svg { transition:transform .25s; }
+    .back-btn:hover svg { transform:translateX(-3px); }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: var(--nav-h);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5vw;
-      backdrop-filter: blur(18px) saturate(180%);
-      background: rgba(250,247,242,0.82);
-      border-bottom: 1px solid rgba(184,146,74,0.15);
-    }
-    .nav-logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-      font-weight: 300; letter-spacing: .12em;
-      color: var(--ink); text-decoration: none;
-    }
-    .nav-logo span { color: var(--gold); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--ink); text-decoration: none; font-weight: 400;
-      position: relative; padding-bottom: 2px;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: 0; left: 0;
-      width: 0; height: 1px; background: var(--gold); transition: width .3s ease;
-    }
-    .nav-links a:hover::after { width: 100%; }
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: pointer; background: none; border: none; padding: 4px;
-    }
-    .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--ink); transition: .3s; }
+    /* MARQUEE */
+    .marquee-wrap { background:var(--gold); overflow:hidden; padding:.9rem 0; user-select:none; }
+    .marquee-track { display:flex; gap:3rem; width:max-content; animation:marquee 28s linear infinite; }
+    @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    .marquee-item { display:flex; align-items:center; gap:1rem; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--white); white-space:nowrap; }
+    .marquee-dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.5); }
 
-    /* ── HERO ── */
-    .hero {
-      position: relative; height: 100svh; min-height: 600px;
-      display: flex; align-items: flex-end; padding: 0 5vw 10vh;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-    }
-    .hero-bg img {
-      width: 100%; height: 100%; object-fit: cover;
-      animation: kenburns 12s ease forwards;
-    }
-    @keyframes kenburns {
-      from { transform: scale(1.07); }
-      to   { transform: scale(1.0); }
-    }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(13,13,13,.78) 0%,
-        rgba(13,13,13,.22) 50%,
-        rgba(13,13,13,.1) 100%
-      );
-    }
-    .hero-content {
-      position: relative; z-index: 2; max-width: 700px;
-      animation: fadeUp .9s .2s both;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero-breadcrumb {
-      display: flex; align-items: center; gap: .6rem;
-      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
-      color: rgba(255,255,255,.6); margin-bottom: 1.2rem;
-    }
-    .hero-breadcrumb a { color: var(--gold); text-decoration: none; }
-    .hero-breadcrumb span { color: rgba(255,255,255,.3); }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.2rem, 8vw, 6rem);
-      line-height: 1.0; font-weight: 300; color: var(--white);
-      margin-bottom: .5rem;
-    }
-    .hero-title em { font-style: italic; color: #e8d5a8; }
-    .hero-tagline {
-      font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1.4rem;
-    }
-    .hero-sub {
-      font-size: .9rem; color: rgba(255,255,255,.72);
-      max-width: 480px; line-height: 1.75; margin-bottom: 2.4rem;
-    }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: .6rem;
-      padding: .85rem 2rem;
-      background: var(--gold); color: var(--white);
-      font-family: 'DM Sans', sans-serif; font-size: .8rem;
-      letter-spacing: .14em; text-transform: uppercase;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: background .25s, transform .2s;
-    }
-    .btn-primary:hover { background: #a07840; transform: translateY(-1px); }
-    .btn-primary svg { transition: transform .25s; }
-    .btn-primary:hover svg { transform: translateX(4px); }
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: .6rem;
-      padding: .85rem 2rem;
-      background: transparent; color: var(--white);
-      font-family: 'DM Sans', sans-serif; font-size: .8rem;
-      letter-spacing: .14em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid rgba(255,255,255,.45); cursor: pointer;
-      transition: border-color .25s, background .25s;
-    }
-    .btn-ghost:hover { border-color: var(--gold); background: rgba(184,146,74,.12); }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    /* SECTIONS */
+    section { padding:100px 5vw; }
+    .section-label { font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+    .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4.5vw,3.4rem); font-weight:300; line-height:1.15; color:var(--ink); }
+    .section-title em { font-style:italic; }
+    .section-sub { font-size:.88rem; color:var(--muted); max-width:540px; line-height:1.75; margin-top:.9rem; }
 
-    /* scroll hint */
-    .scroll-hint {
-      position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%);
-      z-index: 3; display: flex; flex-direction: column; align-items: center; gap: .5rem;
-      color: rgba(255,255,255,.45); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
-    }
-    .scroll-line {
-      width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 1.8s ease-in-out infinite;
-    }
-    @keyframes scrollPulse { 0%,100% { opacity:.3; transform: scaleY(.6); } 50% { opacity:1; transform: scaleY(1); } }
+    /* INTRO */
+    .intro-section { background:var(--sand); }
+    .intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:5vw; align-items:center; }
+    .intro-img img { width:100%; height:460px; object-fit:cover; display:block; }
+    .intro-highlights { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-top:2.5rem; }
+    .highlight-chip { display:flex; align-items:center; gap:.7rem; padding:.9rem 1rem; background:rgba(184,146,74,.08); border:1px solid rgba(184,146,74,.18); }
+    .highlight-chip svg { stroke:var(--gold); flex-shrink:0; }
+    .highlight-chip span { font-size:.78rem; font-weight:400; color:var(--ink); }
 
-    /* back button */
-    .back-btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      color: var(--muted); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
-      text-decoration: none; border: none; background: none; cursor: pointer;
-      transition: color .25s;
-    }
-    .back-btn:hover { color: var(--gold); }
-    .back-btn svg { transition: transform .25s; }
-    .back-btn:hover svg { transform: translateX(-3px); }
+    /* SPOTS */
+    .spots-section { background:var(--cream); }
+    .spots-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.8rem; margin-top:3.5rem; }
+    .spot-card { position:relative; overflow:hidden; cursor:pointer; text-decoration:none; display:block; background:var(--white); box-shadow:0 2px 20px rgba(0,0,0,.06); transition:box-shadow .35s, transform .35s; }
+    .spot-card:hover { box-shadow:0 12px 40px rgba(0,0,0,.13); transform:translateY(-4px); }
+    .spot-card img { width:100%; height:240px; object-fit:cover; display:block; transition:transform .6s ease; }
+    .spot-card:hover img { transform:scale(1.07); }
+    .spot-card-body { padding:1.4rem 1.6rem 1.6rem; }
+    .spot-card-num { font-family:'Cormorant Garamond',serif; font-size:.72rem; color:var(--gold); letter-spacing:.15em; margin-bottom:.4rem; }
+    .spot-card-title { font-family:'Cormorant Garamond',serif; font-size:1.55rem; font-weight:300; color:var(--ink); margin-bottom:.6rem; line-height:1.2; }
+    .spot-card-desc { font-size:.78rem; color:var(--muted); line-height:1.7; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .spot-card-footer { padding:.9rem 1.6rem; border-top:1px solid rgba(13,13,13,.06); display:flex; align-items:center; justify-content:space-between; }
+    .spot-card-tag { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); }
+    .spot-card-arrow { width:28px; height:28px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(.6); transition:opacity .3s, transform .3s; }
+    .spot-card:hover .spot-card-arrow { opacity:1; transform:scale(1); }
+    .spot-card-arrow svg { stroke:white; }
 
-    /* ── MARQUEE ── */
-    .marquee-wrap {
-      background: var(--gold); overflow: hidden;
-      padding: .9rem 0; user-select: none;
-    }
-    .marquee-track {
-      display: flex; gap: 3rem; width: max-content;
-      animation: marquee 22s linear infinite;
-    }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .marquee-item {
-      display: flex; align-items: center; gap: 1rem;
-      font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--white); white-space: nowrap;
-    }
-    .marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.5); }
+    /* STATS */
+    .stats-bar { background:var(--ink); color:var(--white); display:flex; justify-content:space-around; flex-wrap:wrap; gap:2rem; padding:60px 5vw; }
+    .stat-item { text-align:center; }
+    .stat-num { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--gold); line-height:1; }
+    .stat-label { font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-top:.5rem; }
 
-    /* ── SECTIONS ── */
-    section { padding: 100px 5vw; }
-    .section-label {
-      font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1rem;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 300;
-      line-height: 1.15; color: var(--ink);
-    }
-    .section-title em { font-style: italic; }
-    .section-sub {
-      font-size: .88rem; color: var(--muted);
-      max-width: 540px; line-height: 1.75; margin-top: .9rem;
-    }
+    /* FLAVOUR TRAIL */
+    .flavour-section { background:var(--sand); padding:100px 5vw; }
+    .flavour-header { display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; margin-bottom:3.5rem; }
+    .flavour-badge { display:inline-flex; align-items:center; gap:.5rem; padding:.38rem 1rem; border:1px solid rgba(184,146,74,.35); font-size:.65rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+    .flavour-filters { display:flex; gap:.6rem; flex-wrap:wrap; align-self:flex-end; }
+    .filter-btn { padding:.45rem 1.1rem; border:1px solid rgba(13,13,13,.15); background:transparent; font-family:'DM Sans',sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); cursor:pointer; transition:all .25s; }
+    .filter-btn:hover, .filter-btn.active { background:var(--gold); border-color:var(--gold); color:var(--white); }
+    .dish-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:1.6rem; }
+    .dish-card { background:var(--white); box-shadow:0 2px 20px rgba(0,0,0,.05); transition:box-shadow .35s, transform .35s; cursor:pointer; }
+    .dish-card:hover { box-shadow:0 12px 40px rgba(0,0,0,.11); transform:translateY(-4px); }
+    .dish-card-img-wrap { overflow:hidden; }
+    .dish-card-img { width:100%; height:200px; object-fit:cover; display:block; transition:transform .6s ease; }
+    .dish-card:hover .dish-card-img { transform:scale(1.06); }
+    .dish-card-body { padding:1.2rem 1.4rem 1rem; }
+    .dish-card-region { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.35rem; }
+    .dish-card-name { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; color:var(--ink); line-height:1.2; margin-bottom:.5rem; }
+    .dish-card-desc { font-size:.76rem; color:var(--muted); line-height:1.7; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .dish-card-footer { padding:.8rem 1.4rem; border-top:1px solid rgba(13,13,13,.06); display:flex; align-items:center; justify-content:space-between; }
+    .dish-stars { display:flex; align-items:center; gap:.4rem; }
+    .star-row { display:flex; gap:1px; }
+    .star { width:10px; height:10px; clip-path:polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); background:var(--gold); }
+    .star.half { background:linear-gradient(90deg, var(--gold) 50%, rgba(184,146,74,.2) 50%); }
+    .star.empty { background:rgba(184,146,74,.2); }
+    .dish-rating-num { font-size:.75rem; font-weight:500; color:var(--ink); }
+    .dish-reviews { font-size:.68rem; color:var(--muted); }
+    .dish-type-tag { font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); }
+    .dish-featured { grid-column:span 2; display:grid; grid-template-columns:1.2fr 1fr; background:var(--white); box-shadow:0 2px 20px rgba(0,0,0,.06); transition:box-shadow .35s, transform .35s; overflow:hidden; }
+    .dish-featured:hover { box-shadow:0 12px 40px rgba(0,0,0,.12); transform:translateY(-4px); }
+    .dish-featured .dish-card-img-wrap { height:100%; min-height:280px; }
+    .dish-featured .dish-card-img { height:100%; }
+    .dish-featured-body { padding:2.2rem 2rem; display:flex; flex-direction:column; justify-content:center; }
+    .dish-featured-label { font-size:.62rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:.6rem; display:flex; align-items:center; gap:.5rem; }
+    .dish-featured-label::before { content:''; display:inline-block; width:20px; height:1px; background:var(--gold); }
+    .dish-featured-name { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:300; line-height:1.1; color:var(--ink); margin-bottom:.8rem; }
+    .dish-featured-name em { font-style:italic; }
+    .dish-featured-desc { font-size:.84rem; color:var(--muted); line-height:1.78; margin-bottom:1.4rem; }
+    .dish-featured-meta { display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; }
+    .dish-meta-chip { display:flex; align-items:center; gap:.4rem; font-size:.72rem; color:var(--muted); }
+    .dish-meta-chip svg { stroke:var(--gold); }
+    .restaurant-strip { margin-top:4rem; }
+    .restaurant-strip-header { display:flex; align-items:center; gap:1.5rem; margin-bottom:1.6rem; }
+    .restaurant-strip-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; color:var(--ink); }
+    .strip-line { flex:1; height:1px; background:rgba(184,146,74,.2); }
+    .restaurant-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:1.2rem; }
+    .resto-card { background:var(--white); padding:1.2rem 1.4rem; box-shadow:0 2px 14px rgba(0,0,0,.05); transition:box-shadow .3s, transform .3s; border-left:2px solid transparent; cursor:pointer; }
+    .resto-card:hover { box-shadow:0 8px 30px rgba(0,0,0,.1); transform:translateY(-3px); border-left-color:var(--gold); }
+    .resto-name { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:400; color:var(--ink); margin-bottom:.3rem; }
+    .resto-location { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); margin-bottom:.6rem; }
+    .resto-specialty { font-size:.75rem; color:var(--muted); line-height:1.6; margin-bottom:.8rem; }
+    .resto-rating { display:flex; align-items:center; gap:.5rem; font-size:.72rem; color:var(--muted); }
+    .resto-dot { width:5px; height:5px; border-radius:50%; background:var(--gold); display:inline-block; }
 
-    /* ── INTRO ── */
-    .intro-section { background: var(--sand); }
-    .intro-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 5vw; align-items: center;
-    }
-    .intro-img img {
-      width: 100%; height: 460px; object-fit: cover; display: block;
-    }
-    .intro-highlights {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
-      margin-top: 2.5rem;
-    }
-    .highlight-chip {
-      display: flex; align-items: center; gap: .7rem;
-      padding: .9rem 1rem;
-      background: rgba(184,146,74,.08); border: 1px solid rgba(184,146,74,.18);
-    }
-    .highlight-chip svg { stroke: var(--gold); flex-shrink: 0; }
-    .highlight-chip span { font-size: .78rem; font-weight: 400; color: var(--ink); }
+    /* CONTACT */
+    .contact-section { background:var(--sand); text-align:center; }
+    .contact-section .section-title { margin-bottom:.8rem; }
+    .contact-section p { font-size:.9rem; color:var(--muted); max-width:480px; margin:0 auto 2rem; line-height:1.7; }
 
-    /* ── SPOTS GRID ── */
-    .spots-section { background: var(--cream); }
-    .spots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.8rem; margin-top: 3.5rem;
-    }
-    .spot-card {
-      position: relative; overflow: hidden; cursor: pointer;
-      text-decoration: none; display: block;
-      background: var(--white);
-      box-shadow: 0 2px 20px rgba(0,0,0,.06);
-      transition: box-shadow .35s, transform .35s;
-    }
-    .spot-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.13); transform: translateY(-4px); }
-    .spot-card img {
-      width: 100%; height: 240px; object-fit: cover; display: block;
-      transition: transform .6s ease;
-    }
-    .spot-card:hover img { transform: scale(1.07); }
-    .spot-card-body { padding: 1.4rem 1.6rem 1.6rem; }
-    .spot-card-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: .72rem; color: var(--gold); letter-spacing: .15em;
-      margin-bottom: .4rem;
-    }
-    .spot-card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.55rem; font-weight: 300; color: var(--ink);
-      margin-bottom: .6rem; line-height: 1.2;
-    }
-    .spot-card-desc {
-      font-size: .78rem; color: var(--muted); line-height: 1.7;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .spot-card-footer {
-      padding: .9rem 1.6rem; border-top: 1px solid rgba(13,13,13,.06);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .spot-card-tag {
-      font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--gold);
-    }
-    .spot-card-arrow {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: var(--gold); display: flex; align-items: center; justify-content: center;
-      opacity: 0; transform: scale(.6); transition: opacity .3s, transform .3s;
-    }
-    .spot-card:hover .spot-card-arrow { opacity: 1; transform: scale(1); }
-    .spot-card-arrow svg { stroke: white; }
+    /* FOOTER */
+    footer { background:#080808; color:rgba(255,255,255,.55); padding:60px 5vw 30px; }
+    .footer-top { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,.08); }
+    .footer-brand-name { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--white); letter-spacing:.1em; margin-bottom:.8rem; }
+    .footer-brand-name span { color:var(--gold); }
+    .footer-desc { font-size:.8rem; line-height:1.8; max-width:280px; }
+    .footer-col h4 { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--white); margin-bottom:1.2rem; }
+    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+    .footer-col ul li a { font-size:.8rem; color:rgba(255,255,255,.5); text-decoration:none; transition:color .25s; }
+    .footer-col ul li a:hover { color:var(--gold); }
+    .footer-bottom { padding-top:1.8rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; font-size:.75rem; }
 
-    /* ── STATS ── */
-    .stats-bar {
-      background: var(--ink); color: var(--white);
-      display: flex; justify-content: space-around; flex-wrap: wrap;
-      gap: 2rem; padding: 60px 5vw;
-    }
-    .stat-item { text-align: center; }
-    .stat-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; color: var(--gold); line-height: 1;
-    }
-    .stat-label {
-      font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(255,255,255,.5); margin-top: .5rem;
-    }
+    /* MOBILE MENU */
+    .mobile-menu { position:fixed; inset:0; z-index:200; background:var(--ink); color:var(--white); display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2.4rem; opacity:0; pointer-events:none; transition:opacity .35s; }
+    .mobile-menu.open { opacity:1; pointer-events:all; }
+    .mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3.2rem); font-weight:300; color:var(--white); text-decoration:none; transition:color .2s; }
+    .mobile-menu a:hover { color:var(--gold); }
+    .mobile-close { position:absolute; top:1.8rem; right:5vw; background:none; border:none; cursor:pointer; font-size:1.8rem; color:var(--white); }
 
-    /* ── CONTACT ── */
-    .contact-section { background: var(--sand); text-align: center; }
-    .contact-section .section-title { margin-bottom: .8rem; }
-    .contact-section p { font-size: .9rem; color: var(--muted); max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+    /* REVEAL */
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
 
-    /* ── FOOTER ── */
-    footer {
-      background: #080808; color: rgba(255,255,255,.55);
-      padding: 60px 5vw 30px;
-    }
-    .footer-top {
-      display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
-      gap: 3rem; padding-bottom: 3rem;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .footer-brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem; font-weight: 300; color: var(--white);
-      letter-spacing: .1em; margin-bottom: .8rem;
-    }
-    .footer-brand-name span { color: var(--gold); }
-    .footer-desc { font-size: .8rem; line-height: 1.8; max-width: 280px; }
-    .footer-col h4 {
-      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--white); margin-bottom: 1.2rem;
-    }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
-    .footer-col ul li a {
-      font-size: .8rem; color: rgba(255,255,255,.5);
-      text-decoration: none; transition: color .25s;
-    }
-    .footer-col ul li a:hover { color: var(--gold); }
-    .footer-bottom {
-      padding-top: 1.8rem;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1rem; font-size: .75rem;
-    }
+    
 
-    /* ── MOBILE MENU ── */
-    .mobile-menu {
-      position: fixed; inset: 0; z-index: 200;
-      background: var(--ink); color: var(--white);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      gap: 2.4rem; opacity: 0; pointer-events: none; transition: opacity .35s;
+    /* RESPONSIVE */
+    @media (max-width:900px) {
+      .nav-links { display:none; } .hamburger { display:flex; }
+      .intro-grid { grid-template-columns:1fr; }
+      .intro-img img { height:320px; }
+      .footer-top { grid-template-columns:1fr 1fr; }
+      .dish-featured { grid-column:span 1; grid-template-columns:1fr; }
+      .dish-featured .dish-card-img-wrap { min-height:220px; }
+      .flavour-header { flex-direction:column; align-items:flex-start; }
     }
-    .mobile-menu.open { opacity: 1; pointer-events: all; }
-    .mobile-menu a {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 8vw, 3.2rem); font-weight: 300;
-      color: var(--white); text-decoration: none; transition: color .2s;
+    @media (max-width:600px) {
+      section, .flavour-section { padding:70px 5vw; }
+      .spots-grid { grid-template-columns:1fr 1fr; gap:1rem; }
+      .spot-card img { height:180px; }
+      .intro-highlights { grid-template-columns:1fr; }
+      .footer-top { grid-template-columns:1fr; gap:2rem; }
+      .dish-grid { grid-template-columns:1fr; }
+      .community-section-wrap { padding:0 5vw 40px; }
     }
-    .mobile-menu a:hover { color: var(--gold); }
-    .mobile-close {
-      position: absolute; top: 1.8rem; right: 5vw;
-      background: none; border: none; cursor: pointer;
-      font-size: 1.8rem; color: var(--white);
-    }
-
-    /* ── REVEAL ── */
-    .reveal {
-      opacity: 0; transform: translateY(30px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .intro-grid { grid-template-columns: 1fr; }
-      .intro-img img { height: 320px; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 600px) {
-      section { padding: 70px 5vw; }
-      .spots-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-      .spot-card img { height: 180px; }
-      .intro-highlights { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
-    }
-    @media (max-width: 420px) {
-      .spots-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width:420px) { .spots-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
 
-<!-- ── MOBILE MENU ── -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
-  <a href="index.html">Home</a>
-  <a href="#">Destinations</a>
-  <a href="#">Experiences</a>
-  <a href="hotel.html">Hotels</a>
+  <a href="index.html">Home</a><a href="#">Destinations</a>
+  <a href="#">Experiences</a><a href="hotel.html">Hotels</a>
   <a href="contact.html">Contact</a>
 </div>
 
-<!-- ── NAV ── -->
 <nav>
   <a href="index.html" class="nav-logo">Trave<span>lo</span></a>
   <ul class="nav-links">
@@ -400,282 +225,208 @@
     <li><a href="hotel.html">Hotels</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1800&q=80" alt="Kerala Backwaters">
-  </div>
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1800&q=80" alt="Kerala Backwaters"></div>
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
-    <div class="hero-breadcrumb">
-      <a href="index.html">Home</a>
-      <span>›</span>
-      <span>Kerala</span>
-    </div>
+    <div class="hero-breadcrumb"><a href="index.html">Home</a><span>›</span><span>Kerala</span></div>
     <p class="hero-tagline">South India · Coastal Paradise</p>
     <h1 class="hero-title">Kerala<br><em>God's Own Country</em></h1>
     <p class="hero-sub">A tropical paradise on the southwestern coast of India — lush backwaters, spice-scented hills, golden beaches and an ancient culture that enchants every traveller.</p>
     <div class="hero-btns">
-      <a href="#spots" class="btn-primary">
-        Explore Destinations
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="contact.html" class="btn-ghost">Plan My Trip</a>
+      <a href="#spots" class="btn-primary">Explore Destinations <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#flavour-trail" class="btn-ghost">Flavour Trail</a>
     </div>
   </div>
-
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
 
-<!-- ── MARQUEE ── -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <div class="marquee-item"><span>Alleppey</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Munnar</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kochi</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kovalam</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Varkala</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Alappuzha</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Ernakulam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Idukki</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kannur</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kasaragod</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kollam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kottayam</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><span>Kozhikode</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Trivandrum</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Alleppey</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Munnar</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kochi</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Kovalam</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Varkala</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Malappuram</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Palakkad</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Pathanamthitta</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Thiruvananthapuram</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Thrissur</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Wayanad</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Appam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Fish Curry</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Sadya</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Puttu</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Malabar Biryani</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Payasam</span><span class="marquee-dot"></span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee-item"><span>Alappuzha</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Ernakulam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Idukki</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kannur</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kasaragod</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kollam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Kottayam</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><span>Kozhikode</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><span>Trivandrum</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Malappuram</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Palakkad</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Pathanamthitta</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Thiruvananthapuram</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Thrissur</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Wayanad</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Appam</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Fish Curry</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Sadya</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Puttu</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Malabar Biryani</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Payasam</span><span class="marquee-dot"></span></div>
   </div>
 </div>
 
-<!-- ── INTRO ── -->
 <section class="intro-section" id="intro">
   <button class="back-btn" onclick="window.history.back()" style="margin-bottom:2.5rem;">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-    Back
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Back
   </button>
-
   <div class="intro-grid">
-    <div class="intro-img reveal">
-      <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=900&q=80" alt="Kerala canals">
-    </div>
+    <div class="intro-img reveal"><img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=900&q=80" alt="Kerala canals"></div>
     <div class="reveal">
       <p class="section-label">Welcome to Kerala</p>
       <h2 class="section-title">Where Nature<br><em>Meets Soul</em></h2>
       <p class="section-sub">Kerala is a tropical paradise on India's southwestern coast. Famous for its serene backwaters, lush hill stations, pristine beaches, Ayurvedic traditions and vibrant festivals — it offers an experience that lingers long after you leave.</p>
-
       <div class="intro-highlights">
-        <div class="highlight-chip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span>Houseboat Stays</span>
-        </div>
-        <div class="highlight-chip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span>Ayurveda & Wellness</span>
-        </div>
-        <div class="highlight-chip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          <span>Backwater Cruises</span>
-        </div>
-        <div class="highlight-chip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          <span>Spice Plantations</span>
-        </div>
-        <div class="highlight-chip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          <span>Wildlife & Nature</span>
-        </div>
-        <div class="highlight-chip">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-          <span>Kerala Cuisine</span>
-        </div>
+        <div class="highlight-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Houseboat Stays</span></div>
+        <div class="highlight-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Ayurveda &amp; Wellness</span></div>
+        <div class="highlight-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>Backwater Cruises</span></div>
+        <div class="highlight-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Spice Plantations</span></div>
+        <div class="highlight-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Wildlife &amp; Nature</span></div>
+        <div class="highlight-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg><span>Kerala Cuisine</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── STATS ── -->
 <div class="stats-bar">
-  <div class="stat-item reveal"><div class="stat-num">10</div><div class="stat-label">Top Destinations</div></div>
+  <div class="stat-item reveal"><div class="stat-num">14</div><div class="stat-label">Districts</div></div>
   <div class="stat-item reveal"><div class="stat-num">580km</div><div class="stat-label">Coastline</div></div>
   <div class="stat-item reveal"><div class="stat-num">44</div><div class="stat-label">Rivers</div></div>
   <div class="stat-item reveal"><div class="stat-num">3</div><div class="stat-label">UNESCO Sites</div></div>
 </div>
 
-<!-- ── TOURIST SPOTS ── -->
+<!-- SPOTS -->
 <section class="spots-section" id="spots">
   <div class="section-header reveal">
     <p class="section-label">Top Destinations</p>
     <h2 class="section-title">Places to <em>Discover</em><br>in Kerala</h2>
     <p class="section-sub">From misty tea gardens to sun-drenched beaches — each destination is a story waiting to be lived.</p>
   </div>
+  <div class="spots-grid" id="spotsGrid">
+    <a href="allepy.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=700&q=80" alt="Alleppey"><div class="spot-card-body"><p class="spot-card-num">01 — Alappuzha</p><h3 class="spot-card-title">Alleppey</h3><p class="spot-card-desc">Famous for its tranquil backwaters and iconic houseboats, Alleppey is a must-visit for nature lovers seeking peaceful waterway journeys.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Houseboat · Nature</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="kochi.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=700&q=80" alt="Kochi"><div class="spot-card-body"><p class="spot-card-num">02 — Ernakulam</p><h3 class="spot-card-title">Kochi</h3><p class="spot-card-desc">A vibrant port city rich in culture, with historic architecture, Chinese fishing nets and a buzzing contemporary art scene.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Culture · History</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="munnar.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=700&q=80" alt="Munnar"><div class="spot-card-body"><p class="spot-card-num">03 — Idukki</p><h3 class="spot-card-title">Munnar</h3><p class="spot-card-desc">A scenic hill station draped in rolling tea plantations, misty mountains and cool air. Perfect for trekking and wildlife spotting.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Hills · Tea Gardens</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="kovalam.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="Kovalam"><div class="spot-card-body"><p class="spot-card-num">04 — Thiruvananthapuram</p><h3 class="spot-card-title">Kovalam</h3><p class="spot-card-desc">One of Kerala's most famous crescent beaches, beloved for sunbathing, Ayurvedic therapies and Arabian Sea sunsets.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Beach · Wellness</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="varkala.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?w=700&q=80" alt="Varkala"><div class="spot-card-body"><p class="spot-card-num">05 — Thiruvananthapuram</p><h3 class="spot-card-title">Varkala</h3><p class="spot-card-desc">Known for dramatic red laterite cliffs, the sacred Papanasam Beach and a vibrant cliff-top café and yoga culture.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Beach · Spiritual</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="kozhikode.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1585135497273-1a86b09fe70e?w=700&q=80" alt="Kozhikode"><div class="spot-card-body"><p class="spot-card-num">06 — Kozhikode</p><h3 class="spot-card-title">Kozhikode</h3><p class="spot-card-desc">Historic Calicut — famous for its beaches, Mananchira Square and legendary Malabar cuisine including the iconic Kozhikode biryani.</p></div><div class="spot-card-footer"><span class="spot-card-tag">History · Food</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="trivandrum.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=700&q=80" alt="Trivandrum"><div class="spot-card-body"><p class="spot-card-num">07 — Thiruvananthapuram</p><h3 class="spot-card-title">Trivandrum</h3><p class="spot-card-desc">Kerala's capital blends ancient temples, colonial museums and Kovalam Beach. The magnificent Padmanabhaswamy Temple is unmissable.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Temples · Capital</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="wayanad.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1619468129361-605ebea04b44?w=700&q=80" alt="Wayanad"><div class="spot-card-body"><p class="spot-card-num">08 — Wayanad</p><h3 class="spot-card-title">Wayanad</h3><p class="spot-card-desc">Mist-shrouded forests, ancient tribal caves, thundering waterfalls and sprawling coffee estates — Kerala's most untamed highland escape.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Forest · Wildlife</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="thekkady.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1621996659490-3275b4d0d951?w=700&q=80" alt="Thekkady"><div class="spot-card-body"><p class="spot-card-num">09 — Idukki</p><h3 class="spot-card-title">Thekkady</h3><p class="spot-card-desc">Home to Periyar Wildlife Sanctuary — Kerala's spice capital where cardamom, pepper and cinnamon perfume every trail.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Wildlife · Spice</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="thrissur.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1630935216665-e79a7ab2ea07?w=700&q=80" alt="Thrissur"><div class="spot-card-body"><p class="spot-card-num">10 — Thrissur</p><h3 class="spot-card-title">Thrissur</h3><p class="spot-card-desc">Kerala's cultural capital, home to the magnificent Thrissur Pooram — one of Asia's grandest temple festivals with caparisoned elephants.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Festivals · Culture</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="kannur.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=80" alt="Kannur"><div class="spot-card-body"><p class="spot-card-num">11 — Kannur</p><h3 class="spot-card-title">Kannur</h3><p class="spot-card-desc">The land of looms, lores and legends. Famous for Theyyam rituals, pristine beaches and the historic St. Angelo Fort on the coast.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Culture · Beach</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="kollam.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=700&q=80" alt="Kollam"><div class="spot-card-body"><p class="spot-card-num">12 — Kollam</p><h3 class="spot-card-title">Kollam</h3><p class="spot-card-desc">Gateway to Ashtamudi Lake — Kerala's second-largest backwater lake, famed for houseboat cruises, cashew processing and sunset vistas.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Backwaters · Lake</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="palakkad.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?w=700&q=80" alt="Palakkad"><div class="spot-card-body"><p class="spot-card-num">13 — Palakkad</p><h3 class="spot-card-title">Palakkad</h3><p class="spot-card-desc">The granary of Kerala — home to the ancient Palakkad Fort, the Silent Valley National Park and lush paddy fields stretching to the horizon.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Nature · History</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
+    <a href="malappuram.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=700&q=80" alt="Malappuram"><div class="spot-card-body"><p class="spot-card-num">14 — Malappuram</p><h3 class="spot-card-title">Malappuram</h3><p class="spot-card-desc">A land steeped in Malabar heritage, known for the Kottakkunnu hill park, Nilambur teak forests and the sacred Thirunavaya temple on the Bharathapuzha.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Heritage · Forest</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
 
-  <div class="spots-grid">
+    <a href="kasaragod.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1590077428593-a55bb07c4665?w=700&q=80" alt="Kasaragod"><div class="spot-card-body"><p class="spot-card-num">15 — Kasaragod</p><h3 class="spot-card-title">Kasaragod</h3><p class="spot-card-desc">Kerala's northernmost district — home to the majestic Bekal Fort, pristine Kappil beach, the ancient Ananthapura Lake Temple and lush cashew groves stretching to the horizon.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Fort · Beach</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
 
-    <a href="allepy.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?w=700&q=80" alt="Alleppey">
-      <div class="spot-card-body">
-        <p class="spot-card-num">01 — Backwaters</p>
-        <h3 class="spot-card-title">Alleppey</h3>
-        <p class="spot-card-desc">Famous for its tranquil backwaters and iconic houseboats, Alleppey is a must-visit for nature lovers and those seeking peaceful waterway journeys through lush greenery.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">Houseboat · Nature</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
+    <a href="kottayam.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=700&q=80" alt="Kottayam"><div class="spot-card-body"><p class="spot-card-num">16 — Kottayam</p><h3 class="spot-card-title">Kottayam</h3><p class="spot-card-desc">The land of letters, latex and lakes — sitting between Vembanad Lake and the Western Ghats, blessed with rubber plantations, historic churches and Kumarakom bird sanctuary.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Backwaters · Nature</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
 
-    <a href="kochi.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=700&q=80" alt="Kochi">
-      <div class="spot-card-body">
-        <p class="spot-card-num">02 — Heritage City</p>
-        <h3 class="spot-card-title">Kochi</h3>
-        <p class="spot-card-desc">A vibrant port city rich in culture, with historic architecture, Chinese fishing nets, Fort Kochi's colonial charm and a buzzing contemporary art scene.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">Culture · History</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
-
-    <a href="munnar.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=700&q=80" alt="Munnar">
-      <div class="spot-card-body">
-        <p class="spot-card-num">03 — Hill Station</p>
-        <h3 class="spot-card-title">Munnar</h3>
-        <p class="spot-card-desc">A scenic hill station draped in rolling tea plantations, misty mountains and cool air. Perfect for trekking, wildlife spotting and escaping the heat.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">Hills · Tea Gardens</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
-
-    <a href="kovalam.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80" alt="Kovalam">
-      <div class="spot-card-body">
-        <p class="spot-card-num">04 — Beach</p>
-        <h3 class="spot-card-title">Kovalam</h3>
-        <p class="spot-card-desc">One of Kerala's most famous crescent beaches, beloved for sunbathing, Ayurvedic therapies, water sports and spectacular Arabian Sea sunsets.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">Beach · Wellness</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
-
-    <a href="varkala.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1596895111956-bf1cf0599ce5?w=700&q=80" alt="Varkala">
-      <div class="spot-card-body">
-        <p class="spot-card-num">05 — Cliffs & Coast</p>
-        <h3 class="spot-card-title">Varkala</h3>
-        <p class="spot-card-desc">Known for dramatic red laterite cliffs plunging into the sea, the sacred Papanasam Beach and a vibrant cliff-top café and yoga culture.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">Beach · Spiritual</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
-
-    <a href="kozhikode.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1585135497273-1a86b09fe70e?w=700&q=80" alt="Kozhikode">
-      <div class="spot-card-body">
-        <p class="spot-card-num">06 — Malabar City</p>
-        <h3 class="spot-card-title">Kozhikode</h3>
-        <p class="spot-card-desc">Historic Calicut — a city famous for its beaches, Mananchira Square and the legendary Malabar cuisine, including the iconic Kozhikode biryani.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">History · Food</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
-
-    <a href="trivandrum.html" target="_blank" class="spot-card reveal">
-      <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=700&q=80" alt="Trivandrum">
-      <div class="spot-card-body">
-        <p class="spot-card-num">07 — Capital City</p>
-        <h3 class="spot-card-title">Trivandrum</h3>
-        <p class="spot-card-desc">Kerala's capital blends ancient temples, colonial museums and Kovalam Beach. The magnificent Padmanabhaswamy Temple alone makes it a pilgrim of culture.</p>
-      </div>
-      <div class="spot-card-footer">
-        <span class="spot-card-tag">Temples · Capital</span>
-        <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </div>
-    </a>
-    <a href="wayanad.html" target="_blank" class="spot-card reveal">
-  <img src="https://images.unsplash.com/photo-1619468129361-605ebea04b44?w=700&q=80" alt="Wayanad">
-  <div class="spot-card-body">
-    <p class="spot-card-num">10 — Highland District</p>
-    <h3 class="spot-card-title">Wayanad</h3>
-    <p class="spot-card-desc">Mist-shrouded forests, ancient tribal caves, thundering waterfalls and sprawling coffee estates — Kerala's most untamed highland escape.</p>
+    <a href="pathanamthitta.html" target="_blank" class="spot-card reveal"><img src="https://images.unsplash.com/photo-1610642372651-fe6e7bc3b5aa?w=700&q=80" alt="Pathanamthitta"><div class="spot-card-body"><p class="spot-card-num">17 — Pathanamthitta</p><h3 class="spot-card-title">Pathanamthitta</h3><p class="spot-card-desc">Known as the Pilgrim's Capital of Kerala — home to the Sabarimala temple, Konni elephant training centre and the scenic Pamba River winding through forested hills.</p></div><div class="spot-card-footer"><span class="spot-card-tag">Pilgrimage · Nature</span><div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div></a>
   </div>
-  <div class="spot-card-footer">
-    <span class="spot-card-tag">Forest · Wildlife</span>
-    <div class="spot-card-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+
+</section>
+
+<!-- FLAVOUR TRAIL -->
+<section class="flavour-section" id="flavour-trail">
+  <div class="flavour-header reveal">
+    <div>
+      <div class="flavour-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        Flavour Trail · Kerala
+      </div>
+      <h2 class="section-title">Taste the <em>Soul</em><br>of Kerala</h2>
+      <p class="section-sub">Every destination has a flavour. Follow Kerala's culinary trail — from coconut-laced coast curries to fragrant Malabar biryanis and centuries-old sadya feasts.</p>
+    </div>
+    <div class="flavour-filters">
+      <button class="filter-btn active" onclick="filterDishes('all',this)">All</button>
+      <button class="filter-btn" onclick="filterDishes('seafood',this)">Seafood</button>
+      <button class="filter-btn" onclick="filterDishes('breakfast',this)">Breakfast</button>
+      <button class="filter-btn" onclick="filterDishes('rice',this)">Rice &amp; Curry</button>
+      <button class="filter-btn" onclick="filterDishes('sweet',this)">Sweets</button>
+    </div>
   </div>
-</a>
+
+  <div class="dish-grid" id="dishGrid">
+    <div class="dish-card dish-featured reveal" data-category="rice">
+      <div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=900&q=80" alt="Kerala Sadya"></div>
+      <div class="dish-featured-body">
+        <div class="dish-featured-label">Signature Feast</div>
+        <h3 class="dish-featured-name">Kerala <em>Sadya</em></h3>
+        <p class="dish-featured-desc">A grand vegetarian feast served on a banana leaf — 28 dishes including avial, olan, thoran, papad, pickles and payasam. Eaten with the right hand, seated on the floor. Onam's crowning glory.</p>
+        <div class="dish-featured-meta">
+          <div class="dish-meta-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> All Kerala</div>
+          <div class="dish-meta-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> 4.9 · 6,200 reviews</div>
+          <div class="dish-meta-chip"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Festive · Traditional</div>
+        </div>
+      </div>
+    </div>
+    <div class="dish-card reveal" data-category="breakfast"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1630409351217-bc4fa6422075?w=600&q=80" alt="Appam"></div><div class="dish-card-body"><p class="dish-card-region">Breakfast · All Kerala</p><h3 class="dish-card-name">Appam</h3><p class="dish-card-desc">Lacy, fermented rice hoppers with a soft spongy centre — best paired with coconut milk stew or egg curry.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><span class="dish-rating-num">4.8</span><span class="dish-reviews">· 3.4k</span></div><span class="dish-type-tag">Vegetarian</span></div></div>
+    <div class="dish-card reveal" data-category="rice"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80" alt="Malabar Biryani"></div><div class="dish-card-body"><p class="dish-card-region">Rice &amp; Curry · Kozhikode</p><h3 class="dish-card-name">Malabar Biryani</h3><p class="dish-card-desc">Fragrant Khyma rice layered with spiced chicken or mutton and fried onions — lighter and more aromatic than its Hyderabadi cousin.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><span class="dish-rating-num">4.9</span><span class="dish-reviews">· 5.1k</span></div><span class="dish-type-tag">Non-Veg</span></div></div>
+    <div class="dish-card reveal" data-category="seafood"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Kerala Fish Curry"></div><div class="dish-card-body"><p class="dish-card-region">Seafood · Coastal Kerala</p><h3 class="dish-card-name">Kerala Fish Curry</h3><p class="dish-card-desc">A fiery, tangy coconut milk curry with kudampuli — cooked in a traditional clay pot for that unmistakable smoky depth.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><span class="dish-rating-num">4.8</span><span class="dish-reviews">· 4.2k</span></div><span class="dish-type-tag">Seafood</span></div></div>
+    <div class="dish-card reveal" data-category="breakfast"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=600&q=80" alt="Puttu and Kadala"></div><div class="dish-card-body"><p class="dish-card-region">Breakfast · All Kerala</p><h3 class="dish-card-name">Puttu &amp; Kadala</h3><p class="dish-card-desc">Steamed rice flour cylinders with shredded coconut, served alongside a spiced black chickpea curry. The quintessential Kerala morning.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star half"></div></div><span class="dish-rating-num">4.7</span><span class="dish-reviews">· 2.8k</span></div><span class="dish-type-tag">Vegetarian</span></div></div>
+    <div class="dish-card reveal" data-category="seafood"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Karimeen Pollichathu"></div><div class="dish-card-body"><p class="dish-card-region">Seafood · Alappuzha</p><h3 class="dish-card-name">Karimeen Pollichathu</h3><p class="dish-card-desc">Pearl spot fish marinated in spices, wrapped in banana leaf and roasted until smoky. An Alleppey backwater delicacy like no other.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><span class="dish-rating-num">4.9</span><span class="dish-reviews">· 3.7k</span></div><span class="dish-type-tag">Seafood</span></div></div>
+    <div class="dish-card reveal" data-category="sweet"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" alt="Payasam"></div><div class="dish-card-body"><p class="dish-card-region">Sweets · All Kerala</p><h3 class="dish-card-name">Palada Payasam</h3><p class="dish-card-desc">A silky, slow-cooked rice ada pudding in sweetened milk with cardamom and cashews — Kerala's most beloved dessert.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><span class="dish-rating-num">4.8</span><span class="dish-reviews">· 2.1k</span></div><span class="dish-type-tag">Dessert</span></div></div>
+    <div class="dish-card reveal" data-category="seafood"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1625938144755-652e08e359b7?w=600&q=80" alt="Prawn Moilee"></div><div class="dish-card-body"><p class="dish-card-region">Seafood · South Kerala</p><h3 class="dish-card-name">Prawn Moilee</h3><p class="dish-card-desc">Delicate prawns simmered in a mild, golden coconut milk curry with turmeric and green chillies. Elegant and fragrant, best with appam.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star half"></div></div><span class="dish-rating-num">4.7</span><span class="dish-reviews">· 1.9k</span></div><span class="dish-type-tag">Seafood</span></div></div>
+    <div class="dish-card reveal" data-category="sweet"><div class="dish-card-img-wrap"><img class="dish-card-img" src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&q=80" alt="Kozhikode Halwa"></div><div class="dish-card-body"><p class="dish-card-region">Sweets · Kozhikode</p><h3 class="dish-card-name">Kozhikode Halwa</h3><p class="dish-card-desc">A dense, jewel-toned confection made from wheat or rice starch, ghee and coconut oil — a Kozhikode speciality that melts on the tongue.</p></div><div class="dish-card-footer"><div class="dish-stars"><div class="star-row"><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div></div><span class="dish-rating-num">4.8</span><span class="dish-reviews">· 1.6k</span></div><span class="dish-type-tag">Dessert</span></div></div>
+  </div>
+
+
+  <div class="restaurant-strip reveal">
+    <div class="restaurant-strip-header"><h3 class="restaurant-strip-title">Where to <em>Eat</em></h3><div class="strip-line"></div><p style="font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); white-space:nowrap;">Top Picks</p></div>
+    <div class="restaurant-grid">
+      <div class="resto-card reveal"><div class="resto-name">Paragon Restaurant</div><div class="resto-location">Kozhikode</div><div class="resto-specialty">Legendary Malabar biryani and fresh seafood. A Kozhikode institution since 1939.</div><div class="resto-rating"><span class="resto-dot"></span> 4.6 · Casual Dining</div></div>
+      <div class="resto-card reveal"><div class="resto-name">Dal Roti</div><div class="resto-location">Kochi, Fort Area</div><div class="resto-specialty">Coastal Kerala seafood platters with a modern twist. Rooftop views over the harbour.</div><div class="resto-rating"><span class="resto-dot"></span> 4.7 · Fine Dining</div></div>
+      <div class="resto-card reveal"><div class="resto-name">Chakara Restaurant</div><div class="resto-location">Kovalam</div><div class="resto-specialty">Right on the beach. Famous for karimeen pollichathu and lobster grilled in banana leaf.</div><div class="resto-rating"><span class="resto-dot"></span> 4.8 · Beachfront</div></div>
+      <div class="resto-card reveal"><div class="resto-name">Ariya Nivaas</div><div class="resto-location">Trivandrum</div><div class="resto-specialty">Authentic vegetarian sadya served daily. Banana leaf meals that feel like home.</div><div class="resto-rating"><span class="resto-dot"></span> 4.5 · Pure Veg</div></div>
+      <div class="resto-card reveal"><div class="resto-name">The Rice Boat</div><div class="resto-location">Kochi, Taj Malabar</div><div class="resto-specialty">Award-winning Kerala cuisine inside a traditional kettuvallam. Kerala's most romantic dining.</div><div class="resto-rating"><span class="resto-dot"></span> 4.9 · Luxury</div></div>
+      <div class="resto-card reveal"><div class="resto-name">Hotel Saas</div><div class="resto-location">Alleppey</div><div class="resto-specialty">Simple, no-frills backwater eatery. Best fish curry and appam you'll find in Alleppey.</div><div class="resto-rating"><span class="resto-dot"></span> 4.4 · Local Favourite</div></div>
+    </div>
   </div>
 </section>
 
-<!-- ── CONTACT ── -->
 <section class="contact-section" id="contact">
   <div class="reveal">
     <p class="section-label">Plan Your Visit</p>
     <h2 class="section-title">Ready to Explore<br><em>Kerala?</em></h2>
     <p>Planning a trip to God's Own Country? Our Kerala travel experts are here to craft your perfect itinerary — from backwater cruises to mountain treks.</p>
     <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-      <a href="mailto:info@keralatravel.com" class="btn-primary">
-        Email Us
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </a>
+      <a href="/cdn-cgi/l/email-protection#0d64636b624d66687f6c616c797f6c7b6861236e6260" class="btn-primary">Email Us <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
       <a href="contact.html" class="btn-ghost" style="color:var(--ink); border-color:rgba(13,13,13,.25);">View All Packages</a>
     </div>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-top">
-    <div>
-      <div class="footer-brand-name">Trave<span>lo</span></div>
-      <p class="footer-desc">Curating India's finest travel experiences since 2016. Your journey, our passion.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Kerala</h4>
-      <ul>
-        <li><a href="#">Alleppey</a></li>
-        <li><a href="#">Munnar</a></li>
-        <li><a href="#">Kochi</a></li>
-        <li><a href="#">Kovalam</a></li>
-        <li><a href="#">Varkala</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Press</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms</a></li>
-        <li><a href="#">FAQ</a></li>
-      </ul>
-    </div>
+    <div><div class="footer-brand-name">Trave<span>lo</span></div><p class="footer-desc">Curating India's finest travel experiences since 2016. Your journey, our passion.</p></div>
+    <div class="footer-col"><h4>Kerala</h4><ul><li><a href="#">Alleppey</a></li><li><a href="#">Munnar</a></li><li><a href="#">Kochi</a></li><li><a href="#">Kovalam</a></li><li><a href="#">Varkala</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Blog</a></li><li><a href="#">Press</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="contact.html">Contact Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li><li><a href="#">FAQ</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <p>© 2025 Kerala Tourism · Travelo. All Rights Reserved.</p>
@@ -683,21 +434,29 @@
   </div>
 </footer>
 
-<script>
-  /* Mobile menu */
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const menu   = document.getElementById('mobileMenu');
   const burger = document.getElementById('hamburger');
-  const close  = document.getElementById('mobileClose');
+  const closeB = document.getElementById('mobileClose');
   burger.addEventListener('click', () => menu.classList.add('open'));
-  close.addEventListener('click',  () => menu.classList.remove('open'));
+  closeB.addEventListener('click', () => menu.classList.remove('open'));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
 
-  /* Scroll reveal */
-  const reveals = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  reveals.forEach(r => io.observe(r));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold:0.08 });
+  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+
+  function filterDishes(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#dishGrid .dish-card').forEach(card => {
+      const show = category === 'all' || card.dataset.category === category;
+      card.style.display = show ? '' : 'none';
+      if(show){ card.classList.remove('visible'); setTimeout(() => card.classList.add('visible'), 60); }
+    });
+  }
 </script>
+
 </body>
 </html>

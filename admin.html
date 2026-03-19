@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin · Travelo Suggestions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --ink:#0d0d0d; --sand:#f5f0e8; --gold:#b8924a; --cream:#faf7f2;
+      --muted:#888070; --white:#ffffff; --nav-h:64px;
+      --green:#27ae60; --red:#e74c3c; --blue:#2980b9;
+    }
+    html { scroll-behavior:smooth; }
+    body { background:#f0ece3; color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; min-height:100vh; }
+    ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); }
+
+    /* LOGIN */
+    .login-screen {
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:var(--ink);
+      background-image: radial-gradient(ellipse at 20% 50%, rgba(184,146,74,.12) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(184,146,74,.08) 0%, transparent 50%);
+    }
+    .login-box { background:rgba(255,255,255,.04); border:1px solid rgba(184,146,74,.2); padding:3rem 3.5rem; width:100%; max-width:400px; backdrop-filter:blur(10px); }
+    .login-logo { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:var(--white); letter-spacing:.1em; text-align:center; margin-bottom:2rem; }
+    .login-logo span { color:var(--gold); }
+    .login-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:.4rem; display:block; }
+    .login-input { width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:var(--white); padding:.85rem 1rem; font-family:'DM Sans',sans-serif; font-size:.85rem; outline:none; margin-bottom:1rem; transition:border-color .2s; }
+    .login-input:focus { border-color:var(--gold); }
+    .login-input::placeholder { color:rgba(255,255,255,.3); }
+    .login-btn { width:100%; padding:1rem; background:var(--gold); color:var(--white); border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.2em; text-transform:uppercase; transition:opacity .2s; }
+    .login-btn:hover { opacity:.85; }
+    .login-err { font-size:.75rem; color:#e74c3c; margin-top:.5rem; display:none; }
+    .login-err.show { display:block; }
+
+    /* APP */
+    .app { display:none; flex-direction:column; min-height:100vh; }
+    .app.active { display:flex; }
+
+    /* TOPBAR */
+    .topbar { position:sticky; top:0; z-index:50; height:var(--nav-h); background:var(--ink); border-bottom:1px solid rgba(184,146,74,.15); display:flex; align-items:center; justify-content:space-between; padding:0 2rem; }
+    .topbar-logo { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:300; color:var(--white); letter-spacing:.1em; }
+    .topbar-logo span { color:var(--gold); }
+    .topbar-right { display:flex; align-items:center; gap:1rem; }
+    .topbar-badge { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); border:1px solid rgba(184,146,74,.3); padding:.3rem .8rem; }
+    .logout-btn { background:none; border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.6); padding:.35rem .9rem; font-size:.75rem; cursor:pointer; letter-spacing:.1em; text-transform:uppercase; transition:all .2s; font-family:'DM Sans',sans-serif; }
+    .logout-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .refresh-btn { background:none; border:1px solid rgba(184,146,74,.3); color:var(--gold); padding:.35rem .9rem; font-size:.75rem; cursor:pointer; letter-spacing:.1em; text-transform:uppercase; transition:all .2s; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:.4rem; }
+    .refresh-btn:hover { background:rgba(184,146,74,.12); }
+    .refresh-btn:disabled { opacity:.5; cursor:not-allowed; }
+    @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    .spinning { animation:spin .7s linear infinite; display:inline-block; }
+
+    /* MAIN */
+    .main { flex:1; padding:2rem; max-width:1500px; margin:0 auto; width:100%; }
+
+    /* STATS */
+    .stats-row { display:grid; grid-template-columns:repeat(4, 1fr); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:var(--white); padding:1.4rem 1.6rem; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+    .stat-card-num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:var(--gold); line-height:1; }
+    .stat-card-label { font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+
+    /* TOOLBAR */
+    .toolbar { background:var(--white); padding:1.2rem 1.6rem; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; box-shadow:0 2px 12px rgba(0,0,0,.05); }
+    .filter-tabs { display:flex; gap:.3rem; flex-wrap:wrap; }
+    .filter-tab { padding:.45rem 1.1rem; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; border:1px solid transparent; background:transparent; font-family:'DM Sans',sans-serif; color:var(--muted); transition:all .2s; }
+    .filter-tab.active { border-color:var(--gold); color:var(--gold); background:rgba(184,146,74,.06); }
+    .filter-tab:hover:not(.active) { color:var(--ink); border-color:rgba(13,13,13,.15); }
+    .toolbar-right { display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; }
+
+    /* Search + state filter row */
+    .search-input { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.5rem 1rem; font-size:.8rem; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; width:200px; transition:border-color .2s; }
+    .search-input:focus { border-color:var(--gold); }
+
+    .state-filter { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.5rem 1rem; font-size:.78rem; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; cursor:pointer; transition:border-color .2s; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23888070' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .7rem center; padding-right:2rem; }
+    .state-filter:focus { border-color:var(--gold); }
+
+    .export-btn { padding:.5rem 1.2rem; background:var(--ink); color:var(--white); border:none; cursor:pointer; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:.5rem; transition:background .2s; white-space:nowrap; }
+    .export-btn:hover { background:var(--gold); }
+
+    /* TABLE */
+    .table-wrap { background:var(--white); box-shadow:0 2px 16px rgba(0,0,0,.06); overflow:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.8rem; }
+    thead th { padding:.9rem 1rem; text-align:left; font-size:.63rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); background:var(--sand); border-bottom:1px solid rgba(13,13,13,.07); white-space:nowrap; }
+    tbody tr { border-bottom:1px solid rgba(13,13,13,.05); transition:background .15s; }
+    tbody tr:hover { background:rgba(184,146,74,.04); }
+    tbody td { padding:.9rem 1rem; vertical-align:top; }
+
+    .cell-name  { font-weight:500; font-size:.82rem; color:var(--ink); }
+    .cell-sub   { font-size:.72rem; color:var(--muted); margin-top:.15rem; }
+    .cell-place { font-weight:500; font-size:.82rem; color:var(--ink); }
+    .cell-desc  { max-width:200px; font-size:.77rem; color:var(--muted); line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cell-date  { font-size:.74rem; color:var(--muted); white-space:nowrap; }
+
+    /* Location pill */
+    .loc-state    { font-size:.75rem; font-weight:500; color:var(--ink); }
+    .loc-district { font-size:.7rem; color:var(--gold); margin-top:.15rem; display:flex; align-items:center; gap:.3rem; }
+    .loc-district::before { content:''; display:inline-block; width:3px; height:3px; border-radius:50%; background:var(--gold); }
+
+    .badge { display:inline-flex; align-items:center; padding:.25rem .7rem; font-size:.63rem; letter-spacing:.12em; text-transform:uppercase; font-weight:500; }
+    .badge-pending  { background:rgba(184,146,74,.12); color:#8a6a28; }
+    .badge-approved { background:rgba(39,174,96,.1);   color:#1e7a44; }
+    .badge-rejected { background:rgba(231,76,60,.1);   color:#a93226; }
+
+    .stars       { color:var(--gold); font-size:.85rem; letter-spacing:1px; }
+    .stars-empty { color:#ddd; }
+
+    .thumb    { width:48px; height:36px; object-fit:cover; display:block; }
+    .no-photo { width:48px; height:36px; background:var(--sand); display:flex; align-items:center; justify-content:center; }
+    .no-photo i { color:var(--muted); font-size:.7rem; }
+
+    .action-btns { display:flex; gap:.4rem; flex-wrap:wrap; }
+    .act-btn      { padding:.28rem .7rem; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; border:1px solid transparent; font-family:'DM Sans',sans-serif; transition:all .2s; white-space:nowrap; }
+    .act-approve  { border-color:rgba(39,174,96,.4);  color:var(--green); background:rgba(39,174,96,.06); }
+    .act-approve:hover { background:var(--green); color:var(--white); }
+    .act-reject   { border-color:rgba(231,76,60,.4);  color:var(--red);   background:rgba(231,76,60,.06); }
+    .act-reject:hover  { background:var(--red);   color:var(--white); }
+    .act-delete   { border-color:rgba(13,13,13,.2);   color:var(--muted); }
+    .act-delete:hover  { background:var(--ink); color:var(--white); border-color:var(--ink); }
+    .act-view     { border-color:rgba(41,128,185,.4); color:var(--blue);  background:rgba(41,128,185,.06); }
+    .act-view:hover    { background:var(--blue); color:var(--white); }
+
+    /* MODAL */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:500; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity .25s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:var(--white); width:100%; max-width:660px; max-height:90vh; overflow-y:auto; padding:2.5rem; position:relative; }
+    .modal-close { position:absolute; top:1.2rem; right:1.2rem; background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--muted); }
+    .modal-close:hover { color:var(--ink); }
+    .modal-place { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; margin-bottom:.3rem; }
+    .modal-meta  { font-size:.78rem; color:var(--muted); margin-bottom:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
+    .modal-img   { width:100%; height:220px; object-fit:cover; margin-bottom:1.5rem; display:block; }
+
+    /* Location block in modal */
+    .modal-location-block { display:flex; align-items:stretch; gap:0; margin-bottom:1.5rem; border:1px solid rgba(184,146,74,.18); overflow:hidden; }
+    .modal-loc-item { flex:1; padding:1rem 1.2rem; background:rgba(184,146,74,.04); }
+    .modal-loc-item + .modal-loc-item { border-left:1px solid rgba(184,146,74,.18); }
+    .modal-loc-label { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.3rem; }
+    .modal-loc-val   { font-size:.88rem; font-weight:500; color:var(--ink); }
+
+    .modal-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+    .modal-section { margin-bottom:1.2rem; }
+    .modal-section-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+    .modal-section-val { font-size:.85rem; color:var(--ink); line-height:1.7; }
+
+    /* EMPTY / LOADING */
+    .table-loading, .table-empty { text-align:center; padding:4rem 2rem; color:var(--muted); font-size:.85rem; }
+    .table-loading i { font-size:1.5rem; color:var(--gold); margin-bottom:.8rem; display:block; }
+
+    /* TOAST */
+    .toast { position:fixed; bottom:2rem; right:2rem; z-index:999; padding:1rem 1.5rem; font-size:.8rem; display:flex; align-items:center; gap:.7rem; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); pointer-events:all; }
+    .toast-success { background:var(--green); color:var(--white); }
+    .toast-error   { background:var(--red);   color:var(--white); }
+
+    /* Result count */
+    .result-count { font-size:.72rem; color:var(--muted); letter-spacing:.05em; padding:.3rem 0; }
+
+    @media(max-width:900px){ .stats-row{grid-template-columns:1fr 1fr;} }
+    @media(max-width:600px){ .stats-row{grid-template-columns:1fr 1fr;} .toolbar{flex-direction:column; align-items:flex-start;} .modal-grid{grid-template-columns:1fr 1fr;} .modal-location-block{flex-direction:column;} .modal-loc-item+.modal-loc-item{border-left:none; border-top:1px solid rgba(184,146,74,.18);} }
+  </style>
+</head>
+<body>
+
+<script>
+  const SUPABASE_URL      = 'https://mqxpcxvyfeefriaehbev.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_rrTAjrtL7hrQj_YupZgbWw_QFed0sgT';
+  const ADMIN_PASSWORD    = 'travelo2025';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Trave<span>lo</span></div>
+    <p style="font-size:.75rem; color:rgba(255,255,255,.4); text-align:center; margin-bottom:2rem; letter-spacing:.1em;">ADMIN PANEL</p>
+    <label class="login-label">Password</label>
+    <input type="password" class="login-input" id="loginPwd" placeholder="Enter admin password" onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Enter Dashboard</button>
+    <p class="login-err" id="loginErr">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+
+  <div class="topbar">
+    <div class="topbar-logo">Trave<span>lo</span></div>
+    <div class="topbar-right">
+      <span class="topbar-badge">Admin</span>
+      <span id="lastRefreshed" style="font-size:.68rem; color:rgba(255,255,255,.35); letter-spacing:.06em;"></span>
+      <button class="refresh-btn" id="refreshBtn" onclick="doRefresh()" title="Refresh data">
+        <i class="fas fa-sync-alt" id="refreshIcon"></i> Refresh
+      </button>
+      <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-card-num" id="stTotal">—</div><div class="stat-card-label">Total Suggestions</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="stPending">—</div><div class="stat-card-label">Pending Review</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="stApproved">—</div><div class="stat-card-label">Approved</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="stRejected">—</div><div class="stat-card-label">Rejected</div></div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-tab" onclick="setFilter('pending',this)">Pending</button>
+        <button class="filter-tab" onclick="setFilter('approved',this)">Approved</button>
+        <button class="filter-tab" onclick="setFilter('rejected',this)">Rejected</button>
+      </div>
+      <div class="toolbar-right">
+        <input type="text" class="search-input" id="searchInput"
+               placeholder="Search place, name, district…"
+               oninput="renderTable()">
+        <select class="state-filter" id="stateFilter" onchange="renderTable()">
+          <option value="">All States</option>
+        </select>
+        <button class="export-btn" onclick="exportCSV()">
+          <i class="fas fa-download"></i> Export CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Result count -->
+    <div class="result-count" id="resultCount" style="margin-bottom:.8rem; padding-left:.2rem;"></div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div class="table-loading" id="tableLoading">
+        <i class="fas fa-circle-notch fa-spin"></i>Loading suggestions…
+      </div>
+      <div class="table-empty" id="tableEmpty" style="display:none">No suggestions found.</div>
+      <table id="dataTable" style="display:none">
+        <thead>
+          <tr>
+            <th>Photo</th>
+            <th>Submitted By</th>
+            <th>Place</th>
+            <th>State</th>
+            <th>District</th>
+            <th>Category</th>
+            <th>Rating</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let allData   = [];
+  let curFilter = 'all';
+
+  /* ── SESSION (persists for 24 hours via localStorage) ── */
+  const SESSION_KEY      = 'travelo_admin_session';
+  const SESSION_DURATION = 24 * 60 * 60 * 1000; /* 24 hours in ms */
+
+  function saveSession() {
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+  }
+  function clearSession() {
+    localStorage.removeItem(SESSION_KEY);
+  }
+  function isSessionValid() {
+    try {
+      const raw = localStorage.getItem(SESSION_KEY);
+      if (!raw) return false;
+      const { ts } = JSON.parse(raw);
+      return (Date.now() - ts) < SESSION_DURATION;
+    } catch { return false; }
+  }
+
+  /* ── LOGIN ── */
+  function doLogin() {
+    if (document.getElementById('loginPwd').value === ADMIN_PASSWORD) {
+      saveSession();
+      showApp();
+    } else {
+      document.getElementById('loginErr').classList.add('show');
+    }
+  }
+  function doLogout() {
+    clearSession();
+    document.getElementById('loginScreen').style.display = '';
+    document.getElementById('app').classList.remove('active');
+    document.getElementById('loginPwd').value = '';
+    document.getElementById('loginErr').classList.remove('show');
+  }
+  function showApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.add('active');
+    loadData();
+    startSessionTimer();
+  }
+
+  /* ── AUTO-CHECK SESSION ON PAGE LOAD ── */
+  window.addEventListener('DOMContentLoaded', () => {
+    if (isSessionValid()) {
+      showApp();
+    }
+  });
+
+  /* ── SESSION EXPIRY TIMER (checks every minute) ── */
+  function startSessionTimer() {
+    setInterval(() => {
+      if (!isSessionValid()) {
+        showToast('Session expired. Please log in again.', 'error');
+        setTimeout(doLogout, 2000);
+      }
+    }, 60 * 1000);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin();
+  });
+
+  /* ── LOAD DATA ── */
+  async function loadData() {
+    document.getElementById('tableLoading').style.display = 'block';
+    document.getElementById('dataTable').style.display    = 'none';
+    document.getElementById('tableEmpty').style.display   = 'none';
+    try {
+      const { data, error } = await db
+        .from('suggestions')
+        .select('*')
+        .order('submitted_at', { ascending: false });
+
+      if (error) { showToast('Error: ' + error.message, 'error'); return; }
+
+      allData = data || [];
+      populateStateFilter();
+      updateStats();
+      renderTable();
+      setLastRefreshed();
+    } catch(e) {
+      document.getElementById('tableLoading').innerHTML =
+        '<i class="fas fa-exclamation-triangle"></i> Failed to load: ' + e.message;
+    }
+  }
+
+  /* ── REFRESH ── */
+  async function doRefresh() {
+    const btn  = document.getElementById('refreshBtn');
+    const icon = document.getElementById('refreshIcon');
+    btn.disabled = true;
+    icon.classList.add('spinning');
+    await loadData();
+    icon.classList.remove('spinning');
+    btn.disabled = false;
+    showToast('Data refreshed', 'success');
+  }
+
+  /* ── LAST REFRESHED LABEL ── */
+  function setLastRefreshed() {
+    const el  = document.getElementById('lastRefreshed');
+    const now = new Date();
+    const hh  = String(now.getHours()).padStart(2,'0');
+    const mm  = String(now.getMinutes()).padStart(2,'0');
+    el.textContent = 'Updated ' + hh + ':' + mm;
+  }
+
+  /* ── POPULATE STATE FILTER DROPDOWN ── */
+  function populateStateFilter() {
+    const sel    = document.getElementById('stateFilter');
+    const states = [...new Set(allData.map(r => r.state).filter(Boolean))].sort();
+    sel.innerHTML = '<option value="">All States</option>';
+    states.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s; opt.textContent = s;
+      sel.appendChild(opt);
+    });
+  }
+
+  /* ── STATS ── */
+  function updateStats() {
+    document.getElementById('stTotal').textContent    = allData.length;
+    document.getElementById('stPending').textContent  = allData.filter(r => r.status === 'pending').length;
+    document.getElementById('stApproved').textContent = allData.filter(r => r.status === 'approved').length;
+    document.getElementById('stRejected').textContent = allData.filter(r => r.status === 'rejected').length;
+  }
+
+  /* ── FILTER + SEARCH + STATE ── */
+  function setFilter(f, btn) {
+    curFilter = f;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable();
+  }
+
+  function getFilteredRows() {
+    const q     = document.getElementById('searchInput').value.toLowerCase().trim();
+    const state = document.getElementById('stateFilter').value;
+
+    return allData.filter(r => {
+      /* status filter */
+      if (curFilter !== 'all' && r.status !== curFilter) return false;
+
+      /* state dropdown filter */
+      if (state && r.state !== state) return false;
+
+      /* full-text search: place, name, email, category, state, district */
+      if (q) {
+        const haystack = [
+          r.place, r.name, r.email, r.category,
+          r.state, r.district, r.description
+        ].map(v => (v||'').toLowerCase()).join(' ');
+        if (!haystack.includes(q)) return false;
+      }
+
+      return true;
+    });
+  }
+
+  /* ── RENDER TABLE ── */
+  function renderTable() {
+    const rows    = getFilteredRows();
+    const loading = document.getElementById('tableLoading');
+    const empty   = document.getElementById('tableEmpty');
+    const table   = document.getElementById('dataTable');
+    const tbody   = document.getElementById('tableBody');
+    const counter = document.getElementById('resultCount');
+
+    loading.style.display = 'none';
+    counter.textContent   = `Showing ${rows.length} of ${allData.length} suggestion${allData.length !== 1 ? 's' : ''}`;
+
+    if (rows.length === 0) {
+      empty.style.display = 'block';
+      table.style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    table.style.display = 'table';
+
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td>
+          ${r.photo_url
+            ? `<img src="${esc(r.photo_url)}" class="thumb" alt="photo">`
+            : `<div class="no-photo"><i class="fas fa-image"></i></div>`}
+        </td>
+        <td>
+          <div class="cell-name">${esc(r.name)}</div>
+          <div class="cell-sub">${esc(r.email)}</div>
+        </td>
+        <td>
+          <div class="cell-place">${esc(r.place)}</div>
+        </td>
+        <td>
+          <div class="loc-state">${esc(r.state || '—')}</div>
+        </td>
+        <td>
+          <div class="loc-district">${esc(r.district || '—')}</div>
+        </td>
+        <td><div class="cell-sub">${esc(r.category || '—')}</div></td>
+        <td>${starHtml(r.rating)}</td>
+        <td>
+          <div class="cell-desc" title="${esc(r.description || '')}">
+            ${esc(r.description || '—')}
+          </div>
+        </td>
+        <td><span class="badge badge-${r.status}">${r.status}</span></td>
+        <td><div class="cell-date">${formatDate(r.submitted_at)}</div></td>
+        <td>
+          <div class="action-btns">
+            <button class="act-btn act-view" onclick="viewRow('${r.id}')">View</button>
+            ${r.status !== 'approved'
+              ? `<button class="act-btn act-approve" onclick="updateStatus('${r.id}','approved')">Approve</button>`
+              : ''}
+            ${r.status !== 'rejected'
+              ? `<button class="act-btn act-reject" onclick="updateStatus('${r.id}','rejected')">Reject</button>`
+              : ''}
+            <button class="act-btn act-delete" onclick="deleteRow('${r.id}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  /* ── ACTIONS ── */
+  async function updateStatus(id, status) {
+    const { error } = await db.from('suggestions').update({ status }).eq('id', id);
+    if (error) { showToast(error.message, 'error'); return; }
+    const row = allData.find(r => r.id === id);
+    if (row) row.status = status;
+    updateStats();
+    renderTable();
+    showToast(`Marked as ${status}`, 'success');
+  }
+
+  async function deleteRow(id) {
+    if (!confirm('Delete this suggestion permanently?')) return;
+    const { error } = await db.from('suggestions').delete().eq('id', id);
+    if (error) { showToast(error.message, 'error'); return; }
+    allData = allData.filter(r => r.id !== id);
+    populateStateFilter();
+    updateStats();
+    renderTable();
+    showToast('Suggestion deleted', 'success');
+  }
+
+  /* ── MODAL VIEW ── */
+  function viewRow(id) {
+    const r = allData.find(x => x.id === id);
+    if (!r) return;
+
+    document.getElementById('modalContent').innerHTML = `
+      <p style="font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.4rem;">
+        ${esc(r.category || '')}
+      </p>
+      <div class="modal-place">${esc(r.place)}</div>
+      <div class="modal-meta">
+        ${formatDate(r.submitted_at)}
+        &nbsp;·&nbsp;
+        <span class="badge badge-${r.status}">${r.status}</span>
+      </div>
+
+      ${r.photo_url ? `<img src="${esc(r.photo_url)}" class="modal-img" alt="photo">` : ''}
+
+      <!-- State & District block -->
+      <div class="modal-location-block">
+        <div class="modal-loc-item">
+          <div class="modal-loc-label"><i class="fas fa-map" style="margin-right:.3rem;"></i>State</div>
+          <div class="modal-loc-val">${esc(r.state || '—')}</div>
+        </div>
+        <div class="modal-loc-item">
+          <div class="modal-loc-label"><i class="fas fa-map-marker-alt" style="margin-right:.3rem;"></i>District</div>
+          <div class="modal-loc-val">${esc(r.district || '—')}</div>
+        </div>
+        <div class="modal-loc-item">
+          <div class="modal-loc-label"><i class="fas fa-tag" style="margin-right:.3rem;"></i>Category</div>
+          <div class="modal-loc-val">${esc(r.category || '—')}</div>
+        </div>
+      </div>
+
+      <!-- Submitter info -->
+      <div class="modal-grid">
+        <div>
+          <div class="modal-section-label">Submitted by</div>
+          <div class="modal-section-val">
+            ${esc(r.name)}<br>
+            <span style="color:var(--muted); font-size:.78rem;">${esc(r.email)}</span>
+          </div>
+        </div>
+        <div>
+          <div class="modal-section-label">Rating</div>
+          <div class="modal-section-val">${starHtml(r.rating)}</div>
+        </div>
+        <div>
+          <div class="modal-section-label">Submitted On</div>
+          <div class="modal-section-val">${formatDate(r.submitted_at)}</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="modal-section">
+        <div class="modal-section-label">Description</div>
+        <div class="modal-section-val">${esc(r.description || '—')}</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-btns" style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid rgba(13,13,13,.07);">
+        ${r.status !== 'approved'
+          ? `<button class="act-btn act-approve" onclick="updateStatus('${r.id}','approved');closeModal()">
+               <i class="fas fa-check"></i> Approve
+             </button>`
+          : ''}
+        ${r.status !== 'rejected'
+          ? `<button class="act-btn act-reject" onclick="updateStatus('${r.id}','rejected');closeModal()">
+               <i class="fas fa-times"></i> Reject
+             </button>`
+          : ''}
+        <button class="act-btn act-delete" onclick="deleteRow('${r.id}');closeModal()">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    `;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  /* ── EXPORT CSV ── */
+  function exportCSV() {
+    const rows = getFilteredRows();   /* exports only what's currently filtered */
+
+    const headers = [
+      'ID', 'Name', 'Email', 'Place',
+      'State', 'District',             /* ← new columns */
+      'Category', 'Rating', 'Description',
+      'Status', 'Submitted At', 'Photo URL'
+    ];
+
+    const csvRows = [headers.join(',')];
+
+    rows.forEach(r => {
+      csvRows.push([
+        r.id,
+        csvCell(r.name),
+        csvCell(r.email),
+        csvCell(r.place),
+        csvCell(r.state),              /* ← state */
+        csvCell(r.district),           /* ← district */
+        csvCell(r.category),
+        r.rating || '',
+        csvCell(r.description),
+        r.status,
+        r.submitted_at,
+        csvCell(r.photo_url)
+      ].join(','));
+    });
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `travelo-suggestions-${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${rows.length} rows`, 'success');
+  }
+
+  /* ── HELPERS ── */
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function csvCell(v) { return `"${String(v||'').replace(/"/g,'""')}"`; }
+  function formatDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+  }
+  function starHtml(rating) {
+    if (!rating) return '<span style="color:var(--muted);font-size:.75rem">—</span>';
+    return Array.from({length:5}, (_,i) =>
+      `<span class="${i < rating ? 'stars' : 'stars-empty'}">★</span>`
+    ).join('');
+  }
+  function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    t.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation-circle'}"></i> ${msg}`;
+    t.className = `toast toast-${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
