@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin · Travelo Suggestions</title>
+  <title>Admin · Travelo Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --ink:#0d0d0d; --sand:#f5f0e8; --gold:#b8924a; --cream:#faf7f2;
-      --muted:#888070; --white:#ffffff; --nav-h:64px;
+      --ink:#0d0d0d; --sand:#f5f0e8; --gold:#b8924a; --gold2:#e8d5a8;
+      --cream:#faf7f2; --muted:#888070; --white:#ffffff; --nav-h:64px;
       --green:#27ae60; --red:#e74c3c; --blue:#2980b9;
     }
     html { scroll-behavior:smooth; }
@@ -19,12 +20,7 @@
     ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); }
 
     /* LOGIN */
-    .login-screen {
-      min-height:100vh; display:flex; align-items:center; justify-content:center;
-      background:var(--ink);
-      background-image: radial-gradient(ellipse at 20% 50%, rgba(184,146,74,.12) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 20%, rgba(184,146,74,.08) 0%, transparent 50%);
-    }
+    .login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--ink); background-image:radial-gradient(ellipse at 20% 50%, rgba(184,146,74,.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(184,146,74,.08) 0%, transparent 50%); }
     .login-box { background:rgba(255,255,255,.04); border:1px solid rgba(184,146,74,.2); padding:3rem 3.5rem; width:100%; max-width:400px; backdrop-filter:blur(10px); }
     .login-logo { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:var(--white); letter-spacing:.1em; text-align:center; margin-bottom:2rem; }
     .login-logo span { color:var(--gold); }
@@ -49,17 +45,24 @@
     .topbar-badge { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); border:1px solid rgba(184,146,74,.3); padding:.3rem .8rem; }
     .logout-btn { background:none; border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.6); padding:.35rem .9rem; font-size:.75rem; cursor:pointer; letter-spacing:.1em; text-transform:uppercase; transition:all .2s; font-family:'DM Sans',sans-serif; }
     .logout-btn:hover { border-color:var(--gold); color:var(--gold); }
-    .refresh-btn { background:none; border:1px solid rgba(184,146,74,.3); color:var(--gold); padding:.35rem .9rem; font-size:.75rem; cursor:pointer; letter-spacing:.1em; text-transform:uppercase; transition:all .2s; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:.4rem; }
-    .refresh-btn:hover { background:rgba(184,146,74,.12); }
-    .refresh-btn:disabled { opacity:.5; cursor:not-allowed; }
-    @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-    .spinning { animation:spin .7s linear infinite; display:inline-block; }
+
+    /* PAGE TABS */
+    .page-tabs { background:var(--white); border-bottom:1px solid rgba(13,13,13,.07); padding:0 2rem; display:flex; gap:0; }
+    .page-tab { padding:1rem 1.6rem; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; border:none; background:none; font-family:'DM Sans',sans-serif; color:var(--muted); border-bottom:2px solid transparent; transition:all .25s; display:flex; align-items:center; gap:.5rem; }
+    .page-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+    .page-tab:hover:not(.active) { color:var(--ink); }
+    .page-tab .tab-count { background:rgba(184,146,74,.15); color:var(--gold); font-size:.6rem; padding:.15rem .5rem; border-radius:20px; }
+    .page-tab.active .tab-count { background:var(--gold); color:var(--white); }
+
+    /* PAGE PANELS */
+    .page-panel { display:none; }
+    .page-panel.active { display:block; }
 
     /* MAIN */
-    .main { flex:1; padding:2rem; max-width:1500px; margin:0 auto; width:100%; }
+    .main { flex:1; padding:2rem; max-width:1400px; margin:0 auto; width:100%; }
 
     /* STATS */
-    .stats-row { display:grid; grid-template-columns:repeat(4, 1fr); gap:1rem; margin-bottom:2rem; }
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
     .stat-card { background:var(--white); padding:1.4rem 1.6rem; box-shadow:0 2px 12px rgba(0,0,0,.06); }
     .stat-card-num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:var(--gold); line-height:1; }
     .stat-card-label { font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
@@ -71,96 +74,97 @@
     .filter-tab.active { border-color:var(--gold); color:var(--gold); background:rgba(184,146,74,.06); }
     .filter-tab:hover:not(.active) { color:var(--ink); border-color:rgba(13,13,13,.15); }
     .toolbar-right { display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; }
-
-    /* Search + state filter row */
-    .search-input { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.5rem 1rem; font-size:.8rem; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; width:200px; transition:border-color .2s; }
+    .search-input { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.5rem 1rem; font-size:.8rem; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; width:220px; transition:border-color .2s; }
     .search-input:focus { border-color:var(--gold); }
-
-    .state-filter { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.5rem 1rem; font-size:.78rem; font-family:'DM Sans',sans-serif; color:var(--ink); outline:none; cursor:pointer; transition:border-color .2s; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23888070' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .7rem center; padding-right:2rem; }
-    .state-filter:focus { border-color:var(--gold); }
-
-    .export-btn { padding:.5rem 1.2rem; background:var(--ink); color:var(--white); border:none; cursor:pointer; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:.5rem; transition:background .2s; white-space:nowrap; }
+    .export-btn { padding:.5rem 1.2rem; background:var(--ink); color:var(--white); border:none; cursor:pointer; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:.5rem; transition:background .2s; }
     .export-btn:hover { background:var(--gold); }
 
     /* TABLE */
     .table-wrap { background:var(--white); box-shadow:0 2px 16px rgba(0,0,0,.06); overflow:auto; }
     table { width:100%; border-collapse:collapse; font-size:.8rem; }
-    thead th { padding:.9rem 1rem; text-align:left; font-size:.63rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); background:var(--sand); border-bottom:1px solid rgba(13,13,13,.07); white-space:nowrap; }
+    thead th { padding:.9rem 1.2rem; text-align:left; font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); background:var(--sand); border-bottom:1px solid rgba(13,13,13,.07); white-space:nowrap; }
     tbody tr { border-bottom:1px solid rgba(13,13,13,.05); transition:background .15s; }
     tbody tr:hover { background:rgba(184,146,74,.04); }
-    tbody td { padding:.9rem 1rem; vertical-align:top; }
+    tbody td { padding:1rem 1.2rem; vertical-align:top; }
 
-    .cell-name  { font-weight:500; font-size:.82rem; color:var(--ink); }
-    .cell-sub   { font-size:.72rem; color:var(--muted); margin-top:.15rem; }
-    .cell-place { font-weight:500; font-size:.82rem; color:var(--ink); }
-    .cell-desc  { max-width:200px; font-size:.77rem; color:var(--muted); line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .cell-date  { font-size:.74rem; color:var(--muted); white-space:nowrap; }
+    .cell-name { font-weight:500; font-size:.82rem; color:var(--ink); }
+    .cell-sub  { font-size:.73rem; color:var(--muted); margin-top:.15rem; }
+    .cell-place { font-weight:500; font-size:.82rem; }
+    .cell-location { font-size:.73rem; color:var(--muted); margin-top:.15rem; }
+    .cell-desc { max-width:200px; font-size:.78rem; color:var(--muted); line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cell-date { font-size:.75rem; color:var(--muted); white-space:nowrap; }
+    .cell-price { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ink); white-space:nowrap; }
+    .cell-price-sub { font-size:.68rem; color:var(--muted); }
+    .cell-ref { font-size:.72rem; font-weight:500; color:var(--gold); letter-spacing:.08em; }
 
-    /* Location pill */
-    .loc-state    { font-size:.75rem; font-weight:500; color:var(--ink); }
-    .loc-district { font-size:.7rem; color:var(--gold); margin-top:.15rem; display:flex; align-items:center; gap:.3rem; }
-    .loc-district::before { content:''; display:inline-block; width:3px; height:3px; border-radius:50%; background:var(--gold); }
+    .badge { display:inline-flex; align-items:center; padding:.25rem .7rem; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; font-weight:500; }
+    .badge-pending   { background:rgba(184,146,74,.12); color:#8a6a28; }
+    .badge-approved  { background:rgba(39,174,96,.1);   color:#1e7a44; }
+    .badge-rejected  { background:rgba(231,76,60,.1);   color:#a93226; }
+    .badge-confirmed { background:rgba(41,128,185,.1);  color:#1a5276; }
+    .badge-contacted { background:rgba(142,68,173,.1);  color:#6c3483; }
 
-    .badge { display:inline-flex; align-items:center; padding:.25rem .7rem; font-size:.63rem; letter-spacing:.12em; text-transform:uppercase; font-weight:500; }
-    .badge-pending  { background:rgba(184,146,74,.12); color:#8a6a28; }
-    .badge-approved { background:rgba(39,174,96,.1);   color:#1e7a44; }
-    .badge-rejected { background:rgba(231,76,60,.1);   color:#a93226; }
-
-    .stars       { color:var(--gold); font-size:.85rem; letter-spacing:1px; }
+    .stars { color:var(--gold); font-size:.85rem; letter-spacing:1px; }
     .stars-empty { color:#ddd; }
 
-    .thumb    { width:48px; height:36px; object-fit:cover; display:block; }
-    .no-photo { width:48px; height:36px; background:var(--sand); display:flex; align-items:center; justify-content:center; }
-    .no-photo i { color:var(--muted); font-size:.7rem; }
+    .thumb { width:52px; height:38px; object-fit:cover; display:block; }
+    .no-photo { width:52px; height:38px; background:var(--sand); display:flex; align-items:center; justify-content:center; }
+    .no-photo i { color:var(--muted); font-size:.75rem; }
 
     .action-btns { display:flex; gap:.4rem; flex-wrap:wrap; }
-    .act-btn      { padding:.28rem .7rem; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; border:1px solid transparent; font-family:'DM Sans',sans-serif; transition:all .2s; white-space:nowrap; }
+    .act-btn { padding:.3rem .75rem; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; border:1px solid transparent; font-family:'DM Sans',sans-serif; transition:all .2s; white-space:nowrap; }
     .act-approve  { border-color:rgba(39,174,96,.4);  color:var(--green); background:rgba(39,174,96,.06); }
-    .act-approve:hover { background:var(--green); color:var(--white); }
+    .act-approve:hover  { background:var(--green); color:var(--white); }
     .act-reject   { border-color:rgba(231,76,60,.4);  color:var(--red);   background:rgba(231,76,60,.06); }
-    .act-reject:hover  { background:var(--red);   color:var(--white); }
+    .act-reject:hover   { background:var(--red);   color:var(--white); }
     .act-delete   { border-color:rgba(13,13,13,.2);   color:var(--muted); }
-    .act-delete:hover  { background:var(--ink); color:var(--white); border-color:var(--ink); }
+    .act-delete:hover   { background:var(--ink);   color:var(--white); border-color:var(--ink); }
     .act-view     { border-color:rgba(41,128,185,.4); color:var(--blue);  background:rgba(41,128,185,.06); }
-    .act-view:hover    { background:var(--blue); color:var(--white); }
+    .act-view:hover     { background:var(--blue);  color:var(--white); }
+    .act-contacted { border-color:rgba(142,68,173,.4); color:#8e44ad; background:rgba(142,68,173,.06); }
+    .act-contacted:hover { background:#8e44ad; color:var(--white); }
+
+    /* ENQUIRY REVENUE CARD */
+    .enq-stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:2rem; }
+    .enq-stat-card { background:var(--white); padding:1.2rem 1.4rem; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+    .enq-stat-num { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:300; color:var(--gold); line-height:1; }
+    .enq-stat-label { font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
 
     /* MODAL */
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:500; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity .25s; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:500; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity .25s; backdrop-filter:blur(4px); }
     .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal { background:var(--white); width:100%; max-width:660px; max-height:90vh; overflow-y:auto; padding:2.5rem; position:relative; }
+    .modal { background:var(--white); width:100%; max-width:640px; max-height:90vh; overflow-y:auto; padding:2.5rem; position:relative; }
     .modal-close { position:absolute; top:1.2rem; right:1.2rem; background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--muted); }
     .modal-close:hover { color:var(--ink); }
     .modal-place { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; margin-bottom:.3rem; }
-    .modal-meta  { font-size:.78rem; color:var(--muted); margin-bottom:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
-    .modal-img   { width:100%; height:220px; object-fit:cover; margin-bottom:1.5rem; display:block; }
-
-    /* Location block in modal */
-    .modal-location-block { display:flex; align-items:stretch; gap:0; margin-bottom:1.5rem; border:1px solid rgba(184,146,74,.18); overflow:hidden; }
-    .modal-loc-item { flex:1; padding:1rem 1.2rem; background:rgba(184,146,74,.04); }
-    .modal-loc-item + .modal-loc-item { border-left:1px solid rgba(184,146,74,.18); }
-    .modal-loc-label { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.3rem; }
-    .modal-loc-val   { font-size:.88rem; font-weight:500; color:var(--ink); }
-
-    .modal-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+    .modal-meta { font-size:.78rem; color:var(--muted); margin-bottom:1.5rem; }
+    .modal-img { width:100%; height:220px; object-fit:cover; margin-bottom:1.5rem; display:block; }
     .modal-section { margin-bottom:1.2rem; }
     .modal-section-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
     .modal-section-val { font-size:.85rem; color:var(--ink); line-height:1.7; }
+    .modal-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+    .modal-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+    .modal-divider { border:none; border-top:1px solid rgba(13,13,13,.08); margin:1.2rem 0; }
+    .enq-total-box { background:var(--sand); padding:1.2rem 1.4rem; display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem; }
+    .enq-total-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+    .enq-total-val { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--gold); }
 
-    /* EMPTY / LOADING */
+    /* STATUS SELECT */
+    .status-select { border:1px solid rgba(184,146,74,.3); background:var(--cream); padding:.3rem .6rem; font-family:'DM Sans',sans-serif; font-size:.72rem; color:var(--ink); outline:none; cursor:pointer; appearance:none; padding-right:1.4rem; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888070'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .5rem center; }
+
+    /* LOADING / EMPTY */
     .table-loading, .table-empty { text-align:center; padding:4rem 2rem; color:var(--muted); font-size:.85rem; }
     .table-loading i { font-size:1.5rem; color:var(--gold); margin-bottom:.8rem; display:block; }
 
     /* TOAST */
-    .toast { position:fixed; bottom:2rem; right:2rem; z-index:999; padding:1rem 1.5rem; font-size:.8rem; display:flex; align-items:center; gap:.7rem; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; }
+    .toast { position:fixed; bottom:2rem; right:2rem; z-index:999; padding:1rem 1.5rem; font-size:.8rem; display:flex; align-items:center; gap:.7rem; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; max-width:320px; }
     .toast.show { opacity:1; transform:translateY(0); pointer-events:all; }
     .toast-success { background:var(--green); color:var(--white); }
     .toast-error   { background:var(--red);   color:var(--white); }
+    .toast-info    { background:var(--ink);   color:var(--white); }
 
-    /* Result count */
-    .result-count { font-size:.72rem; color:var(--muted); letter-spacing:.05em; padding:.3rem 0; }
-
-    @media(max-width:900px){ .stats-row{grid-template-columns:1fr 1fr;} }
-    @media(max-width:600px){ .stats-row{grid-template-columns:1fr 1fr;} .toolbar{flex-direction:column; align-items:flex-start;} .modal-grid{grid-template-columns:1fr 1fr;} .modal-location-block{flex-direction:column;} .modal-loc-item+.modal-loc-item{border-left:none; border-top:1px solid rgba(184,146,74,.18);} }
+    @media(max-width:900px){ .stats-row,.enq-stats-row{grid-template-columns:1fr 1fr;} }
+    @media(max-width:600px){ .stats-row,.enq-stats-row{grid-template-columns:1fr 1fr;} .toolbar{flex-direction:column;align-items:flex-start;} .modal-grid,.modal-grid-2{grid-template-columns:1fr;} .page-tab{padding:.8rem .9rem;font-size:.68rem;} }
   </style>
 </head>
 <body>
@@ -169,6 +173,11 @@
   const SUPABASE_URL      = 'https://mqxpcxvyfeefriaehbev.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_rrTAjrtL7hrQj_YupZgbWw_QFed0sgT';
   const ADMIN_PASSWORD    = 'travelo2025';
+
+  // EmailJS
+  const EJS_SERVICE_ID  = 'service_dynwtx8';
+  const EJS_TEMPLATE_ID = 'template_6yyg3bl';
+  const EJS_PUBLIC_KEY  = 'JjfHc9wAR-G4HOh8I';
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -176,7 +185,7 @@
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <div class="login-logo">Trave<span>lo</span></div>
-    <p style="font-size:.75rem; color:rgba(255,255,255,.4); text-align:center; margin-bottom:2rem; letter-spacing:.1em;">ADMIN PANEL</p>
+    <p style="font-size:.75rem;color:rgba(255,255,255,.4);text-align:center;margin-bottom:2rem;letter-spacing:.1em;">ADMIN PANEL</p>
     <label class="login-label">Password</label>
     <input type="password" class="login-input" id="loginPwd" placeholder="Enter admin password" onkeydown="if(event.key==='Enter') doLogin()">
     <button class="login-btn" onclick="doLogin()">Enter Dashboard</button>
@@ -191,78 +200,123 @@
     <div class="topbar-logo">Trave<span>lo</span></div>
     <div class="topbar-right">
       <span class="topbar-badge">Admin</span>
-      <span id="lastRefreshed" style="font-size:.68rem; color:rgba(255,255,255,.35); letter-spacing:.06em;"></span>
-      <button class="refresh-btn" id="refreshBtn" onclick="doRefresh()" title="Refresh data">
-        <i class="fas fa-sync-alt" id="refreshIcon"></i> Refresh
-      </button>
+      <span id="sessionTimer" style="font-size:.65rem;color:rgba(255,255,255,.35);letter-spacing:.08em;"></span>
       <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
 
-  <div class="main">
+  <!-- PAGE TABS -->
+  <div class="page-tabs">
+    <button class="page-tab active" id="tabSugg" onclick="switchTab('suggestions')">
+      <i class="fas fa-map-marker-alt"></i> Suggestions
+      <span class="tab-count" id="tabCountSugg">0</span>
+    </button>
+    <button class="page-tab" id="tabEnq" onclick="switchTab('enquiries')">
+      <i class="fas fa-hotel"></i> Hotel Enquiries
+      <span class="tab-count" id="tabCountEnq">0</span>
+    </button>
+  </div>
 
-    <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-card-num" id="stTotal">—</div><div class="stat-card-label">Total Suggestions</div></div>
-      <div class="stat-card"><div class="stat-card-num" id="stPending">—</div><div class="stat-card-label">Pending Review</div></div>
-      <div class="stat-card"><div class="stat-card-num" id="stApproved">—</div><div class="stat-card-label">Approved</div></div>
-      <div class="stat-card"><div class="stat-card-num" id="stRejected">—</div><div class="stat-card-label">Rejected</div></div>
-    </div>
-
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <div class="filter-tabs">
-        <button class="filter-tab active" onclick="setFilter('all',this)">All</button>
-        <button class="filter-tab" onclick="setFilter('pending',this)">Pending</button>
-        <button class="filter-tab" onclick="setFilter('approved',this)">Approved</button>
-        <button class="filter-tab" onclick="setFilter('rejected',this)">Rejected</button>
+  <!-- ══════════════════════════════
+       SUGGESTIONS PANEL
+  ══════════════════════════════════ -->
+  <div class="page-panel active" id="panelSuggestions">
+    <div class="main">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card-num" id="stTotal">—</div><div class="stat-card-label">Total Suggestions</div></div>
+        <div class="stat-card"><div class="stat-card-num" id="stPending">—</div><div class="stat-card-label">Pending Review</div></div>
+        <div class="stat-card"><div class="stat-card-num" id="stApproved">—</div><div class="stat-card-label">Approved</div></div>
+        <div class="stat-card"><div class="stat-card-num" id="stRejected">—</div><div class="stat-card-label">Rejected</div></div>
       </div>
-      <div class="toolbar-right">
-        <input type="text" class="search-input" id="searchInput"
-               placeholder="Search place, name, district…"
-               oninput="renderTable()">
-        <select class="state-filter" id="stateFilter" onchange="renderTable()">
-          <option value="">All States</option>
-        </select>
-        <button class="export-btn" onclick="exportCSV()">
-          <i class="fas fa-download"></i> Export CSV
-        </button>
+
+      <div class="toolbar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="setSuggFilter('all',this)">All</button>
+          <button class="filter-tab" onclick="setSuggFilter('pending',this)">Pending</button>
+          <button class="filter-tab" onclick="setSuggFilter('approved',this)">Approved</button>
+          <button class="filter-tab" onclick="setSuggFilter('rejected',this)">Rejected</button>
+        </div>
+        <div class="toolbar-right">
+          <input type="text" class="search-input" id="suggSearch" placeholder="Search place, name…" oninput="renderSugg()">
+          <button class="export-btn" style="background:#555" onclick="loadSuggestions()"><i class="fas fa-sync-alt"></i> Refresh</button>
+          <button class="export-btn" onclick="exportSuggCSV()"><i class="fas fa-download"></i> Export CSV</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-loading" id="suggLoading"><i class="fas fa-circle-notch fa-spin"></i>Loading suggestions…</div>
+        <div class="table-empty" id="suggEmpty" style="display:none">No suggestions found.</div>
+        <table id="suggTable" style="display:none">
+          <thead>
+            <tr>
+              <th>Photo</th><th>Submitted By</th><th>Place</th><th>Category</th>
+              <th>Rating</th><th>Description</th><th>Status</th><th>Date</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="suggBody"></tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-    <!-- Result count -->
-    <div class="result-count" id="resultCount" style="margin-bottom:.8rem; padding-left:.2rem;"></div>
+  <!-- ══════════════════════════════
+       HOTEL ENQUIRIES PANEL
+  ══════════════════════════════════ -->
+  <div class="page-panel" id="panelEnquiries">
+    <div class="main">
 
-    <!-- Table -->
-    <div class="table-wrap">
-      <div class="table-loading" id="tableLoading">
-        <i class="fas fa-circle-notch fa-spin"></i>Loading suggestions…
+      <!-- Enquiry Stats -->
+      <div class="enq-stats-row">
+        <div class="enq-stat-card"><div class="enq-stat-num" id="enqTotal">—</div><div class="enq-stat-label">Total Enquiries</div></div>
+        <div class="enq-stat-card"><div class="enq-stat-num" id="enqPending">—</div><div class="enq-stat-label">Pending</div></div>
+        <div class="enq-stat-card"><div class="enq-stat-num" id="enqContacted">—</div><div class="enq-stat-label">Contacted</div></div>
+        <div class="enq-stat-card"><div class="enq-stat-num" id="enqConfirmed">—</div><div class="enq-stat-label">Confirmed</div></div>
+        <div class="enq-stat-card"><div class="enq-stat-num" id="enqRevenue">—</div><div class="enq-stat-label">Pipeline Value</div></div>
       </div>
-      <div class="table-empty" id="tableEmpty" style="display:none">No suggestions found.</div>
-      <table id="dataTable" style="display:none">
-        <thead>
-          <tr>
-            <th>Photo</th>
-            <th>Submitted By</th>
-            <th>Place</th>
-            <th>State</th>
-            <th>District</th>
-            <th>Category</th>
-            <th>Rating</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
 
+      <div class="toolbar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="setEnqFilter('all',this)">All</button>
+          <button class="filter-tab" onclick="setEnqFilter('pending',this)">Pending</button>
+          <button class="filter-tab" onclick="setEnqFilter('contacted',this)">Contacted</button>
+          <button class="filter-tab" onclick="setEnqFilter('confirmed',this)">Confirmed</button>
+          <button class="filter-tab" onclick="setEnqFilter('rejected',this)">Rejected</button>
+        </div>
+        <div class="toolbar-right">
+          <input type="text" class="search-input" id="enqSearch" placeholder="Search hotel, guest, ref…" oninput="renderEnq()">
+          <button class="export-btn" style="background:#555" onclick="loadEnquiries()"><i class="fas fa-sync-alt"></i> Refresh</button>
+          <button class="export-btn" onclick="exportEnqCSV()"><i class="fas fa-download"></i> Export CSV</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-loading" id="enqLoading"><i class="fas fa-circle-notch fa-spin"></i>Loading enquiries…</div>
+        <div class="table-empty" id="enqEmpty" style="display:none">No enquiries found.</div>
+        <table id="enqTable" style="display:none">
+          <thead>
+            <tr>
+              <th>Reference</th><th>Hotel</th><th>Guest</th><th>Dates</th>
+              <th>Nights</th><th>Room</th><th>Guests</th><th>Total</th>
+              <th>Status</th><th>Submitted</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="enqBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- EMAIL MODAL -->
+<div class="modal-overlay" id="emailModalOverlay" onclick="if(event.target===this)closeEmailModal()" style="z-index:600;">
+  <div class="modal" style="max-width:560px;">
+    <button class="modal-close" onclick="closeEmailModal()"><i class="fas fa-times"></i></button>
+    <div id="emailModalContent"></div>
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- DETAIL MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal">
     <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
@@ -270,409 +324,673 @@
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-  const { createClient } = supabase;
-  const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* ── Supabase ── */
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  let allData   = [];
-  let curFilter = 'all';
+// Init EmailJS
+emailjs.init(EJS_PUBLIC_KEY);
 
-  /* ── SESSION (persists for 24 hours via localStorage) ── */
-  const SESSION_KEY      = 'travelo_admin_session';
-  const SESSION_DURATION = 24 * 60 * 60 * 1000; /* 24 hours in ms */
+/* ── State ── */
+let suggData   = [];
+let enqData    = [];
+let suggFilter = 'all';
+let enqFilter  = 'all';
+let activeTab  = 'suggestions';
 
-  function saveSession() {
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now() }));
-  }
-  function clearSession() {
-    localStorage.removeItem(SESSION_KEY);
-  }
-  function isSessionValid() {
+/* ════ SESSION (24-hour localStorage) ════ */
+const SESSION_KEY = 'travelo_admin_session';
+const SESSION_TTL = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+function isSessionValid() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return false;
+    const { ts } = JSON.parse(raw);
+    return (Date.now() - ts) < SESSION_TTL;
+  } catch(e) { return false; }
+}
+
+function saveSession() {
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
+function showApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').classList.add('active');
+  loadSuggestions();
+  loadEnquiries();
+  startSessionCountdown();
+}
+
+function startSessionCountdown() {
+  function tick() {
     try {
       const raw = localStorage.getItem(SESSION_KEY);
-      if (!raw) return false;
+      if (!raw) return;
       const { ts } = JSON.parse(raw);
-      return (Date.now() - ts) < SESSION_DURATION;
-    } catch { return false; }
+      const remaining = SESSION_TTL - (Date.now() - ts);
+      if (remaining <= 0) { doLogout(); return; }
+      const h = Math.floor(remaining / 3600000);
+      const m = Math.floor((remaining % 3600000) / 60000);
+      const el = document.getElementById('sessionTimer');
+      if (el) el.textContent = h + 'h ' + m + 'm left';
+    } catch(e) {}
   }
+  tick();
+  setInterval(tick, 60000);
+}
 
-  /* ── LOGIN ── */
-  function doLogin() {
-    if (document.getElementById('loginPwd').value === ADMIN_PASSWORD) {
-      saveSession();
-      showApp();
+/* ════ LOGIN ════ */
+function doLogin() {
+  if (document.getElementById('loginPwd').value === ADMIN_PASSWORD) {
+    saveSession();
+    showApp();
+  } else {
+    document.getElementById('loginErr').classList.add('show');
+  }
+}
+
+function doLogout() {
+  clearSession();
+  document.getElementById('loginScreen').style.display = '';
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('loginPwd').value = '';
+  document.getElementById('loginErr').classList.remove('show');
+}
+
+/* ════ AUTO-LOGIN on page load / refresh ════ */
+(function initSession() {
+  if (isSessionValid()) {
+    saveSession(); // refresh the 24h window on every visit
+    showApp();
+  }
+})();
+
+/* ════ TAB SWITCH ════ */
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById('tabSugg').classList.toggle('active', tab === 'suggestions');
+  document.getElementById('tabEnq').classList.toggle('active',  tab === 'enquiries');
+  document.getElementById('panelSuggestions').classList.toggle('active', tab === 'suggestions');
+  document.getElementById('panelEnquiries').classList.toggle('active',   tab === 'enquiries');
+}
+
+/* ════════════════════════════════════════
+   SUGGESTIONS
+════════════════════════════════════════ */
+async function loadSuggestions() {
+  document.getElementById('suggLoading').style.display = 'block';
+  document.getElementById('suggTable').style.display   = 'none';
+  document.getElementById('suggEmpty').style.display   = 'none';
+  try {
+    const { data, error } = await db.from('suggestions').select('*').order('submitted_at', { ascending:false });
+    if (error) throw error;
+    suggData = data || [];
+    updateSuggStats();
+    renderSugg();
+    document.getElementById('tabCountSugg').textContent = suggData.length;
+  } catch(e) {
+    document.getElementById('suggLoading').innerHTML = '<i class="fas fa-exclamation-triangle"></i> ' + e.message;
+    showToast('Suggestions: ' + e.message, 'error');
+  }
+}
+
+function updateSuggStats() {
+  document.getElementById('stTotal').textContent    = suggData.length;
+  document.getElementById('stPending').textContent  = suggData.filter(r => r.status === 'pending').length;
+  document.getElementById('stApproved').textContent = suggData.filter(r => r.status === 'approved').length;
+  document.getElementById('stRejected').textContent = suggData.filter(r => r.status === 'rejected').length;
+}
+
+function setSuggFilter(f, btn) {
+  suggFilter = f;
+  document.querySelectorAll('#panelSuggestions .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderSugg();
+}
+
+function renderSugg() {
+  const q = document.getElementById('suggSearch').value.toLowerCase();
+  let rows = suggData;
+  if (suggFilter !== 'all') rows = rows.filter(r => r.status === suggFilter);
+  if (q) rows = rows.filter(r =>
+    (r.place||'').toLowerCase().includes(q) ||
+    (r.name||'').toLowerCase().includes(q) ||
+    (r.location||'').toLowerCase().includes(q) ||
+    (r.category||'').toLowerCase().includes(q)
+  );
+
+  const loading = document.getElementById('suggLoading');
+  const empty   = document.getElementById('suggEmpty');
+  const table   = document.getElementById('suggTable');
+  const tbody   = document.getElementById('suggBody');
+  loading.style.display = 'none';
+
+  if (rows.length === 0) { empty.style.display='block'; table.style.display='none'; return; }
+  empty.style.display = 'none';
+  table.style.display = 'table';
+
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${r.photo_url
+        ? `<img src="${r.photo_url}" class="thumb" alt="">`
+        : `<div class="no-photo"><i class="fas fa-image"></i></div>`}</td>
+      <td><div class="cell-name">${esc(r.name)}</div><div class="cell-sub">${esc(r.email)}</div></td>
+      <td><div class="cell-place">${esc(r.place)}</div><div class="cell-location">${esc(r.location||'—')}</div></td>
+      <td><div class="cell-sub">${esc(r.category||'—')}</div></td>
+      <td>${starHtml(r.rating)}</td>
+      <td><div class="cell-desc" title="${esc(r.description||'')}">${esc(r.description||'—')}</div></td>
+      <td><span class="badge badge-${r.status}">${r.status}</span></td>
+      <td><div class="cell-date">${formatDate(r.submitted_at)}</div></td>
+      <td>
+        <div class="action-btns">
+          <button class="act-btn act-view"   onclick="viewSugg('${r.id}')">View</button>
+          ${r.status !== 'approved' ? `<button class="act-btn act-approve" onclick="updateSuggStatus('${r.id}','approved')">Approve</button>` : ''}
+          ${r.status !== 'rejected' ? `<button class="act-btn act-reject"  onclick="updateSuggStatus('${r.id}','rejected')">Reject</button>`  : ''}
+          <button class="act-btn act-delete" onclick="deleteSugg('${r.id}')">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function updateSuggStatus(id, status) {
+  const { error } = await db.from('suggestions').update({ status }).eq('id', id);
+  if (error) { showToast(error.message, 'error'); return; }
+  const row = suggData.find(r => r.id === id);
+  if (row) row.status = status;
+  updateSuggStats();
+  renderSugg();
+  showToast('Marked as ' + status, 'success');
+}
+
+async function deleteSugg(id) {
+  if (!confirm('Delete this suggestion permanently?')) return;
+  const { error } = await db.from('suggestions').delete().eq('id', id);
+  if (error) { showToast(error.message, 'error'); return; }
+  suggData = suggData.filter(r => r.id !== id);
+  document.getElementById('tabCountSugg').textContent = suggData.length;
+  updateSuggStats();
+  renderSugg();
+  showToast('Suggestion deleted', 'success');
+}
+
+function viewSugg(id) {
+  const r = suggData.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('modalContent').innerHTML = `
+    <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">${esc(r.category||'')}</p>
+    <div class="modal-place">${esc(r.place)}</div>
+    <div class="modal-meta">${esc(r.location||'—')} · ${formatDate(r.submitted_at)} · <span class="badge badge-${r.status}">${r.status}</span></div>
+    ${r.photo_url ? `<img src="${r.photo_url}" class="modal-img" alt="">` : ''}
+    <div class="modal-grid">
+      <div><div class="modal-section-label">Submitted by</div><div class="modal-section-val">${esc(r.name)}<br><span style="color:var(--muted)">${esc(r.email)}</span></div></div>
+      <div><div class="modal-section-label">Rating</div><div class="modal-section-val">${starHtml(r.rating)}</div></div>
+      <div><div class="modal-section-label">Category</div><div class="modal-section-val">${esc(r.category||'—')}</div></div>
+    </div>
+    <div class="modal-section"><div class="modal-section-label">Description</div><div class="modal-section-val">${esc(r.description||'—')}</div></div>
+    <div class="action-btns" style="margin-top:1.5rem;">
+      ${r.status !== 'approved' ? `<button class="act-btn act-approve" onclick="updateSuggStatus('${r.id}','approved');closeModal()">Approve</button>` : ''}
+      ${r.status !== 'rejected' ? `<button class="act-btn act-reject"  onclick="updateSuggStatus('${r.id}','rejected');closeModal()">Reject</button>`  : ''}
+      <button class="act-btn act-delete" onclick="deleteSugg('${r.id}');closeModal()">Delete</button>
+    </div>
+  `;
+  openModal();
+}
+
+function exportSuggCSV() {
+  const headers = ['ID','Name','Email','Place','Location','Category','Rating','Description','Status','Submitted At'];
+  const rows = [headers.join(','), ...suggData.map(r => [
+    r.id, csvCell(r.name), csvCell(r.email), csvCell(r.place), csvCell(r.location),
+    csvCell(r.category), r.rating||'', csvCell(r.description), r.status, r.submitted_at
+  ].join(','))];
+  downloadCSV(rows.join('\n'), 'travelo-suggestions');
+}
+
+/* ════════════════════════════════════════
+   HOTEL ENQUIRIES
+════════════════════════════════════════ */
+async function loadEnquiries() {
+  document.getElementById('enqLoading').style.display = 'block';
+  document.getElementById('enqTable').style.display   = 'none';
+  document.getElementById('enqEmpty').style.display   = 'none';
+  try {
+    const { data, error } = await db.from('hotel_enquiries').select('*').order('submitted_at', { ascending:false });
+    if (error) throw error;
+    enqData = data || [];
+    updateEnqStats();
+    renderEnq();
+    document.getElementById('tabCountEnq').textContent = enqData.length;
+  } catch(e) {
+    document.getElementById('enqLoading').innerHTML = '<i class="fas fa-exclamation-triangle"></i> ' + e.message;
+    showToast('Enquiries: ' + e.message, 'error');
+  }
+}
+
+function updateEnqStats() {
+  const total     = enqData.length;
+  const pending   = enqData.filter(r => r.status === 'pending').length;
+  const contacted = enqData.filter(r => r.status === 'contacted').length;
+  const confirmed = enqData.filter(r => r.status === 'confirmed').length;
+  const pipeline  = enqData.reduce((sum, r) => sum + (parseInt(r.total_inr)||0), 0);
+  document.getElementById('enqTotal').textContent     = total;
+  document.getElementById('enqPending').textContent   = pending;
+  document.getElementById('enqContacted').textContent = contacted;
+  document.getElementById('enqConfirmed').textContent = confirmed;
+  document.getElementById('enqRevenue').textContent   = pipeline > 0 ? '₹' + pipeline.toLocaleString('en-IN') : '₹0';
+}
+
+function setEnqFilter(f, btn) {
+  enqFilter = f;
+  document.querySelectorAll('#panelEnquiries .filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderEnq();
+}
+
+function renderEnq() {
+  const q = document.getElementById('enqSearch').value.toLowerCase();
+  let rows = enqData;
+  if (enqFilter !== 'all') rows = rows.filter(r => r.status === enqFilter);
+  if (q) rows = rows.filter(r =>
+    (r.hotel_name||'').toLowerCase().includes(q) ||
+    (r.guest_name||'').toLowerCase().includes(q) ||
+    (r.email||'').toLowerCase().includes(q) ||
+    (r.reference||'').toLowerCase().includes(q) ||
+    (r.phone||'').toLowerCase().includes(q)
+  );
+
+  const loading = document.getElementById('enqLoading');
+  const empty   = document.getElementById('enqEmpty');
+  const table   = document.getElementById('enqTable');
+  const tbody   = document.getElementById('enqBody');
+  loading.style.display = 'none';
+
+  if (rows.length === 0) { empty.style.display='block'; table.style.display='none'; return; }
+  empty.style.display = 'none';
+  table.style.display = 'table';
+
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><div class="cell-ref">${esc(r.reference||'—')}</div></td>
+      <td>
+        <div class="cell-place">${esc(r.hotel_name||'—')}</div>
+        <div class="cell-location">${esc(r.hotel_id||'')}</div>
+      </td>
+      <td>
+        <div class="cell-name">${esc(r.guest_name||'—')}</div>
+        <div class="cell-sub">${esc(r.email||'')}</div>
+        <div class="cell-sub">${esc(r.phone||'')}</div>
+      </td>
+      <td>
+        <div class="cell-sub">In: ${esc(r.checkin||'—')}</div>
+        <div class="cell-sub">Out: ${esc(r.checkout||'—')}</div>
+      </td>
+      <td><div class="cell-sub" style="font-weight:500;color:var(--ink)">${r.nights||'—'}</div></td>
+      <td><div class="cell-sub">${esc(r.room_type||'—')}</div></td>
+      <td><div class="cell-sub">${r.guests||'—'}</div></td>
+      <td>
+        <div class="cell-price">₹${parseInt(r.total_inr||0).toLocaleString('en-IN')}</div>
+        <div class="cell-price-sub">incl. GST</div>
+      </td>
+      <td><span class="badge badge-${r.status||'pending'}">${r.status||'pending'}</span></td>
+      <td><div class="cell-date">${formatDate(r.submitted_at)}</div></td>
+      <td>
+        <div class="action-btns">
+          <button class="act-btn act-view"  onclick="viewEnq('${r.id}')">View</button>
+          ${r.status !== 'contacted'  ? `<button class="act-btn act-contacted" onclick="updateEnqStatus('${r.id}','contacted')">Contacted</button>` : ''}
+          ${r.status !== 'confirmed'  ? `<button class="act-btn act-approve"   onclick="updateEnqStatus('${r.id}','confirmed')">Confirm</button>` : ''}
+          ${r.status !== 'rejected'   ? `<button class="act-btn act-reject"    onclick="updateEnqStatus('${r.id}','rejected')">Reject</button>`  : ''}
+          <button class="act-btn act-delete" onclick="deleteEnq('${r.id}')">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function updateEnqStatus(id, status) {
+  // id from Supabase bigint may come as number or string — cast both ways
+  const numId = Number(id);
+  const { data, error } = await db
+    .from('hotel_enquiries')
+    .update({ status })
+    .eq('id', numId)
+    .select();
+  if (error) {
+    console.error('[updateEnqStatus]', error);
+    showToast('Update failed: ' + error.message, 'error');
+    return;
+  }
+  console.log('[updateEnqStatus] updated rows:', data);
+  // update local cache
+  const row = enqData.find(r => Number(r.id) === numId);
+  if (row) row.status = status;
+  updateEnqStats();
+  renderEnq();
+  document.getElementById('tabCountEnq').textContent = enqData.length;
+  showToast('Status → ' + status, 'success');
+  // send confirmation email if status is confirmed
+  if (status === 'confirmed') {
+    const enqRow = enqData.find(r => Number(r.id) === numId);
+    if (enqRow) sendConfirmationEmail(enqRow);
+  }
+}
+
+async function deleteEnq(id) {
+  if (!confirm('Delete this enquiry permanently?')) return;
+  const { error } = await db.from('hotel_enquiries').delete().eq('id', id);
+  if (error) { showToast(error.message, 'error'); return; }
+  enqData = enqData.filter(r => r.id !== id);
+  document.getElementById('tabCountEnq').textContent = enqData.length;
+  updateEnqStats();
+  renderEnq();
+  showToast('Enquiry deleted', 'success');
+}
+
+function viewEnq(id) {
+  const r = enqData.find(x => x.id === id);
+  if (!r) return;
+  const total   = parseInt(r.total_inr||0);
+  const tax     = Math.round(total - total/1.18);
+  const base    = total - tax;
+  const perNight = r.nights ? Math.round(base/r.nights) : 0;
+
+  document.getElementById('modalContent').innerHTML = `
+    <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;">Hotel Enquiry</p>
+    <div class="modal-place">${esc(r.hotel_name||'—')}</div>
+    <div class="modal-meta">
+      Ref: <strong style="color:var(--gold)">${esc(r.reference||'—')}</strong>
+      &nbsp;·&nbsp;${formatDate(r.submitted_at)}
+      &nbsp;·&nbsp;<span class="badge badge-${r.status||'pending'}">${r.status||'pending'}</span>
+    </div>
+    <hr class="modal-divider">
+
+    <div class="modal-grid-2" style="margin-bottom:1.2rem;">
+      <div>
+        <div class="modal-section-label">Guest</div>
+        <div class="modal-section-val">
+          ${esc(r.guest_name||'—')}<br>
+          <span style="color:var(--muted)">${esc(r.email||'')}</span><br>
+          <span style="color:var(--muted)">${esc(r.phone||'')}</span>
+        </div>
+      </div>
+      <div>
+        <div class="modal-section-label">Stay Details</div>
+        <div class="modal-section-val">
+          Check-in: <strong>${esc(r.checkin||'—')}</strong><br>
+          Check-out: <strong>${esc(r.checkout||'—')}</strong><br>
+          ${r.nights||'—'} night${r.nights>1?'s':''} · ${r.guests||'—'} guest${r.guests>1?'s':''}
+        </div>
+      </div>
+      <div>
+        <div class="modal-section-label">Room Type</div>
+        <div class="modal-section-val">${esc(r.room_type||'—')}</div>
+      </div>
+      <div>
+        <div class="modal-section-label">Hotel ID</div>
+        <div class="modal-section-val" style="font-size:.78rem;color:var(--muted)">${esc(r.hotel_id||'—')}</div>
+      </div>
+    </div>
+
+    ${r.special_requests ? `
+    <div class="modal-section">
+      <div class="modal-section-label">Special Requests</div>
+      <div class="modal-section-val">${esc(r.special_requests)}</div>
+    </div>` : ''}
+
+    <div class="enq-total-box">
+      <div>
+        <div class="enq-total-label">Total Amount (incl. 18% GST)</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:.2rem;">
+          ₹${perNight.toLocaleString('en-IN')}/night × ${r.nights||1} night${r.nights>1?'s':''} + ₹${tax.toLocaleString('en-IN')} tax
+        </div>
+      </div>
+      <div class="enq-total-val">₹${total.toLocaleString('en-IN')}</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-label">Update Status</div>
+      <select class="status-select" id="enqStatusSelect" onchange="updateEnqStatus('${r.id}', this.value); closeModal();">
+        <option value="pending"   ${r.status==='pending'   ? 'selected':''}>Pending</option>
+        <option value="contacted" ${r.status==='contacted' ? 'selected':''}>Contacted</option>
+        <option value="confirmed" ${r.status==='confirmed' ? 'selected':''}>Confirmed</option>
+        <option value="rejected"  ${r.status==='rejected'  ? 'selected':''}>Rejected</option>
+      </select>
+    </div>
+
+    <div class="action-btns" style="margin-top:1rem;">
+      ${r.status !== 'contacted'  ? `<button class="act-btn act-contacted" onclick="updateEnqStatus('${r.id}','contacted');closeModal()">Mark Contacted</button>` : ''}
+      ${r.status !== 'confirmed'  ? `<button class="act-btn act-approve"   onclick="updateEnqStatus('${r.id}','confirmed');closeModal()">✓ Confirm &amp; Email Guest</button>` : '<button class="act-btn" style="border-color:rgba(39,174,96,.4);color:var(--green);background:rgba(39,174,96,.06);cursor:default;">✓ Confirmed</button>'}
+      ${r.status !== 'rejected'   ? `<button class="act-btn act-reject"    onclick="updateEnqStatus('${r.id}','rejected');closeModal()">Reject</button>` : ''}
+      <button class="act-btn act-delete" onclick="deleteEnq('${r.id}');closeModal()">Delete</button>
+    </div>
+  `;
+  openModal();
+}
+
+/* ════ CONFIRMATION EMAIL (Claude API → mailto fallback) ════ */
+async function sendConfirmationEmail(r) {
+  // Show email preview modal
+  const total = parseInt(r.total_inr||0);
+  const defaultBody = buildDefaultEmail(r);
+
+  document.getElementById('emailModalContent').innerHTML = `
+    <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">
+      <i class="fas fa-envelope"></i> Send Confirmation to ${esc(r.guest_name||'Guest')}
+    </p>
+    <div style="background:var(--sand);padding:1rem;margin-bottom:1rem;font-size:.78rem;color:var(--muted);line-height:1.7;" id="emailPreview">
+      ${defaultBody.replace(/\n/g,'<br>')}
+    </div>
+    <div style="display:flex;gap:.8rem;margin-bottom:.8rem;">
+      <button class="export-btn" style="flex:1;justify-content:center;" onclick="generateAIEmail('${r.id}')">
+        <i class="fas fa-magic"></i> Improve with AI
+      </button>
+      <button class="export-btn" style="flex:1;justify-content:center;background:var(--gold);" onclick="openMailto('${r.id}')">
+        <i class="fas fa-paper-plane"></i> Send Email
+      </button>
+    </div>
+    <button class="act-btn act-delete" style="width:100%;justify-content:center;padding:.6rem;" onclick="closeEmailModal()">Cancel</button>
+  `;
+  // store raw text for mailto
+  window._emailData = window._emailData || {};
+  window._emailData[r.id] = { subject: 'Booking Confirmed — ' + (r.hotel_name||'Your Stay') + ' | Travelo Ref: ' + r.reference, body: defaultBody, email: r.email, name: r.guest_name };
+  document.getElementById('emailModalOverlay').classList.add('open');
+}
+
+function buildDefaultEmail(r) {
+  const total = parseInt(r.total_inr||0);
+  const nights = r.nights||1;
+  return `Dear ${r.guest_name||'Guest'},
+
+We are delighted to confirm your reservation at ${r.hotel_name||'the hotel'}.
+
+BOOKING DETAILS
+───────────────
+Reference : ${r.reference||'—'}
+Hotel     : ${r.hotel_name||'—'}
+Room Type : ${r.room_type||'—'}
+Check-in  : ${r.checkin||'—'}
+Check-out : ${r.checkout||'—'}
+Nights    : ${nights}
+Guests    : ${r.guests||1}
+${r.special_requests ? 'Special   : ' + r.special_requests : ''}
+
+PAYMENT SUMMARY
+───────────────
+Total (incl. 18% GST): ₹${total.toLocaleString('en-IN')}
+
+Our team will be in touch shortly to process payment and provide further details.
+
+For any queries, please reply to this email or call us.
+
+Warm regards,
+Travelo Luxury Hotels
+travelo2025@gmail.com`;
+}
+
+async function generateAIEmail(id) {
+  const d = window._emailData && window._emailData[id];
+  if (!d) return;
+  const r = enqData.find(x => Number(x.id) === Number(id));
+  if (!r) return;
+
+  const preview = document.getElementById('emailPreview');
+  preview.innerHTML = '<i class="fas fa-circle-notch fa-spin" style="color:var(--gold)"></i> Generating with AI…';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `Write a warm, professional hotel booking confirmation email for a luxury travel brand called Travelo.
+
+Guest: ${r.guest_name}
+Hotel: ${r.hotel_name}
+Reference: ${r.reference}
+Check-in: ${r.checkin}
+Check-out: ${r.checkout}
+Nights: ${r.nights}
+Room: ${r.room_type}
+Guests: ${r.guests}
+Total: ₹${parseInt(r.total_inr||0).toLocaleString('en-IN')} (incl. 18% GST)
+Special requests: ${r.special_requests||'None'}
+
+Write ONLY the email body (no subject line). Keep it elegant, warm, and concise. Plain text only, no markdown.`
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    if (text) {
+      window._emailData[id].body = text;
+      preview.innerHTML = text.replace(/\n/g,'<br>');
     } else {
-      document.getElementById('loginErr').classList.add('show');
+      preview.innerHTML = 'AI generation failed. Using default email.';
+      window._emailData[id].body = buildDefaultEmail(r);
     }
+  } catch(e) {
+    preview.innerHTML = 'AI error: ' + e.message + '<br><br>' + buildDefaultEmail(r).replace(/\n/g,'<br>');
   }
-  function doLogout() {
-    clearSession();
-    document.getElementById('loginScreen').style.display = '';
-    document.getElementById('app').classList.remove('active');
-    document.getElementById('loginPwd').value = '';
-    document.getElementById('loginErr').classList.remove('show');
-  }
-  function showApp() {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').classList.add('active');
-    loadData();
-    startSessionTimer();
-  }
+}
 
-  /* ── AUTO-CHECK SESSION ON PAGE LOAD ── */
-  window.addEventListener('DOMContentLoaded', () => {
-    if (isSessionValid()) {
-      showApp();
-    }
-  });
+async function openMailto(id) {
+  const d = window._emailData && window._emailData[id];
+  if (!d) return;
+  const r = enqData.find(x => Number(x.id) === Number(id));
+  if (!r) return;
 
-  /* ── SESSION EXPIRY TIMER (checks every minute) ── */
-  function startSessionTimer() {
-    setInterval(() => {
-      if (!isSessionValid()) {
-        showToast('Session expired. Please log in again.', 'error');
-        setTimeout(doLogout, 2000);
-      }
-    }, 60 * 1000);
-  }
+  const sendBtn = document.querySelector('#emailModalContent .export-btn:last-of-type');
+  if (sendBtn) { sendBtn.disabled = true; sendBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending…'; }
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin();
-  });
-
-  /* ── LOAD DATA ── */
-  async function loadData() {
-    document.getElementById('tableLoading').style.display = 'block';
-    document.getElementById('dataTable').style.display    = 'none';
-    document.getElementById('tableEmpty').style.display   = 'none';
-    try {
-      const { data, error } = await db
-        .from('suggestions')
-        .select('*')
-        .order('submitted_at', { ascending: false });
-
-      if (error) { showToast('Error: ' + error.message, 'error'); return; }
-
-      allData = data || [];
-      populateStateFilter();
-      updateStats();
-      renderTable();
-      setLastRefreshed();
-    } catch(e) {
-      document.getElementById('tableLoading').innerHTML =
-        '<i class="fas fa-exclamation-triangle"></i> Failed to load: ' + e.message;
-    }
-  }
-
-  /* ── REFRESH ── */
-  async function doRefresh() {
-    const btn  = document.getElementById('refreshBtn');
-    const icon = document.getElementById('refreshIcon');
-    btn.disabled = true;
-    icon.classList.add('spinning');
-    await loadData();
-    icon.classList.remove('spinning');
-    btn.disabled = false;
-    showToast('Data refreshed', 'success');
-  }
-
-  /* ── LAST REFRESHED LABEL ── */
-  function setLastRefreshed() {
-    const el  = document.getElementById('lastRefreshed');
-    const now = new Date();
-    const hh  = String(now.getHours()).padStart(2,'0');
-    const mm  = String(now.getMinutes()).padStart(2,'0');
-    el.textContent = 'Updated ' + hh + ':' + mm;
-  }
-
-  /* ── POPULATE STATE FILTER DROPDOWN ── */
-  function populateStateFilter() {
-    const sel    = document.getElementById('stateFilter');
-    const states = [...new Set(allData.map(r => r.state).filter(Boolean))].sort();
-    sel.innerHTML = '<option value="">All States</option>';
-    states.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s; opt.textContent = s;
-      sel.appendChild(opt);
+  try {
+    const result = await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      guest_name:       r.guest_name || '—',
+      guest_email:      r.email || '',
+      hotel_name:       r.hotel_name || '—',
+      reference:        r.reference || '—',
+      room_type:        r.room_type || '—',
+      checkin:          r.checkin || '—',
+      checkout:         r.checkout || '—',
+      nights:           String(r.nights || 1),
+      guests:           String(r.guests || 1),
+      total:            '₹' + parseInt(r.total_inr||0).toLocaleString('en-IN'),
+      special_requests: r.special_requests || 'None',
+      email_body:       d.body
     });
+    console.log('[EmailJS] sent:', result);
+    closeEmailModal();
+    showToast('✓ Confirmation email sent to ' + r.email, 'success');
+    // mark email_sent in supabase if column exists
+    await db.from('hotel_enquiries').update({ email_sent: true }).eq('id', Number(r.id));
+  } catch(err) {
+    console.error('[EmailJS] error:', err);
+    if (sendBtn) { sendBtn.disabled = false; sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Email'; }
+    showToast('Email failed: ' + (err.text || err.message || JSON.stringify(err)), 'error');
   }
+}
 
-  /* ── STATS ── */
-  function updateStats() {
-    document.getElementById('stTotal').textContent    = allData.length;
-    document.getElementById('stPending').textContent  = allData.filter(r => r.status === 'pending').length;
-    document.getElementById('stApproved').textContent = allData.filter(r => r.status === 'approved').length;
-    document.getElementById('stRejected').textContent = allData.filter(r => r.status === 'rejected').length;
-  }
+function closeEmailModal() {
+  document.getElementById('emailModalOverlay').classList.remove('open');
+}
 
-  /* ── FILTER + SEARCH + STATE ── */
-  function setFilter(f, btn) {
-    curFilter = f;
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    renderTable();
-  }
+/* Also hook "Confirm Booking" button in viewEnq modal to trigger email ── */
 
-  function getFilteredRows() {
-    const q     = document.getElementById('searchInput').value.toLowerCase().trim();
-    const state = document.getElementById('stateFilter').value;
+function exportEnqCSV() {
+  const headers = ['Reference','Hotel Name','Hotel ID','Guest Name','Email','Phone','Room Type','Guests',
+    'Special Requests','Check-in','Check-out','Nights','Total INR','Status','Submitted At'];
+  const rows = [headers.join(','), ...enqData.map(r => [
+    csvCell(r.reference), csvCell(r.hotel_name), csvCell(r.hotel_id), csvCell(r.guest_name),
+    csvCell(r.email), csvCell(r.phone), csvCell(r.room_type), r.guests||'',
+    csvCell(r.special_requests), r.checkin||'', r.checkout||'', r.nights||'',
+    r.total_inr||0, r.status, r.submitted_at
+  ].join(','))];
+  downloadCSV(rows.join('\n'), 'travelo-hotel-enquiries');
+}
 
-    return allData.filter(r => {
-      /* status filter */
-      if (curFilter !== 'all' && r.status !== curFilter) return false;
+/* ════ MODAL ════ */
+function openModal()  { document.getElementById('modalOverlay').classList.add('open'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
-      /* state dropdown filter */
-      if (state && r.state !== state) return false;
+/* ════ HELPERS ════ */
+function esc(str)     { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function csvCell(v)   { return `"${String(v||'').replace(/"/g,'""')}"`; }
+function formatDate(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+function starHtml(rating) {
+  if (!rating) return '<span style="color:var(--muted);font-size:.75rem">—</span>';
+  return Array.from({length:5}, (_,i) =>
+    `<span class="${i < rating ? 'stars' : 'stars-empty'}">★</span>`
+  ).join('');
+}
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast toast-${type} show`;
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 3200);
+}
+function downloadCSV(content, name) {
+  const blob = new Blob([content], { type:'text/csv' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `${name}-${Date.now()}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
 
-      /* full-text search: place, name, email, category, state, district */
-      if (q) {
-        const haystack = [
-          r.place, r.name, r.email, r.category,
-          r.state, r.district, r.description
-        ].map(v => (v||'').toLowerCase()).join(' ');
-        if (!haystack.includes(q)) return false;
-      }
+/* keyboard login */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin();
+});
 
-      return true;
-    });
-  }
-
-  /* ── RENDER TABLE ── */
-  function renderTable() {
-    const rows    = getFilteredRows();
-    const loading = document.getElementById('tableLoading');
-    const empty   = document.getElementById('tableEmpty');
-    const table   = document.getElementById('dataTable');
-    const tbody   = document.getElementById('tableBody');
-    const counter = document.getElementById('resultCount');
-
-    loading.style.display = 'none';
-    counter.textContent   = `Showing ${rows.length} of ${allData.length} suggestion${allData.length !== 1 ? 's' : ''}`;
-
-    if (rows.length === 0) {
-      empty.style.display = 'block';
-      table.style.display = 'none';
-      return;
-    }
-    empty.style.display = 'none';
-    table.style.display = 'table';
-
-    tbody.innerHTML = rows.map(r => `
-      <tr>
-        <td>
-          ${r.photo_url
-            ? `<img src="${esc(r.photo_url)}" class="thumb" alt="photo">`
-            : `<div class="no-photo"><i class="fas fa-image"></i></div>`}
-        </td>
-        <td>
-          <div class="cell-name">${esc(r.name)}</div>
-          <div class="cell-sub">${esc(r.email)}</div>
-        </td>
-        <td>
-          <div class="cell-place">${esc(r.place)}</div>
-        </td>
-        <td>
-          <div class="loc-state">${esc(r.state || '—')}</div>
-        </td>
-        <td>
-          <div class="loc-district">${esc(r.district || '—')}</div>
-        </td>
-        <td><div class="cell-sub">${esc(r.category || '—')}</div></td>
-        <td>${starHtml(r.rating)}</td>
-        <td>
-          <div class="cell-desc" title="${esc(r.description || '')}">
-            ${esc(r.description || '—')}
-          </div>
-        </td>
-        <td><span class="badge badge-${r.status}">${r.status}</span></td>
-        <td><div class="cell-date">${formatDate(r.submitted_at)}</div></td>
-        <td>
-          <div class="action-btns">
-            <button class="act-btn act-view" onclick="viewRow('${r.id}')">View</button>
-            ${r.status !== 'approved'
-              ? `<button class="act-btn act-approve" onclick="updateStatus('${r.id}','approved')">Approve</button>`
-              : ''}
-            ${r.status !== 'rejected'
-              ? `<button class="act-btn act-reject" onclick="updateStatus('${r.id}','rejected')">Reject</button>`
-              : ''}
-            <button class="act-btn act-delete" onclick="deleteRow('${r.id}')">Delete</button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  /* ── ACTIONS ── */
-  async function updateStatus(id, status) {
-    const { error } = await db.from('suggestions').update({ status }).eq('id', id);
-    if (error) { showToast(error.message, 'error'); return; }
-    const row = allData.find(r => r.id === id);
-    if (row) row.status = status;
-    updateStats();
-    renderTable();
-    showToast(`Marked as ${status}`, 'success');
-  }
-
-  async function deleteRow(id) {
-    if (!confirm('Delete this suggestion permanently?')) return;
-    const { error } = await db.from('suggestions').delete().eq('id', id);
-    if (error) { showToast(error.message, 'error'); return; }
-    allData = allData.filter(r => r.id !== id);
-    populateStateFilter();
-    updateStats();
-    renderTable();
-    showToast('Suggestion deleted', 'success');
-  }
-
-  /* ── MODAL VIEW ── */
-  function viewRow(id) {
-    const r = allData.find(x => x.id === id);
-    if (!r) return;
-
-    document.getElementById('modalContent').innerHTML = `
-      <p style="font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.4rem;">
-        ${esc(r.category || '')}
-      </p>
-      <div class="modal-place">${esc(r.place)}</div>
-      <div class="modal-meta">
-        ${formatDate(r.submitted_at)}
-        &nbsp;·&nbsp;
-        <span class="badge badge-${r.status}">${r.status}</span>
-      </div>
-
-      ${r.photo_url ? `<img src="${esc(r.photo_url)}" class="modal-img" alt="photo">` : ''}
-
-      <!-- State & District block -->
-      <div class="modal-location-block">
-        <div class="modal-loc-item">
-          <div class="modal-loc-label"><i class="fas fa-map" style="margin-right:.3rem;"></i>State</div>
-          <div class="modal-loc-val">${esc(r.state || '—')}</div>
-        </div>
-        <div class="modal-loc-item">
-          <div class="modal-loc-label"><i class="fas fa-map-marker-alt" style="margin-right:.3rem;"></i>District</div>
-          <div class="modal-loc-val">${esc(r.district || '—')}</div>
-        </div>
-        <div class="modal-loc-item">
-          <div class="modal-loc-label"><i class="fas fa-tag" style="margin-right:.3rem;"></i>Category</div>
-          <div class="modal-loc-val">${esc(r.category || '—')}</div>
-        </div>
-      </div>
-
-      <!-- Submitter info -->
-      <div class="modal-grid">
-        <div>
-          <div class="modal-section-label">Submitted by</div>
-          <div class="modal-section-val">
-            ${esc(r.name)}<br>
-            <span style="color:var(--muted); font-size:.78rem;">${esc(r.email)}</span>
-          </div>
-        </div>
-        <div>
-          <div class="modal-section-label">Rating</div>
-          <div class="modal-section-val">${starHtml(r.rating)}</div>
-        </div>
-        <div>
-          <div class="modal-section-label">Submitted On</div>
-          <div class="modal-section-val">${formatDate(r.submitted_at)}</div>
-        </div>
-      </div>
-
-      <!-- Description -->
-      <div class="modal-section">
-        <div class="modal-section-label">Description</div>
-        <div class="modal-section-val">${esc(r.description || '—')}</div>
-      </div>
-
-      <!-- Actions -->
-      <div class="action-btns" style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid rgba(13,13,13,.07);">
-        ${r.status !== 'approved'
-          ? `<button class="act-btn act-approve" onclick="updateStatus('${r.id}','approved');closeModal()">
-               <i class="fas fa-check"></i> Approve
-             </button>`
-          : ''}
-        ${r.status !== 'rejected'
-          ? `<button class="act-btn act-reject" onclick="updateStatus('${r.id}','rejected');closeModal()">
-               <i class="fas fa-times"></i> Reject
-             </button>`
-          : ''}
-        <button class="act-btn act-delete" onclick="deleteRow('${r.id}');closeModal()">
-          <i class="fas fa-trash"></i> Delete
-        </button>
-      </div>
-    `;
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-
-  /* ── EXPORT CSV ── */
-  function exportCSV() {
-    const rows = getFilteredRows();   /* exports only what's currently filtered */
-
-    const headers = [
-      'ID', 'Name', 'Email', 'Place',
-      'State', 'District',             /* ← new columns */
-      'Category', 'Rating', 'Description',
-      'Status', 'Submitted At', 'Photo URL'
-    ];
-
-    const csvRows = [headers.join(',')];
-
-    rows.forEach(r => {
-      csvRows.push([
-        r.id,
-        csvCell(r.name),
-        csvCell(r.email),
-        csvCell(r.place),
-        csvCell(r.state),              /* ← state */
-        csvCell(r.district),           /* ← district */
-        csvCell(r.category),
-        r.rating || '',
-        csvCell(r.description),
-        r.status,
-        r.submitted_at,
-        csvCell(r.photo_url)
-      ].join(','));
-    });
-
-    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = `travelo-suggestions-${Date.now()}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast(`Exported ${rows.length} rows`, 'success');
-  }
-
-  /* ── HELPERS ── */
-  function esc(str) {
-    return String(str || '')
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-  function csvCell(v) { return `"${String(v||'').replace(/"/g,'""')}"`; }
-  function formatDate(iso) {
-    if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
-  }
-  function starHtml(rating) {
-    if (!rating) return '<span style="color:var(--muted);font-size:.75rem">—</span>';
-    return Array.from({length:5}, (_,i) =>
-      `<span class="${i < rating ? 'stars' : 'stars-empty'}">★</span>`
-    ).join('');
-  }
-  function showToast(msg, type='success') {
-    const t = document.getElementById('toast');
-    t.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation-circle'}"></i> ${msg}`;
-    t.className = `toast toast-${type} show`;
-    setTimeout(() => t.classList.remove('show'), 3000);
-  }
+/* Session expiry countdown in topbar — updates every minute */
+function updateSessionTimer() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return;
+    const { ts } = JSON.parse(raw);
+    const remaining = SESSION_TTL - (Date.now() - ts);
+    if (remaining <= 0) { doLogout(); return; }
+    const hrs  = Math.floor(remaining / 3600000);
+    const mins = Math.floor((remaining % 3600000) / 60000);
+    const badge = document.getElementById('sessionTimer');
+    if (badge) badge.textContent = `${hrs}h ${mins}m`;
+    setTimeout(updateSessionTimer, 60000);
+  } catch(e) {}
+}
+setTimeout(updateSessionTimer, 500);
 </script>
 </body>
 </html>

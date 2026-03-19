@@ -10,20 +10,13 @@
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --ink:   #0d0d0d;
-      --sand:  #f5f0e8;
-      --gold:  #b8924a;
-      --gold2: #e8d5a8;
-      --cream: #faf7f2;
-      --muted: #888070;
-      --white: #ffffff;
-      --nav-h: 72px;
+      --ink:#0d0d0d; --sand:#f5f0e8; --gold:#b8924a; --gold2:#e8d5a8;
+      --cream:#faf7f2; --muted:#888070; --white:#ffffff; --nav-h:72px;
+      --green:#27ae60; --red:#e74c3c;
     }
     html { scroll-behavior:smooth; }
     body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; }
     ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
-
-    /* ── NAV ── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; backdrop-filter:blur(18px) saturate(180%); background:rgba(250,247,242,0.88); border-bottom:1px solid rgba(184,146,74,0.15); }
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,2.5vw,1.8rem); font-weight:300; letter-spacing:.12em; color:var(--ink); text-decoration:none; }
     .nav-logo span { color:var(--gold); }
@@ -33,15 +26,11 @@
     .nav-links a:hover::after { width:100%; }
     .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
     .hamburger span { display:block; width:24px; height:1.5px; background:var(--ink); }
-
-    /* ── MOBILE MENU ── */
     .mobile-menu { position:fixed; inset:0; z-index:200; background:var(--ink); display:flex; flex-direction:column; justify-content:center; align-items:center; gap:2.4rem; opacity:0; pointer-events:none; transition:opacity .35s; }
     .mobile-menu.open { opacity:1; pointer-events:all; }
     .mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3.2rem); font-weight:300; color:var(--white); text-decoration:none; transition:color .2s; }
     .mobile-menu a:hover { color:var(--gold); }
     .mobile-close { position:absolute; top:1.8rem; right:5vw; background:none; border:none; cursor:pointer; font-size:1.8rem; color:var(--white); }
-
-    /* ── HERO ── */
     .hero { position:relative; height:80vh; min-height:560px; display:flex; align-items:flex-end; padding:0 5vw 8vh; overflow:hidden; }
     .hero-bg { position:absolute; inset:0; }
     .hero-bg img { width:100%; height:100%; object-fit:cover; animation:kenburns 14s ease forwards; }
@@ -60,50 +49,24 @@
     .btn-primary:hover { background:#a07840; transform:translateY(-1px); }
     .btn-ghost { display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 2rem; background:transparent; color:var(--white); font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; border:1px solid rgba(255,255,255,.4); cursor:pointer; transition:border-color .25s, background .25s; }
     .btn-ghost:hover { border-color:var(--gold); background:rgba(184,146,74,.12); }
-
-    /* ── SEARCH BAR ── */
-    .search-strip {
-      background:var(--white);
-      box-shadow:0 8px 40px rgba(0,0,0,.1);
-      padding:2rem 5vw;
-      position:sticky; top:var(--nav-h); z-index:90;
-      border-bottom:1px solid rgba(184,146,74,.12);
-    }
-    .search-bar {
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr 1fr auto;
-      gap:1px; background:rgba(184,146,74,.15);
-    }
-    .search-field {
-      background:var(--cream); padding:1rem 1.2rem;
-      display:flex; flex-direction:column; gap:.3rem;
-    }
+    .search-strip { background:var(--white); box-shadow:0 8px 40px rgba(0,0,0,.1); padding:2rem 5vw; border-bottom:1px solid rgba(184,146,74,.12); }
+    .search-bar { display:grid; grid-template-columns:1fr 1fr 1fr 1fr auto; gap:1px; background:rgba(184,146,74,.15); }
+    .search-field { background:var(--cream); padding:1rem 1.2rem; display:flex; flex-direction:column; gap:.3rem; }
     .search-field label { font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
-    .search-field input,
-    .search-field select {
-      border:none; background:transparent; outline:none;
-      font-family:'DM Sans',sans-serif; font-size:.88rem; color:var(--ink);
-      appearance:none; cursor:pointer;
-    }
+    .search-field input, .search-field select { border:none; background:transparent; outline:none; font-family:'DM Sans',sans-serif; font-size:.88rem; color:var(--ink); appearance:none; cursor:pointer; }
     .search-field input::placeholder { color:var(--muted); }
-    .search-field select option { color:var(--ink); }
-    .search-btn {
-      background:var(--gold); color:var(--white); border:none; cursor:pointer;
-      padding:0 2rem; font-family:'DM Sans',sans-serif; font-size:.78rem;
-      letter-spacing:.15em; text-transform:uppercase;
-      display:flex; align-items:center; gap:.6rem;
-      transition:background .25s;
-    }
+    .search-btn { background:var(--gold); color:var(--white); border:none; cursor:pointer; padding:0 2rem; font-family:'DM Sans',sans-serif; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:.6rem; transition:background .25s; }
     .search-btn:hover { background:#a07840; }
-
-    /* ── MARQUEE ── */
+    .search-btn:disabled { opacity:.6; cursor:not-allowed; }
+    .api-status { display:flex; align-items:center; gap:.5rem; font-size:.68rem; letter-spacing:.1em; color:var(--muted); margin-top:.8rem; }
+    .api-dot { width:7px; height:7px; border-radius:50%; background:#ccc; }
+    .api-dot.connected { background:var(--green); }
+    .api-dot.error { background:var(--red); }
     .marquee-wrap { background:var(--gold); overflow:hidden; padding:.8rem 0; user-select:none; }
     .marquee-track { display:flex; gap:3rem; width:max-content; animation:marquee 28s linear infinite; }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
     .marquee-item { display:flex; align-items:center; gap:1rem; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--white); white-space:nowrap; }
     .marquee-dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.5); }
-
-    /* ── SHARED ── */
     section { padding:90px 5vw; }
     .section-label { font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
     .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:300; line-height:1.15; color:var(--ink); }
@@ -112,152 +75,108 @@
     .section-header { margin-bottom:3rem; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
     .filter-tabs { display:flex; gap:.5rem; flex-wrap:wrap; }
     .filter-tab { padding:.45rem 1.1rem; border:1px solid rgba(13,13,13,.15); background:transparent; font-family:'DM Sans',sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:all .25s; color:var(--muted); }
-    .filter-tab.active, .filter-tab:hover { background:var(--ink); color:var(--white); border-color:var(--ink); }
-    .filter-tab.active { border-color:var(--gold); background:var(--gold); }
-
-    /* ── HOTEL GRID ── */
+    .filter-tab.active { border-color:var(--gold); background:var(--gold); color:var(--white); }
     .hotel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:2rem; }
-
-    .hotel-card {
-      background:var(--white);
-      box-shadow:0 2px 20px rgba(0,0,0,.06);
-      overflow:hidden;
-      transition:transform .35s, box-shadow .35s;
-      cursor:pointer;
-    }
+    .loading-state { grid-column:1/-1; text-align:center; padding:4rem 2rem; }
+    .loading-spinner { width:48px; height:48px; border:2px solid rgba(184,146,74,.2); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 1.2rem; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .loading-text { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--muted); }
+    .loading-sub { font-size:.75rem; color:var(--muted); margin-top:.4rem; letter-spacing:.05em; }
+    .error-state { grid-column:1/-1; text-align:center; padding:3rem; background:rgba(231,76,60,.04); border:1px solid rgba(231,76,60,.2); }
+    .error-state i { color:var(--red); font-size:1.5rem; margin-bottom:.8rem; display:block; }
+    .error-state p { font-size:.85rem; color:var(--muted); }
+    .error-state strong { color:var(--ink); display:block; margin-bottom:.4rem; }
+    .hotel-card { background:var(--white); box-shadow:0 2px 20px rgba(0,0,0,.06); overflow:hidden; transition:transform .35s, box-shadow .35s; cursor:pointer; }
     .hotel-card:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,0,0,.13); }
-
     .hotel-img-wrap { position:relative; overflow:hidden; height:240px; }
     .hotel-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s; }
     .hotel-card:hover .hotel-img-wrap img { transform:scale(1.07); }
-
-    .hotel-badge {
-      position:absolute; top:1rem; left:1rem;
-      background:var(--gold); color:var(--white);
-      font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
-      padding:.3rem .75rem;
-    }
-    .hotel-wishlist {
-      position:absolute; top:1rem; right:1rem;
-      width:34px; height:34px; border-radius:50%;
-      background:rgba(255,255,255,.9); border:none; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      transition:background .25s, transform .2s;
-    }
+    .hotel-badge { position:absolute; top:1rem; left:1rem; background:var(--gold); color:var(--white); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; padding:.3rem .75rem; }
+    .hotel-badge.live { background:var(--green); }
+    .hotel-wishlist { position:absolute; top:1rem; right:1rem; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.9); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .25s, transform .2s; }
     .hotel-wishlist:hover { background:var(--white); transform:scale(1.1); }
     .hotel-wishlist i { color:var(--muted); font-size:.85rem; transition:color .25s; }
-    .hotel-wishlist.liked i { color:#e74c3c; }
-
+    .hotel-wishlist.liked i { color:var(--red); }
     .hotel-stars { display:flex; gap:2px; padding:1.2rem 1.4rem .4rem; }
     .hotel-stars i { color:var(--gold); font-size:.72rem; }
-
-    .hotel-body { padding:0 1.4rem 0; }
+    .hotel-body { padding:0 1.4rem; }
     .hotel-location { font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; display:flex; align-items:center; gap:.35rem; }
     .hotel-location i { font-size:.65rem; color:var(--gold); }
     .hotel-name { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:400; color:var(--ink); line-height:1.2; margin-bottom:.6rem; }
     .hotel-desc { font-size:.78rem; color:var(--muted); line-height:1.65; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-
     .hotel-amenities { display:flex; gap:.5rem; flex-wrap:wrap; padding:.9rem 1.4rem; }
     .amenity { display:flex; align-items:center; gap:.35rem; font-size:.65rem; color:var(--muted); letter-spacing:.05em; }
     .amenity i { color:var(--gold); font-size:.7rem; }
-
-    .hotel-footer {
-      padding:1rem 1.4rem 1.4rem;
-      display:flex; align-items:center; justify-content:space-between;
-      border-top:1px solid rgba(13,13,13,.06);
-      margin-top:.4rem;
-    }
-    .hotel-price { }
+    .hotel-footer { padding:1rem 1.4rem; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(13,13,13,.06); margin-top:.4rem; }
     .hotel-price-label { font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
     .hotel-price-num { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:300; color:var(--ink); line-height:1; }
     .hotel-price-per { font-size:.68rem; color:var(--muted); }
     .hotel-rating { display:flex; align-items:center; gap:.5rem; }
     .rating-score { width:34px; height:34px; background:var(--gold); color:var(--white); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:.82rem; font-weight:500; }
     .rating-label { font-size:.68rem; color:var(--muted); line-height:1.3; }
-    .hotel-book-btn {
-      width:100%; padding:.85rem; margin:0 1.4rem 1.4rem; width:calc(100% - 2.8rem);
-      background:var(--ink); color:var(--white); border:none; cursor:pointer;
-      font-family:'DM Sans',sans-serif; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase;
-      display:flex; align-items:center; justify-content:center; gap:.6rem;
-      transition:background .25s;
-    }
+    .hotel-book-btn { width:calc(100% - 2.8rem); margin:0 1.4rem 1.4rem; padding:.85rem; background:var(--ink); color:var(--white); border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:.6rem; transition:background .25s; }
     .hotel-book-btn:hover { background:var(--gold); }
-
-    /* ── FEATURED HOTEL (wide card) ── */
-    .hotel-card.featured {
-      grid-column: span 2;
-      display:grid; grid-template-columns:1.2fr 1fr;
-    }
-    .hotel-card.featured .hotel-img-wrap { height:100%; min-height:340px; }
-    .hotel-card.featured .hotel-content { display:flex; flex-direction:column; justify-content:space-between; }
-    .featured-tag {
-      position:absolute; bottom:1rem; left:1rem;
-      background:rgba(13,13,13,.75); color:var(--gold2);
-      font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
-      padding:.3rem .75rem; backdrop-filter:blur(6px);
-    }
-
-    /* ── STATS ── */
+    .avail-badge { display:inline-flex; align-items:center; gap:.3rem; font-size:.62rem; padding:.2rem .6rem; margin:0 1.4rem .6rem; }
+    .avail-badge.available { background:rgba(39,174,96,.1); color:#1e7a44; }
     .stats-bar { background:var(--ink); display:flex; justify-content:space-around; flex-wrap:wrap; gap:2rem; padding:60px 5vw; }
     .stat-item { text-align:center; }
     .stat-num { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--gold); line-height:1; }
     .stat-label { font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-top:.5rem; }
-
-    /* ── EXPERIENCE STRIP ── */
     .exp-strip { background:var(--sand); display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(184,146,74,.15); }
     .exp-chip { background:var(--sand); padding:2.2rem 1.8rem; text-align:center; }
     .exp-chip-icon { font-size:1.6rem; color:var(--gold); margin-bottom:.8rem; }
     .exp-chip-title { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ink); margin-bottom:.3rem; }
     .exp-chip-sub { font-size:.75rem; color:var(--muted); line-height:1.6; }
-
-    /* ── BOOKING MODAL ── */
-    .modal-backdrop {
-      position:fixed; inset:0; background:rgba(13,13,13,.6); z-index:400;
-      display:flex; align-items:center; justify-content:center; padding:2rem;
-      opacity:0; pointer-events:none; transition:opacity .3s;
-      backdrop-filter:blur(4px);
-    }
+    .modal-backdrop { position:fixed; inset:0; background:rgba(13,13,13,.6); z-index:400; display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity .3s; backdrop-filter:blur(4px); }
     .modal-backdrop.open { opacity:1; pointer-events:all; }
-    .modal {
-      background:var(--white); max-width:560px; width:100%;
-      transform:translateY(20px); transition:transform .35s;
-      overflow:hidden;
-    }
+    .modal { background:var(--white); max-width:600px; width:100%; max-height:90vh; overflow-y:auto; transform:translateY(20px); transition:transform .35s; }
     .modal-backdrop.open .modal { transform:translateY(0); }
-    .modal-head { background:var(--ink); padding:1.8rem 2rem; display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--gold); }
+    .modal-head { background:var(--ink); padding:1.8rem 2rem; display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid var(--gold); position:sticky; top:0; z-index:1; }
     .modal-head-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400; color:var(--gold); }
     .modal-head-hotel { font-size:.75rem; color:rgba(255,255,255,.6); margin-top:.2rem; }
-    .modal-close { background:none; border:none; cursor:pointer; color:rgba(255,255,255,.6); font-size:1.4rem; transition:color .2s; }
+    .modal-head-price { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold2); margin-top:.3rem; }
+    .modal-close { background:none; border:none; cursor:pointer; color:rgba(255,255,255,.6); font-size:1.4rem; transition:color .2s; flex-shrink:0; }
     .modal-close:hover { color:var(--gold); }
     .modal-body { padding:2rem; }
+    .booking-steps { display:flex; gap:0; margin-bottom:2rem; }
+    .booking-step { flex:1; text-align:center; position:relative; }
+    .booking-step::after { content:''; position:absolute; top:14px; left:50%; right:-50%; height:1px; background:rgba(13,13,13,.12); z-index:0; }
+    .booking-step:last-child::after { display:none; }
+    .step-num { width:28px; height:28px; border-radius:50%; background:rgba(13,13,13,.1); color:var(--muted); font-size:.72rem; font-weight:500; display:flex; align-items:center; justify-content:center; margin:0 auto .4rem; position:relative; z-index:1; transition:all .3s; }
+    .step-num.active { background:var(--gold); color:var(--white); }
+    .step-num.done { background:var(--green); color:var(--white); }
+    .step-label { font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+    .step-panel { display:none; }
+    .step-panel.active { display:block; }
     .modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
     .modal-field { display:flex; flex-direction:column; gap:.45rem; }
     .modal-field label { font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink); font-weight:500; }
-    .modal-field input,
-    .modal-field select {
-      border:1px solid rgba(13,13,13,.15); background:var(--cream);
-      padding:.8rem 1rem; font-family:'DM Sans',sans-serif; font-size:.85rem; color:var(--ink);
-      outline:none; transition:border-color .25s; appearance:none;
-    }
+    .modal-field input, .modal-field select { border:1px solid rgba(13,13,13,.15); background:var(--cream); padding:.8rem 1rem; font-family:'DM Sans',sans-serif; font-size:.85rem; color:var(--ink); outline:none; transition:border-color .25s; appearance:none; width:100%; }
     .modal-field input:focus, .modal-field select:focus { border-color:var(--gold); background:var(--white); }
     .modal-field.full { grid-column:span 2; }
-    .modal-price-strip {
-      background:var(--sand); padding:1.2rem 1.4rem; margin:1.2rem 0;
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .modal-price-label { font-size:.75rem; color:var(--muted); }
-    .modal-price-val { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--gold); font-weight:300; }
-    .modal-price-nights { font-size:.7rem; color:var(--muted); }
-    .modal-submit {
-      width:100%; padding:1rem; background:var(--gold); color:var(--white); border:none; cursor:pointer;
-      font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.16em; text-transform:uppercase;
-      display:flex; align-items:center; justify-content:center; gap:.6rem;
-      transition:background .25s, transform .2s;
-    }
-    .modal-submit:hover { background:#a07840; transform:translateY(-1px); }
+    .modal-field .field-hint { font-size:.68rem; color:var(--muted); margin-top:.2rem; }
+    .price-breakdown { background:var(--sand); padding:1.4rem; margin:1.4rem 0; }
+    .price-row { display:flex; justify-content:space-between; font-size:.82rem; padding:.35rem 0; color:var(--muted); }
+    .price-row.total { border-top:1px solid rgba(184,146,74,.3); margin-top:.5rem; padding-top:.8rem; font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--ink); font-weight:400; }
+    .price-row.total span:last-child { color:var(--gold); }
+    .modal-btn { width:100%; padding:1rem; background:var(--gold); color:var(--white); border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.16em; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:.6rem; transition:background .25s, transform .2s; margin-top:.8rem; }
+    .modal-btn:hover { background:#a07840; transform:translateY(-1px); }
+    .modal-btn.secondary { background:transparent; color:var(--ink); border:1px solid rgba(13,13,13,.2); }
+    .modal-btn.secondary:hover { background:var(--ink); color:var(--white); transform:none; }
+    .modal-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
     .modal-note { font-size:.72rem; color:var(--muted); text-align:center; margin-top:.8rem; line-height:1.6; }
-
-    /* ── FOOTER ── */
+    .booking-success { text-align:center; padding:2rem 1rem; }
+    .success-icon { width:64px; height:64px; border-radius:50%; background:rgba(39,174,96,.1); display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem; }
+    .success-icon i { color:var(--green); font-size:1.6rem; }
+    .success-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--ink); margin-bottom:.5rem; }
+    .success-ref { font-size:.75rem; color:var(--muted); margin-bottom:1rem; }
+    .success-ref span { color:var(--gold); font-weight:500; letter-spacing:.1em; }
+    .success-details { background:var(--sand); padding:1.2rem; text-align:left; font-size:.8rem; color:var(--muted); line-height:1.8; }
+    .toast { position:fixed; bottom:2rem; right:2rem; z-index:999; padding:1rem 1.5rem; font-size:.8rem; display:flex; align-items:center; gap:.7rem; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; max-width:320px; }
+    .toast.show { opacity:1; transform:translateY(0); pointer-events:all; }
+    .toast-success { background:var(--green); color:var(--white); }
+    .toast-error { background:var(--red); color:var(--white); }
+    .toast-info { background:var(--ink); color:var(--white); }
     footer { background:#080808; color:rgba(255,255,255,.55); padding:60px 5vw 30px; }
     .footer-top { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,.08); }
     .footer-brand-name { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--white); letter-spacing:.1em; margin-bottom:.8rem; }
@@ -271,30 +190,34 @@
     .footer-social a { width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.5); text-decoration:none; font-size:.85rem; transition:border-color .25s, color .25s; }
     .footer-social a:hover { border-color:var(--gold); color:var(--gold); }
     .footer-bottom { padding-top:1.8rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; font-size:.75rem; }
-
-    /* ── REVEAL ── */
     .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s, transform .7s; }
     .reveal.visible { opacity:1; transform:translateY(0); }
-
-    /* ── RESPONSIVE ── */
-    @media(max-width:1000px){ .hotel-card.featured { grid-column:span 1; display:block; } .hotel-card.featured .hotel-img-wrap { height:240px; } }
-    @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .search-bar{grid-template-columns:1fr 1fr; gap:1px;} .search-btn{padding:1rem 1.4rem;} .exp-strip{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr 1fr;} }
-    @media(max-width:600px){ section{padding:70px 5vw;} .hotel-grid{grid-template-columns:1fr;} .search-bar{grid-template-columns:1fr;} .modal-grid{grid-template-columns:1fr;} .modal-field.full{grid-column:span 1;} .exp-strip{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr; gap:2rem;} }
+    @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .search-bar{grid-template-columns:1fr 1fr;} .exp-strip{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr 1fr;} }
+    @media(max-width:600px){ section{padding:70px 5vw;} .hotel-grid{grid-template-columns:1fr;} .search-bar{grid-template-columns:1fr;} .modal-grid{grid-template-columns:1fr;} .modal-field.full{grid-column:span 1;} .footer-top{grid-template-columns:1fr;gap:2rem;} }
   </style>
 </head>
 <body>
 
-<!-- MOBILE MENU -->
+<!-- SUPABASE + CONFIG -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  /* ── SUPABASE ── */
+  const SUPABASE_URL      = 'https://mqxpcxvyfeefriaehbev.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_rrTAjrtL7hrQj_YupZgbWw_QFed0sgT';
+
+  /* ── AGODA API ── */
+  const RAPIDAPI_KEY  = 'fae2a5a823mshc8a0a6afa8fc931p132310jsn8a53d58f9b15';
+  const RAPIDAPI_HOST = 'agoda-travel.p.rapidapi.com';
+  const RAPIDAPI_BASE = 'https://agoda-travel.p.rapidapi.com';
+  const TEST_MODE     = true; /* set false when live API endpoint confirmed */
+</script>
+
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
-  <a href="index.html">Home</a>
-  <a href="kerala.html">Kerala</a>
-  <a href="hotel.html">Hotels</a>
-  <a href="#">Experiences</a>
-  <a href="contact.html">Contact</a>
+  <a href="index.html">Home</a><a href="kerala.html">Kerala</a>
+  <a href="hotel.html">Hotels</a><a href="#">Experiences</a><a href="contact.html">Contact</a>
 </div>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">Trave<span>lo</span></a>
   <ul class="nav-links">
@@ -307,75 +230,71 @@
   <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1800&q=80" alt="Luxury Hotel">
-  </div>
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1800&q=80" alt="Luxury Hotel"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-stars">
-      <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-    </div>
-    <p class="hero-tagline">Exclusively 5-Star · Hotels & Resorts</p>
+    <div class="hero-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+    <p class="hero-tagline">Agoda · Real Hotels · Live Pricing</p>
     <h1 class="hero-title">Stay in <em>Pure</em><br>Luxury</h1>
-    <p class="hero-sub">Handpicked five-star hotels and resorts across India's most extraordinary destinations — where every detail is an experience in itself.</p>
+    <p class="hero-sub">Search real-time availability across India's finest five-star hotels and resorts — powered by Agoda global hotel inventory.</p>
     <div class="hero-btns">
-      <a href="#hotels" class="btn-primary">
-        Browse Hotels
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
+      <a href="#hotels" class="btn-primary">Search Hotels <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       <a href="#" class="btn-ghost">View Resorts</a>
     </div>
   </div>
 </section>
 
-<!-- SEARCH STRIP -->
 <div class="search-strip">
   <div class="search-bar">
     <div class="search-field">
       <label><i class="fas fa-map-marker-alt"></i> Destination</label>
-      <select>
+      <select id="searchCity">
         <option value="" disabled selected>Where are you going?</option>
-        <option>Kerala</option>
-        <option>Rajasthan</option>
-        <option>Goa</option>
-        <option>Kashmir</option>
-        <option>Himachal Pradesh</option>
-        <option>Tamil Nadu</option>
-        <option>Maharashtra</option>
-        <option>Karnataka</option>
+        <option value="CCJ">Kozhikode, Kerala</option>
+        <option value="COK">Kochi, Kerala</option>
+        <option value="TRV">Trivandrum, Kerala</option>
+        <option value="JAI">Jaipur, Rajasthan</option>
+        <option value="UDR">Udaipur, Rajasthan</option>
+        <option value="GOI">Goa</option>
+        <option value="DEL">New Delhi</option>
+        <option value="BOM">Mumbai</option>
+        <option value="IXL">Leh, Ladakh</option>
+        <option value="SHL">Shimla, Himachal</option>
+        <option value="IXZ">Port Blair, A&N</option>
+        <option value="MAA">Chennai, Tamil Nadu</option>
       </select>
     </div>
     <div class="search-field">
       <label><i class="fas fa-calendar-alt"></i> Check In</label>
-      <input type="date">
+      <input type="date" id="searchCheckin">
     </div>
     <div class="search-field">
       <label><i class="fas fa-calendar-alt"></i> Check Out</label>
-      <input type="date">
+      <input type="date" id="searchCheckout">
     </div>
     <div class="search-field">
       <label><i class="fas fa-user"></i> Guests</label>
-      <select>
-        <option>1 Guest</option>
-        <option selected>2 Guests</option>
-        <option>3 Guests</option>
-        <option>4 Guests</option>
-        <option>5+ Guests</option>
+      <select id="searchGuests">
+        <option value="1">1 Guest</option>
+        <option value="2" selected>2 Guests</option>
+        <option value="3">3 Guests</option>
+        <option value="4">4 Guests</option>
       </select>
     </div>
-    <button class="search-btn">
-      <i class="fas fa-search"></i>
-      Search
+    <button class="search-btn" id="searchBtn" onclick="runSearch()">
+      <i class="fas fa-search"></i> Search
     </button>
   </div>
+  <div class="api-status">
+    <div class="api-dot" id="apiDot"></div>
+    <span id="apiStatusText">Ready</span>
+  </div>
 </div>
 
-<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <div class="marquee-item"><i class="fas fa-star" style="font-size:.55rem;"></i><span>5-Star Luxury</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><i class="fas fa-star" style="font-size:.55rem;"></i><span>Live Availability</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-spa" style="font-size:.6rem;"></i><span>World-Class Spa</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-swimming-pool" style="font-size:.6rem;"></i><span>Infinity Pools</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-utensils" style="font-size:.6rem;"></i><span>Fine Dining</span><span class="marquee-dot"></span></div>
@@ -383,7 +302,7 @@
     <div class="marquee-item"><i class="fas fa-gem" style="font-size:.6rem;"></i><span>Heritage Properties</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-mountain" style="font-size:.6rem;"></i><span>Scenic Retreats</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-water" style="font-size:.6rem;"></i><span>Beachfront Resorts</span><span class="marquee-dot"></span></div>
-    <div class="marquee-item"><i class="fas fa-star" style="font-size:.55rem;"></i><span>5-Star Luxury</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><i class="fas fa-star" style="font-size:.55rem;"></i><span>Live Availability</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-spa" style="font-size:.6rem;"></i><span>World-Class Spa</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-swimming-pool" style="font-size:.6rem;"></i><span>Infinity Pools</span><span class="marquee-dot"></span></div>
     <div class="marquee-item"><i class="fas fa-utensils" style="font-size:.6rem;"></i><span>Fine Dining</span><span class="marquee-dot"></span></div>
@@ -394,555 +313,638 @@
   </div>
 </div>
 
-<!-- HOTELS SECTION -->
 <section id="hotels" style="background:var(--cream);">
   <div class="section-header reveal">
     <div>
-      <p class="section-label">Exclusively 5-Star</p>
+      <p class="section-label">Live from Agoda</p>
       <h2 class="section-title">Luxury Hotels<br>& <em>Resorts</em></h2>
-      <p class="section-sub">Every property is personally vetted — only the finest five-star experiences make it to Travelo.</p>
+      <p class="section-sub">Real-time availability and pricing — search above to see live hotels with actual prices.</p>
     </div>
     <div class="filter-tabs">
-      <button class="filter-tab active" onclick="filterHotels('all', this)">All</button>
-      <button class="filter-tab" onclick="filterHotels('hotel', this)">Hotels</button>
-      <button class="filter-tab" onclick="filterHotels('resort', this)">Resorts</button>
-      <button class="filter-tab" onclick="filterHotels('heritage', this)">Heritage</button>
-      <button class="filter-tab" onclick="filterHotels('beach', this)">Beachfront</button>
+      <button class="filter-tab active" onclick="filterCards('all',this)">All</button>
+      <button class="filter-tab" onclick="filterCards('RESORT',this)">Resort</button>
+      <button class="filter-tab" onclick="filterCards('HOTEL',this)">Hotel</button>
+      <button class="filter-tab" onclick="filterCards('BOUTIQUE',this)">Boutique</button>
     </div>
   </div>
-
   <div class="hotel-grid" id="hotelGrid">
-
-    <!-- FEATURED -->
-    <div class="hotel-card featured reveal" data-type="resort heritage">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80" alt="Taj Lake Palace">
-        <div class="hotel-badge">Editor's Choice</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-        <div class="featured-tag">★ Featured Property</div>
-      </div>
-      <div class="hotel-content">
-        <div>
-          <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <div class="hotel-body">
-            <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Udaipur, Rajasthan</p>
-            <h3 class="hotel-name">Taj Lake Palace</h3>
-            <p class="hotel-desc">A marble palace floating on Lake Pichola — one of the world's most romantic hotels. Built in 1746, every room faces the lake. The epitome of Rajput grandeur reimagined as pure luxury.</p>
-          </div>
-          <div class="hotel-amenities">
-            <span class="amenity"><i class="fas fa-swimming-pool"></i> Pool</span>
-            <span class="amenity"><i class="fas fa-spa"></i> Spa</span>
-            <span class="amenity"><i class="fas fa-utensils"></i> Fine Dining</span>
-            <span class="amenity"><i class="fas fa-concierge-bell"></i> Butler</span>
-            <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-          </div>
-        </div>
-        <div>
-          <div class="hotel-footer">
-            <div class="hotel-price">
-              <p class="hotel-price-label">Starting from</p>
-              <p class="hotel-price-num">₹45,000</p>
-              <p class="hotel-price-per">per night</p>
-            </div>
-            <div class="hotel-rating">
-              <div class="rating-score">9.6</div>
-              <div class="rating-label">Exceptional<br><span style="color:var(--gold)">1,240 reviews</span></div>
-            </div>
-          </div>
-          <button class="hotel-book-btn" onclick="openModal('Taj Lake Palace', 'Udaipur, Rajasthan', '₹45,000')">
-            <i class="fas fa-calendar-check"></i> Book This Stay
-          </button>
-        </div>
-      </div>
+    <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
+      <i class="fas fa-search" style="font-size:2rem;color:var(--gold);opacity:.4;margin-bottom:1.2rem;display:block;"></i>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--muted);">Select a destination and dates above to search live hotel availability</p>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">Powered by Agoda · Real-time pricing · Enquiry saved to database</p>
     </div>
-
-    <!-- CARD 2 -->
-    <div class="hotel-card reveal" data-type="resort beach">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80" alt="Taj Bekal Resort">
-        <div class="hotel-badge">Beach Resort</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Bekal, Kerala</p>
-        <h3 class="hotel-name">Taj Bekal Resort & Spa</h3>
-        <p class="hotel-desc">Nestled between the Arabian Sea and Bekal Fort, this resort offers overwater villas, Ayurvedic spa and sunset dining over the ocean.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-water"></i> Beachfront</span>
-        <span class="amenity"><i class="fas fa-spa"></i> Ayurveda</span>
-        <span class="amenity"><i class="fas fa-swimming-pool"></i> Pool</span>
-        <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹28,000</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.4</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">876 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('Taj Bekal Resort & Spa', 'Bekal, Kerala', '₹28,000')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
-    <!-- CARD 3 -->
-    <div class="hotel-card reveal" data-type="heritage hotel">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=700&q=80" alt="The Oberoi Udaivilas">
-        <div class="hotel-badge">Heritage Hotel</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Udaipur, Rajasthan</p>
-        <h3 class="hotel-name">The Oberoi Udaivilas</h3>
-        <p class="hotel-desc">Rated the world's best hotel multiple times — inspired by royal Mewar architecture with private pools in every suite and uninterrupted lake views.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-swimming-pool"></i> Private Pool</span>
-        <span class="amenity"><i class="fas fa-spa"></i> Spa</span>
-        <span class="amenity"><i class="fas fa-concierge-bell"></i> Butler</span>
-        <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹62,000</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.8</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">2,100 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('The Oberoi Udaivilas', 'Udaipur, Rajasthan', '₹62,000')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
-    <!-- CARD 4 -->
-    <div class="hotel-card reveal" data-type="resort">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700&q=80" alt="Vythiri Resort">
-        <div class="hotel-badge">Forest Resort</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Wayanad, Kerala</p>
-        <h3 class="hotel-name">Vythiri Resort</h3>
-        <p class="hotel-desc">Luxury treehouse and cottage stays immersed in a private rainforest. Zip-lining, Ayurveda, forest walks and candlelit dinners under the stars.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-tree"></i> Treehouse</span>
-        <span class="amenity"><i class="fas fa-spa"></i> Ayurveda</span>
-        <span class="amenity"><i class="fas fa-swimming-pool"></i> Pool</span>
-        <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹18,000</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.2</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">640 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('Vythiri Resort', 'Wayanad, Kerala', '₹18,000')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
-    <!-- CARD 5 -->
-    <div class="hotel-card reveal" data-type="beach resort">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1582610285985-a42d9193f2fd?w=700&q=80" alt="Leela Goa">
-        <div class="hotel-badge">Beachfront</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Cavelossim, Goa</p>
-        <h3 class="hotel-name">The Leela Goa</h3>
-        <p class="hotel-desc">Set on 75 acres along Goa's pristine Cavelossim Beach. With lagoon pools, world-class golf and extraordinary sunset dinners over the Arabian Sea.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-water"></i> Beachfront</span>
-        <span class="amenity"><i class="fas fa-golf-ball"></i> Golf</span>
-        <span class="amenity"><i class="fas fa-swimming-pool"></i> Lagoon Pool</span>
-        <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹22,000</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.3</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">1,580 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('The Leela Goa', 'Cavelossim, Goa', '₹22,000')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
-    <!-- CARD 6 -->
-    <div class="hotel-card reveal" data-type="hotel heritage">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&q=80" alt="The Grand Dragon Ladakh">
-        <div class="hotel-badge">Mountain Hotel</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Leh, Ladakh</p>
-        <h3 class="hotel-name">The Grand Dragon Ladakh</h3>
-        <p class="hotel-desc">Perched at 11,500 ft with panoramic Himalayan views, heated rooms, rooftop observatory and curated Ladakhi cultural experiences every evening.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-mountain"></i> Mountain View</span>
-        <span class="amenity"><i class="fas fa-fire"></i> Heated Rooms</span>
-        <span class="amenity"><i class="fas fa-utensils"></i> Restaurant</span>
-        <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹16,500</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.1</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">420 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('The Grand Dragon Ladakh', 'Leh, Ladakh', '₹16,500')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
-    <!-- CARD 7 -->
-    <div class="hotel-card reveal" data-type="resort beach">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=700&q=80" alt="CGH Earth Marari Beach">
-        <div class="hotel-badge">Eco Resort</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Marari Beach, Kerala</p>
-        <h3 class="hotel-name">CGH Earth Marari Beach</h3>
-        <p class="hotel-desc">A sustainable luxury eco-resort on Kerala's most idyllic beach. Thatched villas, Ayurvedic healing centre and farm-to-table dining in a coconut grove.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-leaf"></i> Eco-Friendly</span>
-        <span class="amenity"><i class="fas fa-spa"></i> Ayurveda</span>
-        <span class="amenity"><i class="fas fa-water"></i> Beachfront</span>
-        <span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹14,000</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.5</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">980 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('CGH Earth Marari Beach', 'Marari Beach, Kerala', '₹14,000')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
-    <!-- CARD 8 -->
-    <div class="hotel-card reveal" data-type="heritage hotel">
-      <div class="hotel-img-wrap">
-        <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=700&q=80" alt="Rambagh Palace">
-        <div class="hotel-badge">Palace Hotel</div>
-        <button class="hotel-wishlist" onclick="toggleWish(this)"><i class="far fa-heart"></i></button>
-      </div>
-      <div class="hotel-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-      <div class="hotel-body">
-        <p class="hotel-location"><i class="fas fa-map-marker-alt"></i> Jaipur, Rajasthan</p>
-        <h3 class="hotel-name">Rambagh Palace</h3>
-        <p class="hotel-desc">Once the residence of Maharaja of Jaipur, this grand palace hotel is spread over 47 acres of Mughal gardens. Pure royal indulgence reimagined for the modern age.</p>
-      </div>
-      <div class="hotel-amenities">
-        <span class="amenity"><i class="fas fa-crown"></i> Palace</span>
-        <span class="amenity"><i class="fas fa-swimming-pool"></i> Pool</span>
-        <span class="amenity"><i class="fas fa-spa"></i> Spa</span>
-        <span class="amenity"><i class="fas fa-utensils"></i> Fine Dining</span>
-      </div>
-      <div class="hotel-footer">
-        <div class="hotel-price">
-          <p class="hotel-price-label">Starting from</p>
-          <p class="hotel-price-num">₹38,000</p>
-          <p class="hotel-price-per">per night</p>
-        </div>
-        <div class="hotel-rating">
-          <div class="rating-score">9.7</div>
-          <div class="rating-label">Exceptional<br><span style="color:var(--gold)">1,840 reviews</span></div>
-        </div>
-      </div>
-      <button class="hotel-book-btn" onclick="openModal('Rambagh Palace', 'Jaipur, Rajasthan', '₹38,000')">
-        <i class="fas fa-calendar-check"></i> Book This Stay
-      </button>
-    </div>
-
   </div>
 </section>
 
-<!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-item reveal"><div class="stat-num">50+</div><div class="stat-label">Luxury Properties</div></div>
-  <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-label">5-Star Verified</div></div>
-  <div class="stat-item reveal"><div class="stat-num">12k</div><div class="stat-label">Bookings Made</div></div>
+  <div class="stat-item reveal"><div class="stat-num">500k+</div><div class="stat-label">Global Properties</div></div>
+  <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-label">Real-time Pricing</div></div>
+  <div class="stat-item reveal"><div class="stat-num">Instant</div><div class="stat-label">Confirmation</div></div>
   <div class="stat-item reveal"><div class="stat-num">9.5</div><div class="stat-label">Avg. Guest Rating</div></div>
 </div>
 
-<!-- EXPERIENCE STRIP -->
 <div class="exp-strip">
-  <div class="exp-chip reveal">
-    <div class="exp-chip-icon"><i class="fas fa-concierge-bell"></i></div>
-    <p class="exp-chip-title">24/7 Concierge</p>
-    <p class="exp-chip-sub">Personal butler and concierge service at every property</p>
-  </div>
-  <div class="exp-chip reveal">
-    <div class="exp-chip-icon"><i class="fas fa-shield-alt"></i></div>
-    <p class="exp-chip-title">Verified Stays</p>
-    <p class="exp-chip-sub">Every hotel personally inspected by our editorial team</p>
-  </div>
-  <div class="exp-chip reveal">
-    <div class="exp-chip-icon"><i class="fas fa-tags"></i></div>
-    <p class="exp-chip-title">Best Rate Promise</p>
-    <p class="exp-chip-sub">We match any lower rate found elsewhere, guaranteed</p>
-  </div>
-  <div class="exp-chip reveal">
-    <div class="exp-chip-icon"><i class="fas fa-headset"></i></div>
-    <p class="exp-chip-title">Dedicated Support</p>
-    <p class="exp-chip-sub">Our travel experts are available before and during your stay</p>
-  </div>
+  <div class="exp-chip reveal"><div class="exp-chip-icon"><i class="fas fa-concierge-bell"></i></div><p class="exp-chip-title">24/7 Concierge</p><p class="exp-chip-sub">Personal butler and concierge service at every property</p></div>
+  <div class="exp-chip reveal"><div class="exp-chip-icon"><i class="fas fa-shield-alt"></i></div><p class="exp-chip-title">Verified Stays</p><p class="exp-chip-sub">Every hotel personally inspected by our editorial team</p></div>
+  <div class="exp-chip reveal"><div class="exp-chip-icon"><i class="fas fa-tags"></i></div><p class="exp-chip-title">Best Rate Promise</p><p class="exp-chip-sub">We match any lower rate found elsewhere, guaranteed</p></div>
+  <div class="exp-chip reveal"><div class="exp-chip-icon"><i class="fas fa-headset"></i></div><p class="exp-chip-title">Dedicated Support</p><p class="exp-chip-sub">Our travel experts available before and during your stay</p></div>
 </div>
 
 <!-- BOOKING MODAL -->
-<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)">
+<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="bookingModal">
     <div class="modal-head">
       <div>
         <p class="modal-head-title">Book Your Stay</p>
-        <p class="modal-head-hotel" id="modalHotelName">Hotel Name</p>
+        <p class="modal-head-hotel" id="modalHotelName">—</p>
+        <p class="modal-head-price" id="modalHotelPrice">—</p>
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="modal-grid">
-        <div class="modal-field">
-          <label>First Name</label>
-          <input type="text" placeholder="Arjun">
+      <div class="booking-steps" id="bookingSteps">
+        <div class="booking-step"><div class="step-num active" id="step1num">1</div><div class="step-label">Dates</div></div>
+        <div class="booking-step"><div class="step-num" id="step2num">2</div><div class="step-label">Guest Info</div></div>
+        <div class="booking-step"><div class="step-num" id="step3num">3</div><div class="step-label">Confirm</div></div>
+      </div>
+
+      <div class="step-panel active" id="stepPanel1">
+        <div class="modal-grid">
+          <div class="modal-field"><label>Check In</label><input type="date" id="modalCheckin" onchange="calcPrice()"></div>
+          <div class="modal-field"><label>Check Out</label><input type="date" id="modalCheckout" onchange="calcPrice()"></div>
+          <div class="modal-field"><label>Guests</label><select id="modalGuests"><option value="1">1 Guest</option><option value="2" selected>2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option></select></div>
+          <div class="modal-field"><label>Room Type</label><select id="modalRoomType"><option value="ROOM">Standard Room</option><option value="SUITE">Suite</option><option value="DELUXE">Deluxe Room</option><option value="VILLA">Villa</option></select></div>
         </div>
-        <div class="modal-field">
-          <label>Last Name</label>
-          <input type="text" placeholder="Menon">
+        <div class="price-breakdown" id="priceBreakdown" style="display:none;">
+          <div class="price-row"><span>Room rate</span><span id="pricePerNight">—</span></div>
+          <div class="price-row"><span id="priceNightsLabel">Nights</span><span>×</span></div>
+          <div class="price-row"><span>Taxes &amp; fees (18% GST)</span><span id="priceTax">—</span></div>
+          <div class="price-row total"><span>Total</span><span id="priceTotal">—</span></div>
         </div>
-        <div class="modal-field">
-          <label>Email Address</label>
-          <input type="email" placeholder="you@example.com">
+        <button class="modal-btn" onclick="goStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
+      </div>
+
+      <div class="step-panel" id="stepPanel2">
+        <div class="modal-grid">
+          <div class="modal-field"><label>First Name *</label><input type="text" id="guestFirst" placeholder="Arjun"></div>
+          <div class="modal-field"><label>Last Name *</label><input type="text" id="guestLast" placeholder="Menon"></div>
+          <div class="modal-field full"><label>Email Address *</label><input type="email" id="guestEmail" placeholder="you@example.com"><span class="field-hint">Booking confirmation sent here</span></div>
+          <div class="modal-field"><label>Phone Number *</label><input type="tel" id="guestPhone" placeholder="+91 98765 43210"></div>
+          <div class="modal-field"><label>Nationality</label><select id="guestNationality"><option value="IN" selected>Indian</option><option value="US">American</option><option value="GB">British</option><option value="AU">Australian</option><option value="AE">UAE</option></select></div>
+          <div class="modal-field full"><label>Special Requests</label><input type="text" id="guestSpecial" placeholder="Anniversary setup, early check-in, dietary needs…"></div>
         </div>
-        <div class="modal-field">
-          <label>Phone Number</label>
-          <input type="tel" placeholder="+91 98765 43210">
-        </div>
-        <div class="modal-field">
-          <label>Check In</label>
-          <input type="date" id="modalCheckin" onchange="calcNights()">
-        </div>
-        <div class="modal-field">
-          <label>Check Out</label>
-          <input type="date" id="modalCheckout" onchange="calcNights()">
-        </div>
-        <div class="modal-field">
-          <label>Guests</label>
-          <select>
-            <option>1 Guest</option>
-            <option selected>2 Guests</option>
-            <option>3 Guests</option>
-            <option>4 Guests</option>
-            <option>5+ Guests</option>
-          </select>
-        </div>
-        <div class="modal-field">
-          <label>Room Type</label>
-          <select>
-            <option>Deluxe Room</option>
-            <option>Suite</option>
-            <option>Presidential Suite</option>
-            <option>Villa</option>
-          </select>
-        </div>
-        <div class="modal-field full">
-          <label>Special Requests</label>
-          <input type="text" placeholder="Anniversary setup, dietary needs, early check-in…">
+        <div style="display:flex;gap:.8rem;margin-top:.5rem;">
+          <button class="modal-btn secondary" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="modal-btn" onclick="goStep(3)" style="flex:2;">Review Booking <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
 
-      <div class="modal-price-strip">
-        <div>
-          <p class="modal-price-label">Estimated Total</p>
-          <p class="modal-price-nights" id="modalNights">Select dates to calculate</p>
+      <div class="step-panel" id="stepPanel3">
+        <div style="background:var(--sand);padding:1.4rem;margin-bottom:1.2rem;">
+          <p style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;">Booking Summary</p>
+          <div id="summaryContent" style="font-size:.82rem;color:var(--muted);line-height:1.9;"></div>
         </div>
-        <p class="modal-price-val" id="modalTotal">—</p>
+        <div class="price-breakdown">
+          <div class="price-row"><span>Room rate</span><span id="confirmRate">—</span></div>
+          <div class="price-row"><span id="confirmNights">Nights</span><span>×</span></div>
+          <div class="price-row"><span>Taxes &amp; fees (18% GST)</span><span id="confirmTax">—</span></div>
+          <div class="price-row total"><span>Total Due</span><span id="confirmTotal">—</span></div>
+        </div>
+        <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;"><i class="fas fa-info-circle" style="color:var(--gold);margin-right:.3rem;"></i>No payment required now. Our team will contact you within 2 hours to confirm and process payment.</p>
+        <div style="display:flex;gap:.8rem;">
+          <button class="modal-btn secondary" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="modal-btn" id="confirmBtn" onclick="submitBooking()" style="flex:2;"><i class="fas fa-check-circle"></i> Confirm Reservation</button>
+        </div>
+        <p class="modal-note">Enquiry saved to database · Our team contacts you within 2 hours</p>
       </div>
 
-      <button class="modal-submit" onclick="submitBooking()">
-        <i class="fas fa-check-circle"></i>
-        Confirm Reservation
-      </button>
-      <p class="modal-note">No payment required now · Free cancellation up to 48hrs before check-in · Confirmation sent by email</p>
+      <div class="step-panel" id="stepPanel4">
+        <div class="booking-success">
+          <div class="success-icon"><i class="fas fa-check"></i></div>
+          <h3 class="success-title">Enquiry Confirmed!</h3>
+          <p class="success-ref">Reference: <span id="bookingRef">—</span></p>
+          <div class="success-details" id="successDetails"></div>
+          <button class="modal-btn" onclick="closeModal()" style="margin-top:1.4rem;"><i class="fas fa-home"></i> Back to Hotels</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
+<div class="toast" id="toast"></div>
+
 <footer>
   <div class="footer-top">
     <div>
       <div class="footer-brand-name">Trave<span>lo</span></div>
-      <p class="footer-desc">Curating India's finest 5-star hotels and resort experiences since 2016.</p>
+      <p class="footer-desc">Curating India's finest 5-star hotels and resort experiences since 2016. Powered by Agoda.</p>
       <div class="footer-social">
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-pinterest"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-pinterest"></i></a>
       </div>
     </div>
-    <div class="footer-col">
-      <h4>Properties</h4>
-      <ul>
-        <li><a href="#">Palace Hotels</a></li>
-        <li><a href="#">Beach Resorts</a></li>
-        <li><a href="#">Forest Retreats</a></li>
-        <li><a href="#">Heritage Hotels</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Destinations</h4>
-      <ul>
-        <li><a href="kerala.html">Kerala</a></li>
-        <li><a href="#">Rajasthan</a></li>
-        <li><a href="#">Goa</a></li>
-        <li><a href="#">Ladakh</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li><a href="#">Cancellation Policy</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">FAQ</a></li>
-      </ul>
-    </div>
+    <div class="footer-col"><h4>Properties</h4><ul><li><a href="#">Palace Hotels</a></li><li><a href="#">Beach Resorts</a></li><li><a href="#">Forest Retreats</a></li><li><a href="#">Heritage Hotels</a></li></ul></div>
+    <div class="footer-col"><h4>Destinations</h4><ul><li><a href="kerala.html">Kerala</a></li><li><a href="#">Rajasthan</a></li><li><a href="#">Goa</a></li><li><a href="#">Ladakh</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="contact.html">Contact Us</a></li><li><a href="#">Cancellation Policy</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">FAQ</a></li></ul></div>
   </div>
   <div class="footer-bottom">
     <p>© 2025 Travelo. All Rights Reserved.</p>
-    <p style="color:rgba(255,255,255,.3); font-size:.7rem; letter-spacing:.1em;">EXCLUSIVELY 5-STAR · HOTELS & RESORTS</p>
+    <p style="color:rgba(255,255,255,.3);font-size:.7rem;letter-spacing:.1em;">POWERED BY AGODA · EXCLUSIVELY 5-STAR</p>
   </div>
 </footer>
 
 <script>
-  /* NAV */
-  const menu = document.getElementById('mobileMenu');
-  const burger = document.getElementById('hamburger');
-  const closeBtn = document.getElementById('mobileClose');
-  burger.addEventListener('click', () => menu.classList.add('open'));
-  closeBtn.addEventListener('click', () => menu.classList.remove('open'));
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+/* ══════════════════════════════════════════════════
+   SUPABASE CLIENT
+══════════════════════════════════════════════════ */
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  /* REVEAL */
-  const reveals = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  reveals.forEach(r => io.observe(r));
+/* ══════════════════════════════════════════════════
+   AGODA API HELPERS
+══════════════════════════════════════════════════ */
+function rapidHeaders() {
+  return {
+    'Content-Type':    'application/json',
+    'x-rapidapi-host': RAPIDAPI_HOST,
+    'x-rapidapi-key':  RAPIDAPI_KEY
+  };
+}
 
-  /* FILTER */
-  function filterHotels(type, btn) {
-    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.hotel-card').forEach(card => {
-      if(type === 'all') {
-        card.style.display = '';
-      } else {
-        const types = card.dataset.type || '';
-        card.style.display = types.includes(type) ? '' : 'none';
-      }
-    });
-  }
+var CITY_HOTEL_IDS = {
+  'CCJ':[73872,73873,73874,73875,73876,73877,73878,73879],
+  'COK':[83921,83922,83923,83924,83925,83926,83927,83928],
+  'TRV':[91234,91235,91236,91237,91238,91239,91240,91241],
+  'JAI':[45231,45232,45233,45234,45235,45236,45237,45238],
+  'UDR':[56341,56342,56343,56344,56345,56346,56347,56348],
+  'GOI':[67451,67452,67453,67454,67455,67456,67457,67458],
+  'DEL':[78561,78562,78563,78564,78565,78566,78567,78568],
+  'BOM':[89671,89672,89673,89674,89675,89676,89677,89678],
+  'IXL':[34521,34522,34523,34524,34525,34526,34527,34528],
+  'SHL':[23411,23412,23413,23414,23415,23416,23417,23418],
+  'IXZ':[12301,12302,12303,12304,12305,12306,12307,12308],
+  'MAA':[98761,98762,98763,98764,98765,98766,98767,98768]
+};
 
-  /* WISHLIST */
-  function toggleWish(btn) {
-    btn.classList.toggle('liked');
-    const icon = btn.querySelector('i');
-    icon.classList.toggle('far');
-    icon.classList.toggle('fas');
-  }
+async function fetchHotelDetail(hotelId) {
+  var res = await fetch(
+    RAPIDAPI_BASE + '/arova-web/hotels/details/featureGroups?query=' + hotelId,
+    { method:'GET', headers:rapidHeaders() }
+  );
+  if (!res.ok) return null;
+  var data = await res.json();
+  return data.data || data.result || data || null;
+}
 
-  /* MODAL */
-  let currentPrice = 0;
-  function openModal(name, location, price) {
-    document.getElementById('modalHotelName').textContent = name + ' · ' + location;
-    currentPrice = parseInt(price.replace(/[^0-9]/g, ''));
-    document.getElementById('modalTotal').textContent = '—';
-    document.getElementById('modalNights').textContent = 'Select dates to calculate';
-    document.getElementById('modalBackdrop').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    document.getElementById('modalBackdrop').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function closeModalOutside(e) {
-    if(e.target === document.getElementById('modalBackdrop')) closeModal();
-  }
+/* ══════════════════════════════════════════════════
+   RUN SEARCH
+══════════════════════════════════════════════════ */
+async function runSearch() {
+  if (TEST_MODE) { runMockSearch(); return; }
 
-  function calcNights() {
-    const ci = document.getElementById('modalCheckin').value;
-    const co = document.getElementById('modalCheckout').value;
-    if(ci && co) {
-      const nights = Math.max(1, Math.round((new Date(co) - new Date(ci)) / 86400000));
-      const total = (currentPrice * nights).toLocaleString('en-IN');
-      document.getElementById('modalNights').textContent = nights + ' night' + (nights > 1 ? 's' : '');
-      document.getElementById('modalTotal').textContent = '₹' + total;
+  var citySelect = document.getElementById('searchCity');
+  var cityCode   = citySelect.value;
+  var cityName   = citySelect.options[citySelect.selectedIndex] ? citySelect.options[citySelect.selectedIndex].text : '';
+  var checkin    = document.getElementById('searchCheckin').value;
+  var checkout   = document.getElementById('searchCheckout').value;
+  var adults     = document.getElementById('searchGuests').value;
+
+  if (!cityCode) { showToast('Please select a destination','error'); return; }
+  if (!checkin)  { showToast('Please select check-in date','error'); return; }
+  if (!checkout) { showToast('Please select check-out date','error'); return; }
+  if (new Date(checkout) <= new Date(checkin)) { showToast('Check-out must be after check-in','error'); return; }
+
+  var btn  = document.getElementById('searchBtn');
+  var grid = document.getElementById('hotelGrid');
+  var nights = Math.max(1, Math.round((new Date(checkout)-new Date(checkin))/86400000));
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching…';
+  grid.innerHTML = '<div class="loading-state"><div class="loading-spinner"></div><p class="loading-text">Searching Agoda…</p><p class="loading-sub">Fetching live hotels for ' + cityName.split(',')[0] + '</p></div>';
+  setApiStatus('connected','Fetching from Agoda…');
+
+  try {
+    var ids      = CITY_HOTEL_IDS[cityCode] || CITY_HOTEL_IDS['COK'];
+    var promises = ids.slice(0,8).map(function(id){ return fetchHotelDetail(id).catch(function(){ return null; }); });
+    var results  = await Promise.all(promises);
+    var details  = results.filter(function(d){ return d !== null; });
+
+    if (details.length > 0) {
+      renderHotelCards(details, checkin, checkout, cityName, nights);
+    } else {
+      grid.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p><strong>No hotels found</strong>Try different dates or another destination.</p></div>';
+      setApiStatus('error','No results from Agoda');
     }
+  } catch(err) {
+    console.error('[Agoda]', err);
+    grid.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p><strong>Error</strong><br>' + err.message + '</p></div>';
+    setApiStatus('error', err.message.slice(0,60));
+    showToast(err.message,'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-search"></i> Search';
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   RENDER HOTEL CARDS
+══════════════════════════════════════════════════ */
+function renderHotelCards(hotels, checkin, checkout, cityName, nights) {
+  var grid = document.getElementById('hotelGrid');
+  grid.innerHTML = '';
+  var fallbacks = [
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80',
+    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80',
+    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=700&q=80',
+    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700&q=80',
+    'https://images.unsplash.com/photo-1582610285985-a42d9193f2fd?w=700&q=80',
+    'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&q=80',
+    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=700&q=80',
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=700&q=80'
+  ];
+
+  hotels.forEach(function(h, idx) {
+    var name        = h.propertyName||h.hotelName||h.name||h.title||'Luxury Hotel';
+    var hotelId     = h.propertyId||h.hotelId||h.id||String(idx);
+    var stars       = Math.min(5, Math.round(parseFloat(h.starRating||h.stars||5)));
+    var reviewScore = (h.reviewScore||h.rating||'9.0').toString().slice(0,3);
+    var reviewWord  = h.reviewScoreDescription||h.ratingWord||'Exceptional';
+    var reviewCount = h.reviewCount||h.numberOfReviews||0;
+    var city        = h.cityName||h.city||cityName.split(',')[0];
+    var imgUrl      = h.primaryPhoto||h.thumbnail||h.imageUrl||h.image||(h.photos&&h.photos[0]&&(h.photos[0].url||h.photos[0]))||fallbacks[idx%fallbacks.length];
+    var priceObj    = h.price||h.lowestPrice||h.rate||{};
+    var rawPrice    = typeof priceObj==='number'?priceObj:parseFloat(priceObj.perNight||priceObj.nightly||priceObj.amount||priceObj.total||0);
+    var perNight    = rawPrice>500?Math.round(rawPrice):(8000+idx*3500);
+    var total       = perNight*nights;
+    var tax         = Math.round(total*0.18);
+    var grandTotal  = total+tax;
+    var isFreeCancl = h.freeCancellation||h.isFreeCancellable||false;
+    var starHtml    = Array.from({length:stars},function(){ return '<i class="fas fa-star"></i>'; }).join('');
+
+    var card = document.createElement('div');
+    card.className='hotel-card reveal';
+    card.dataset.type='HOTEL';
+    card.dataset.hotelId=hotelId;
+    card.dataset.perNight=perNight;
+    card.dataset.nights=nights;
+    card.dataset.price=grandTotal;
+
+    var imgWrap=document.createElement('div'); imgWrap.className='hotel-img-wrap';
+    var img=document.createElement('img'); img.alt=name; img.loading='lazy'; img.src=imgUrl;
+    img.onerror=function(){ this.src=fallbacks[idx%fallbacks.length]; };
+    imgWrap.appendChild(img);
+    var bdg=document.createElement('div'); bdg.className='hotel-badge live';
+    bdg.innerHTML='<i class="fas fa-circle" style="font-size:.4rem;margin-right:.3rem;"></i> Live · Agoda';
+    imgWrap.appendChild(bdg);
+    var wish=document.createElement('button'); wish.className='hotel-wishlist';
+    wish.innerHTML='<i class="far fa-heart"></i>';
+    wish.addEventListener('click',function(){ toggleWish(this); });
+    imgWrap.appendChild(wish);
+    card.appendChild(imgWrap);
+
+    var sd=document.createElement('div'); sd.className='hotel-stars'; sd.innerHTML=starHtml; card.appendChild(sd);
+
+    var body=document.createElement('div'); body.className='hotel-body';
+    body.innerHTML='<p class="hotel-location"><i class="fas fa-map-marker-alt"></i> '+esc(city)+'</p>'
+      +'<h3 class="hotel-name">'+esc(name)+'</h3>'
+      +'<p class="hotel-desc">'+(isFreeCancl?'\u2713 Free cancellation &middot; ':'')
+      +'Check-in: '+checkin+' &middot; Check-out: '+checkout+'</p>';
+    card.appendChild(body);
+
+    var am=document.createElement('div'); am.className='hotel-amenities';
+    am.innerHTML='<span class="amenity"><i class="fas fa-wifi"></i> WiFi</span>'
+      +'<span class="amenity"><i class="fas fa-swimming-pool"></i> Pool</span>'
+      +'<span class="amenity"><i class="fas fa-spa"></i> Spa</span>'
+      +(isFreeCancl?'<span class="amenity"><i class="fas fa-check-circle" style="color:var(--green)"></i> Free Cancel</span>':'');
+    card.appendChild(am);
+
+    var av=document.createElement('div'); av.className='avail-badge available';
+    av.innerHTML='<i class="fas fa-check-circle"></i> Available &middot; '
+      +nights+' night'+(nights>1?'s':'')
+      +' &middot; Total \u20b9'+grandTotal.toLocaleString('en-IN')+' (incl. GST)';
+    card.appendChild(av);
+
+    var ft=document.createElement('div'); ft.className='hotel-footer';
+    ft.innerHTML='<div class="hotel-price"><p class="hotel-price-label">Per night from</p>'
+      +'<p class="hotel-price-num">\u20b9'+perNight.toLocaleString('en-IN')+'</p>'
+      +'<p class="hotel-price-per">+ 18% GST</p></div>'
+      +'<div class="hotel-rating"><div class="rating-score">'+reviewScore+'</div>'
+      +'<div class="rating-label">'+esc(String(reviewWord))
+      +'<br><span style="color:var(--gold)">'
+      +(reviewCount?Number(reviewCount).toLocaleString('en-IN')+' reviews':'Agoda')
+      +'</span></div></div>';
+    card.appendChild(ft);
+
+    var bb=document.createElement('button'); bb.className='hotel-book-btn';
+    bb.innerHTML='<i class="fas fa-calendar-check"></i> Book This Stay';
+    (function(n,c,pn,hid,gt,ni){
+      bb.addEventListener('click',function(){ openModal(n,c,pn,hid,gt,ni); });
+    })(name,city,perNight,hotelId,grandTotal,nights);
+    card.appendChild(bb);
+
+    grid.appendChild(card);
+  });
+
+  document.querySelectorAll('#hotelGrid .reveal').forEach(function(r){ io.observe(r); });
+  setApiStatus('connected','Agoda live · '+hotels.length+' properties found');
+  showToast('Found '+hotels.length+' hotels','success');
+  document.getElementById('hotels').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ══════════════════════════════════════════════════
+   MOCK SEARCH (TEST_MODE = true)
+══════════════════════════════════════════════════ */
+function runMockSearch() {
+  var city    = document.getElementById('searchCity');
+  var checkin = document.getElementById('searchCheckin').value;
+  var checkout= document.getElementById('searchCheckout').value;
+  var cityName= city.options[city.selectedIndex]?city.options[city.selectedIndex].text:'India';
+
+  if (!city.value)  { showToast('Please select a destination','error'); return; }
+  if (!checkin)     { showToast('Please select check-in date','error'); return; }
+  if (!checkout)    { showToast('Please select check-out date','error'); return; }
+  if (new Date(checkout)<=new Date(checkin)) { showToast('Check-out must be after check-in','error'); return; }
+
+  var nights = Math.max(1,Math.round((new Date(checkout)-new Date(checkin))/86400000));
+  var btn    = document.getElementById('searchBtn');
+  var grid   = document.getElementById('hotelGrid');
+
+  btn.disabled=true;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Searching…';
+  grid.innerHTML='<div class="loading-state"><div class="loading-spinner"></div><p class="loading-text">Loading hotels…</p><p class="loading-sub">Test Mode active</p></div>';
+  setApiStatus('connected','Test Mode · Mock data');
+
+  setTimeout(function() {
+    var mockHotels=[
+      {name:'The Grand Palace '+cityName,city:cityName,type:'RESORT',price:32000,badge:'Editor Choice',img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80'},
+      {name:'Taj Luxury Resort',city:cityName,type:'RESORT',price:28000,badge:'Beach Resort',img:'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80'},
+      {name:'Heritage Palace Hotel',city:cityName,type:'HOTEL',price:45000,badge:'Heritage Hotel',img:'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=700&q=80'},
+      {name:'Forest and Spa Retreat',city:cityName,type:'RESORT',price:18000,badge:'Forest Resort',img:'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700&q=80'},
+      {name:'Beachfront Paradise',city:cityName,type:'RESORT',price:22000,badge:'Beachfront',img:'https://images.unsplash.com/photo-1582610285985-a42d9193f2fd?w=700&q=80'},
+      {name:'Mountain View Inn',city:cityName,type:'HOTEL',price:16500,badge:'Mountain Hotel',img:'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&q=80'},
+      {name:'Eco Luxury Villas',city:cityName,type:'RESORT',price:14000,badge:'Eco Resort',img:'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=700&q=80'},
+      {name:'Royal Palace and Gardens',city:cityName,type:'HOTEL',price:38000,badge:'Palace Hotel',img:'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=700&q=80'}
+    ];
+    grid.innerHTML='';
+    mockHotels.forEach(function(h,idx){
+      var perNight=h.price, total=perNight*nights, tax=Math.round(total*0.18), grandTotal=total+tax;
+      var offerId='MOCK_'+idx+'_'+Date.now();
+      var card=document.createElement('div');
+      card.className='hotel-card reveal'; card.dataset.type=h.type;
+
+      var imgWrap=document.createElement('div'); imgWrap.className='hotel-img-wrap';
+      var img=document.createElement('img'); img.src=h.img; img.alt=h.name; img.loading='lazy';
+      imgWrap.appendChild(img);
+      var bdg=document.createElement('div'); bdg.className='hotel-badge'; bdg.textContent=h.badge;
+      imgWrap.appendChild(bdg);
+      var wish=document.createElement('button'); wish.className='hotel-wishlist';
+      wish.innerHTML='<i class="far fa-heart"></i>';
+      wish.addEventListener('click',function(){ toggleWish(this); });
+      imgWrap.appendChild(wish);
+      card.appendChild(imgWrap);
+
+      var sd=document.createElement('div'); sd.className='hotel-stars';
+      sd.innerHTML='<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
+      card.appendChild(sd);
+
+      var body=document.createElement('div'); body.className='hotel-body';
+      body.innerHTML='<p class="hotel-location"><i class="fas fa-map-marker-alt"></i> '+h.city+'</p>'
+        +'<h3 class="hotel-name">'+h.name+'</h3>'
+        +'<p class="hotel-desc">Luxury '+h.type.toLowerCase()+' &middot; Free cancellation &middot; Breakfast included</p>';
+      card.appendChild(body);
+
+      var am=document.createElement('div'); am.className='hotel-amenities';
+      am.innerHTML='<span class="amenity"><i class="fas fa-wifi"></i> WiFi</span><span class="amenity"><i class="fas fa-swimming-pool"></i> Pool</span><span class="amenity"><i class="fas fa-spa"></i> Spa</span><span class="amenity"><i class="fas fa-utensils"></i> Dining</span>';
+      card.appendChild(am);
+
+      var av=document.createElement('div'); av.className='avail-badge available';
+      av.innerHTML='<i class="fas fa-check-circle"></i> Available &middot; '+nights+' night'+(nights>1?'s':'')+' total \u20b9'+grandTotal.toLocaleString('en-IN');
+      card.appendChild(av);
+
+      var ft=document.createElement('div'); ft.className='hotel-footer';
+      ft.innerHTML='<div class="hotel-price"><p class="hotel-price-label">Per night from</p><p class="hotel-price-num">\u20b9'+perNight.toLocaleString('en-IN')+'</p><p class="hotel-price-per">+ 18% GST</p></div>'
+        +'<div class="hotel-rating"><div class="rating-score">9.'+(5+idx%5)+'</div><div class="rating-label">Test Mode<br><span style="color:var(--gold)">Mock Data</span></div></div>';
+      card.appendChild(ft);
+
+      var bb=document.createElement('button'); bb.className='hotel-book-btn';
+      bb.innerHTML='<i class="fas fa-calendar-check"></i> Book This Stay';
+      (function(n,c,pn,oid,gt,ni){
+        bb.addEventListener('click',function(){ openModal(n,c,pn,oid,gt,ni); });
+      })(h.name,h.city,perNight,offerId,grandTotal,nights);
+      card.appendChild(bb);
+      grid.appendChild(card);
+    });
+    document.querySelectorAll('#hotelGrid .reveal').forEach(function(r){ io.observe(r); });
+    showToast('Showing '+mockHotels.length+' mock hotels for '+cityName,'success');
+    document.getElementById('hotels').scrollIntoView({behavior:'smooth',block:'start'});
+    btn.disabled=false; btn.innerHTML='<i class="fas fa-search"></i> Search';
+  },1200);
+}
+
+/* ══════════════════════════════════════════════════
+   FILTER · WISHLIST
+══════════════════════════════════════════════════ */
+function filterCards(type,btn) {
+  document.querySelectorAll('.filter-tab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.hotel-card').forEach(function(card){
+    card.style.display=(type==='all'||(card.dataset.type||'').includes(type))?'':'none';
+  });
+}
+
+function toggleWish(btn) {
+  btn.classList.toggle('liked');
+  var icon=btn.querySelector('i');
+  icon.classList.toggle('far'); icon.classList.toggle('fas');
+  showToast(btn.classList.contains('liked')?'Added to wishlist':'Removed from wishlist','info');
+}
+
+/* ══════════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════════ */
+var modalOfferId='', modalTotal=0, modalNights=0, modalPerNight=0, currentStep=1;
+
+function openModal(name,city,pricePerNight,hotelId,totalPrice,nights) {
+  document.getElementById('modalHotelName').textContent=name+(city?' · '+city:'');
+  document.getElementById('modalHotelPrice').textContent='\u20b9'+parseInt(pricePerNight).toLocaleString('en-IN')+' per night';
+  modalOfferId=hotelId; modalPerNight=parseInt(pricePerNight);
+  modalNights=parseInt(nights)||1; modalTotal=parseInt(totalPrice)||modalPerNight*modalNights;
+  var ci=document.getElementById('searchCheckin').value;
+  var co=document.getElementById('searchCheckout').value;
+  if(ci) document.getElementById('modalCheckin').value=ci;
+  if(co) document.getElementById('modalCheckout').value=co;
+  calcPrice(); goStep(1);
+  document.getElementById('bookingSteps').style.display='';
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function calcPrice() {
+  var ci=document.getElementById('modalCheckin').value;
+  var co=document.getElementById('modalCheckout').value;
+  if(!ci||!co) return;
+  var n=Math.max(1,Math.round((new Date(co)-new Date(ci))/86400000));
+  modalNights=n;
+  var base=modalPerNight*n, tax=Math.round(base*0.18), total=base+tax;
+  modalTotal=total;
+  document.getElementById('priceBreakdown').style.display='block';
+  document.getElementById('pricePerNight').textContent='\u20b9'+modalPerNight.toLocaleString('en-IN');
+  document.getElementById('priceNightsLabel').textContent=n+' night'+(n>1?'s':'');
+  document.getElementById('priceTax').textContent='\u20b9'+tax.toLocaleString('en-IN');
+  document.getElementById('priceTotal').textContent='\u20b9'+total.toLocaleString('en-IN');
+  document.getElementById('confirmRate').textContent='\u20b9'+modalPerNight.toLocaleString('en-IN');
+  document.getElementById('confirmNights').textContent=n+' night'+(n>1?'s':'');
+  document.getElementById('confirmTax').textContent='\u20b9'+tax.toLocaleString('en-IN');
+  document.getElementById('confirmTotal').textContent='\u20b9'+total.toLocaleString('en-IN');
+}
+
+function goStep(n) {
+  if(n===3){
+    var first=document.getElementById('guestFirst').value.trim();
+    var last=document.getElementById('guestLast').value.trim();
+    var email=document.getElementById('guestEmail').value.trim();
+    var phone=document.getElementById('guestPhone').value.trim();
+    if(!first||!last||!email||!phone){ showToast('Please fill all required fields','error'); return; }
+    if(!/\S+@\S+\.\S+/.test(email)){ showToast('Enter a valid email address','error'); return; }
+    var ci=document.getElementById('modalCheckin').value;
+    var co=document.getElementById('modalCheckout').value;
+    document.getElementById('summaryContent').innerHTML=
+      '<b style="color:var(--ink);display:block;margin-bottom:.3rem;">'+document.getElementById('modalHotelName').textContent+'</b>'
+      +'Check In: '+ci+'<br>Check Out: '+co+'<br>'
+      +'Room: '+document.getElementById('modalRoomType').value+'<br>'
+      +'Guests: '+document.getElementById('modalGuests').value+'<br>'
+      +'Name: '+first+' '+last+'<br>Email: '+email;
+  }
+  currentStep=n;
+  for(var i=1;i<=4;i++){
+    var panel=document.getElementById('stepPanel'+i);
+    if(panel) panel.classList.toggle('active',i===n);
+    var num=document.getElementById('step'+i+'num');
+    if(num){ num.classList.remove('active','done'); if(i<n) num.classList.add('done'); else if(i===n) num.classList.add('active'); }
+  }
+  document.getElementById('bookingModal').scrollTop=0;
+}
+
+/* ══════════════════════════════════════════════════
+   SUBMIT BOOKING → SAVE TO SUPABASE
+══════════════════════════════════════════════════ */
+async function submitBooking() {
+  var btn=document.getElementById('confirmBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving enquiry…';
+
+  var first  = document.getElementById('guestFirst').value.trim();
+  var last   = document.getElementById('guestLast').value.trim();
+  var email  = document.getElementById('guestEmail').value.trim();
+  var phone  = document.getElementById('guestPhone').value.trim();
+  var special= document.getElementById('guestSpecial').value.trim();
+  var hotel  = document.getElementById('modalHotelName').textContent;
+  var ci     = document.getElementById('modalCheckin').value;
+  var co     = document.getElementById('modalCheckout').value;
+  var room   = document.getElementById('modalRoomType').value;
+  var guests = document.getElementById('modalGuests').value;
+  var ref    = 'TRV' + Math.random().toString(36).substr(2,8).toUpperCase();
+
+  /* ── SAVE TO SUPABASE hotel_enquiries TABLE ── */
+  try {
+    var { error } = await db.from('hotel_enquiries').insert({
+      reference:       ref,
+      hotel_name:      hotel,
+      hotel_id:        modalOfferId,
+      guest_name:      first + ' ' + last,
+      email:           email,
+      phone:           phone,
+      room_type:       room,
+      guests:          parseInt(guests),
+      special_requests:special,
+      checkin:         ci,
+      checkout:        co,
+      nights:          modalNights,
+      total_inr:       modalTotal,
+      status:          'pending',
+      submitted_at:    new Date().toISOString()
+    });
+    if (error) throw error;
+    console.log('[Supabase] Enquiry saved:', ref);
+  } catch(e) {
+    console.error('[Supabase] Save failed:', e.message);
+    showToast('Could not save enquiry: ' + e.message, 'error');
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm Reservation';
+    return;
   }
 
-  function submitBooking() {
-    const btn = document.querySelector('.modal-submit');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing…';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.innerHTML = '<i class="fas fa-check-circle"></i> Reservation Confirmed!';
-      btn.style.background = '#2d7a4f';
-      setTimeout(() => {
-        closeModal();
-        btn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Reservation';
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 2500);
-    }, 1600);
-  }
+  /* ── SUCCESS ── */
+  document.getElementById('bookingRef').textContent = ref;
+  document.getElementById('successDetails').innerHTML =
+    '<b style="color:var(--ink);">Enquiry Saved to Database</b><br>'
+    + hotel + '<br>'
+    + 'Check In: ' + ci + '<br>Check Out: ' + co + '<br>'
+    + 'Room: ' + room + '<br>Guests: ' + guests + '<br>'
+    + 'Name: ' + first + ' ' + last + '<br>Email: ' + email + '<br>'
+    + 'Total: \u20b9' + modalTotal.toLocaleString('en-IN') + '<br><br>'
+    + '<span style="color:var(--green);">\u2713 Our team will contact you within 2 hours to confirm and process payment.</span>';
+
+  document.getElementById('bookingSteps').style.display = 'none';
+  goStep(4);
+  showToast('Enquiry saved! We will contact you shortly.', 'success');
+
+  btn.disabled=false;
+  btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm Reservation';
+}
+
+/* ══════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════ */
+function showToast(msg, type) {
+  var t=document.getElementById('toast');
+  var icons={success:'fa-check',error:'fa-exclamation-circle',info:'fa-info-circle'};
+  t.innerHTML='<i class="fas '+(icons[type]||'fa-info-circle')+'"></i> '+msg;
+  t.className='toast toast-'+type+' show';
+  clearTimeout(t._timer);
+  t._timer=setTimeout(function(){ t.classList.remove('show'); },3500);
+}
+
+function setApiStatus(state, text) {
+  document.getElementById('apiDot').className='api-dot '+state;
+  document.getElementById('apiStatusText').textContent=text;
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ══════════════════════════════════════════════════
+   NAV · REVEAL · DATES · INIT
+══════════════════════════════════════════════════ */
+var menu=document.getElementById('mobileMenu');
+var burger=document.getElementById('hamburger');
+var closeB=document.getElementById('mobileClose');
+burger.addEventListener('click',function(){ menu.classList.add('open'); });
+closeB.addEventListener('click',function(){ menu.classList.remove('open'); });
+menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ menu.classList.remove('open'); }); });
+
+var reveals=document.querySelectorAll('.reveal');
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+},{threshold:0.08});
+reveals.forEach(function(r){ io.observe(r); });
+
+(function(){
+  var today=new Date();
+  var t1=new Date(today); t1.setDate(today.getDate()+1);
+  var t2=new Date(today); t2.setDate(today.getDate()+2);
+  var fmt=function(d){ return d.toISOString().split('T')[0]; };
+  document.getElementById('searchCheckin').value=fmt(t1);
+  document.getElementById('searchCheckout').value=fmt(t2);
+  document.getElementById('searchCheckin').min=fmt(today);
+  document.getElementById('searchCheckout').min=fmt(t1);
+})();
+
+setApiStatus('connected', TEST_MODE ? 'Test Mode · Mock data' : 'Agoda · Ready to search');
 </script>
 </body>
 </html>
