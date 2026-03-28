@@ -215,18 +215,15 @@
     @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .search-bar{grid-template-columns:1fr 1fr;} .exp-strip{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr 1fr;} }
     @media(max-width:600px){ section{padding:70px 5vw;} .hotel-grid{grid-template-columns:1fr;} .search-bar{grid-template-columns:1fr;} .modal-grid{grid-template-columns:1fr;} .modal-field.full{grid-column:span 1;} .footer-top{grid-template-columns:1fr;gap:2rem;} }
   </style>
+  
 </head>
 <body>
 
 <!-- SUPABASE + CONFIG -->
+ <script src="/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL      = 'https://mqxpcxvyfeefriaehbev.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_rrTAjrtL7hrQj_YupZgbWw_QFed0sgT';
-  const RAPIDAPI_KEY      = 'fae2a5a823mshc8a0a6afa8fc931p132310jsn8a53d58f9b15';
-  const RAPIDAPI_HOST     = 'agoda-travel.p.rapidapi.com';
-  const RAPIDAPI_BASE     = 'https://agoda-travel.p.rapidapi.com';
-  const TEST_MODE         = true;
+
 
   /* ══════════════════════════════════════════
      STATE → DISTRICT DATA

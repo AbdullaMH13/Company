@@ -122,14 +122,14 @@
     @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .page-body{grid-template-columns:1fr; gap:2.5rem;} .sidebar{order:-1; display:grid; grid-template-columns:1fr 1fr;} }
     @media(max-width:600px){ .form-card{padding:2rem 1.5rem;} .form-row{grid-template-columns:1fr;} .sidebar{grid-template-columns:1fr;} }
   </style>
+  <script src="/config.js"></script>
+
+  <!-- your existing scripts below -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-<script>
-  const SUPABASE_URL = 'https://mqxpcxvyfeefriaehbev.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_rrTAjrtL7hrQj_YupZgbWw_QFed0sgT';
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
