@@ -811,7 +811,7 @@ async function runSearch() {
 
       document.querySelectorAll('#hotelGrid .reveal').forEach(function(r){ io.observe(r); });
       showToast('Found ' + resorts.length + ' properties in ' + distName, 'success');
-      setApiStatus('connected', 'Supabase live \u00b7 ' + resorts.length + ' properties in ' + distName);
+      setApiStatus('connected', 'live \u00b7 ' + resorts.length + ' properties in ' + distName);
       document.getElementById('hotels').scrollIntoView({ behavior:'smooth', block:'start' });
 
     } else {
