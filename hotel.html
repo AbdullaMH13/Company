@@ -17,6 +17,8 @@
     html { scroll-behavior:smooth; }
     body { background:var(--cream); color:var(--ink); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; }
     ::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--sand); } ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+
+    /* ── NAV ── */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; backdrop-filter:blur(18px) saturate(180%); background:rgba(250,247,242,0.88); border-bottom:1px solid rgba(184,146,74,0.15); }
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,2.5vw,1.8rem); font-weight:300; letter-spacing:.12em; color:var(--ink); text-decoration:none; }
     .nav-logo span { color:var(--gold); }
@@ -31,6 +33,8 @@
     .mobile-menu a { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3.2rem); font-weight:300; color:var(--white); text-decoration:none; transition:color .2s; }
     .mobile-menu a:hover { color:var(--gold); }
     .mobile-close { position:absolute; top:1.8rem; right:5vw; background:none; border:none; cursor:pointer; font-size:1.8rem; color:var(--white); }
+
+    /* ── HERO ── */
     .hero { position:relative; height:80vh; min-height:560px; display:flex; align-items:flex-end; padding:0 5vw 8vh; overflow:hidden; }
     .hero-bg { position:absolute; inset:0; }
     .hero-bg img { width:100%; height:100%; object-fit:cover; animation:kenburns 14s ease forwards; }
@@ -50,43 +54,104 @@
     .btn-ghost { display:inline-flex; align-items:center; gap:.6rem; padding:.85rem 2rem; background:transparent; color:var(--white); font-family:'DM Sans',sans-serif; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; text-decoration:none; border:1px solid rgba(255,255,255,.4); cursor:pointer; transition:border-color .25s, background .25s; }
     .btn-ghost:hover { border-color:var(--gold); background:rgba(184,146,74,.12); }
 
-    /* ── SEARCH STRIP ── */
-    .search-strip { background:var(--white); box-shadow:0 8px 40px rgba(0,0,0,.1); padding:2rem 5vw; border-bottom:1px solid rgba(184,146,74,.12); }
-    .search-bar { display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1fr auto; gap:1px; background:rgba(184,146,74,.15); }
-    .search-field { background:var(--cream); padding:1rem 1.2rem; display:flex; flex-direction:column; gap:.3rem; position:relative; }
-    .search-field label { font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
-    .search-field input, .search-field select { border:none; background:transparent; outline:none; font-family:'DM Sans',sans-serif; font-size:.88rem; color:var(--ink); appearance:none; cursor:pointer; width:100%; }
-    .search-field input::placeholder { color:var(--muted); }
-    .search-field select:disabled { color:var(--muted); cursor:not-allowed; opacity:.6; }
+    /* ── UNIFIED SEARCH PANEL ── */
+    .search-panel { background:var(--white); box-shadow:0 8px 40px rgba(0,0,0,.1); border-bottom:2px solid rgba(184,146,74,.2); }
 
-    /* district field locked state */
-    .search-field.locked { opacity:.55; pointer-events:none; }
-    .search-field.locked::after { content:'Select state first'; position:absolute; bottom:.35rem; left:1.2rem; font-size:.6rem; color:var(--gold); letter-spacing:.08em; }
+    /* Tab switcher */
+    .search-tabs { display:flex; border-bottom:1px solid rgba(184,146,74,.15); }
+    .search-tab { flex:1; padding:1rem 1.5rem; background:none; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); transition:all .25s; display:flex; align-items:center; justify-content:center; gap:.6rem; border-bottom:2px solid transparent; margin-bottom:-1px; }
+    .search-tab.active { color:var(--gold); border-bottom-color:var(--gold); background:rgba(184,146,74,.04); }
+    .search-tab:hover:not(.active) { color:var(--ink); background:rgba(13,13,13,.02); }
 
-    /* animated unlock */
-    .search-field { transition:opacity .3s; }
+    /* Tab content */
+    .tab-content { display:none; padding:1.8rem 5vw 1.5rem; }
+    .tab-content.active { display:block; }
 
-    .search-btn { background:var(--gold); color:var(--white); border:none; cursor:pointer; padding:0 2rem; font-family:'DM Sans',sans-serif; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:.6rem; transition:background .25s; }
-    .search-btn:hover { background:#a07840; }
-    .search-btn:disabled { opacity:.6; cursor:not-allowed; }
-    .api-status { display:flex; align-items:center; gap:.5rem; font-size:.68rem; letter-spacing:.1em; color:var(--muted); margin-top:.8rem; }
-    .api-dot { width:7px; height:7px; border-radius:50%; background:#ccc; }
+    /* ── TAB 1: Quick Search (Name/State/District) ── */
+    .quick-search-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr 1fr auto; gap:1px; background:rgba(184,146,74,.12); }
+    .qs-field { background:var(--cream); padding:1rem 1.2rem; display:flex; flex-direction:column; gap:.3rem; }
+    .qs-field label { font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:500; }
+    .qs-field input, .qs-field select { border:none; background:transparent; outline:none; font-family:'DM Sans',sans-serif; font-size:.86rem; color:var(--ink); appearance:none; cursor:pointer; width:100%; }
+    .qs-field input::placeholder { color:var(--muted); }
+    .qs-field.locked { opacity:.5; pointer-events:none; }
+    .qs-search-btn { background:var(--gold); color:var(--white); border:none; cursor:pointer; padding:0 2.2rem; font-family:'DM Sans',sans-serif; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; display:flex; align-items:center; gap:.6rem; transition:background .25s; min-width:130px; justify-content:center; }
+    .qs-search-btn:hover { background:#a07840; }
+    .qs-search-btn:disabled { opacity:.6; cursor:not-allowed; }
+
+    /* Name search suggestion dropdown */
+    .name-search-wrap { position:relative; }
+    .name-suggestions { position:absolute; top:100%; left:0; right:0; background:var(--white); box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:50; max-height:260px; overflow-y:auto; display:none; border-top:2px solid var(--gold); }
+    .name-suggestions.open { display:block; }
+    .name-suggestion-item { padding:.75rem 1rem; font-size:.82rem; cursor:pointer; border-bottom:1px solid rgba(13,13,13,.05); display:flex; align-items:center; gap:.6rem; transition:background .15s; }
+    .name-suggestion-item:hover { background:rgba(184,146,74,.08); }
+    .name-suggestion-item i { color:var(--gold); font-size:.7rem; }
+    .name-suggestion-item .sug-type { font-size:.62rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
+    .name-suggestion-item .sug-loc { font-size:.68rem; color:var(--muted); }
+
+    /* Active search badge */
+    .active-search-info { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; padding:.7rem 5vw; background:rgba(184,146,74,.06); border-top:1px solid rgba(184,146,74,.1); }
+    .active-search-info.hidden { display:none; }
+    .search-badge { display:inline-flex; align-items:center; gap:.35rem; background:rgba(184,146,74,.12); border:1px solid rgba(184,146,74,.3); padding:.25rem .75rem; font-size:.68rem; letter-spacing:.08em; color:var(--gold); }
+    .search-badge-clear { background:none; border:none; cursor:pointer; color:var(--muted); font-size:.75rem; padding:.1rem .3rem; margin-left:.2rem; transition:color .2s; }
+    .search-badge-clear:hover { color:var(--red); }
+    .api-status { display:flex; align-items:center; gap:.5rem; font-size:.68rem; letter-spacing:.1em; color:var(--muted); margin-left:auto; }
+    .api-dot { width:7px; height:7px; border-radius:50%; background:#ccc; flex-shrink:0; }
     .api-dot.connected { background:var(--green); }
     .api-dot.error { background:var(--red); }
+    .api-dot.loading { background:var(--gold); animation:pulse .8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-    /* breadcrumb pill showing state → district */
-    .dest-crumb { display:none; align-items:center; gap:.4rem; margin-top:.7rem; }
-    .dest-crumb.show { display:flex; }
-    .crumb-pill { display:inline-flex; align-items:center; gap:.35rem; background:rgba(184,146,74,.1); border:1px solid rgba(184,146,74,.3); padding:.25rem .75rem; font-size:.68rem; letter-spacing:.1em; color:var(--gold); }
-    .crumb-sep { color:var(--muted); font-size:.75rem; }
-    .crumb-clear { background:none; border:none; cursor:pointer; color:var(--muted); font-size:.75rem; padding:.1rem .3rem; transition:color .2s; }
-    .crumb-clear:hover { color:var(--red); }
+    /* ── TAB 2: Location / Map Search ── */
+    .loc-search-layout { display:grid; grid-template-columns:1fr 380px; gap:2rem; align-items:start; }
+    .loc-controls { display:flex; flex-direction:column; gap:1.4rem; }
+    .loc-section-title { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.6rem; display:flex; align-items:center; gap:.5rem; }
+    .loc-input-row { display:flex; gap:.8rem; }
+    .loc-text-input { flex:1; border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.75rem 1rem; font-family:'DM Sans',sans-serif; font-size:.85rem; color:var(--ink); outline:none; transition:border-color .2s; }
+    .loc-text-input:focus { border-color:var(--gold); background:var(--white); }
+    .loc-text-input::placeholder { color:var(--muted); }
+    .loc-dropdowns { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+    .loc-select { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.75rem 2rem .75rem 1rem; font-family:'DM Sans',sans-serif; font-size:.82rem; color:var(--ink); outline:none; appearance:none; cursor:pointer; transition:border-color .2s; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888070'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right .7rem center; width:100%; }
+    .loc-select:focus { border-color:var(--gold); }
 
+    /* Date/guests row in location tab */
+    .loc-dates-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.8rem; }
+    .loc-date-field { display:flex; flex-direction:column; gap:.35rem; }
+    .loc-date-field label { font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); }
+    .loc-date-field input, .loc-date-field select { border:1px solid rgba(13,13,13,.12); background:var(--cream); padding:.7rem 1rem; font-family:'DM Sans',sans-serif; font-size:.82rem; color:var(--ink); outline:none; transition:border-color .2s; appearance:none; }
+    .loc-date-field input:focus, .loc-date-field select:focus { border-color:var(--gold); }
+
+    .loc-action-row { display:flex; gap:.8rem; flex-wrap:wrap; }
+    .loc-btn { padding:.7rem 1.4rem; font-family:'DM Sans',sans-serif; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; border:none; transition:all .2s; display:flex; align-items:center; gap:.5rem; white-space:nowrap; }
+    .loc-btn-primary { background:var(--gold); color:var(--white); }
+    .loc-btn-primary:hover { background:#a07840; }
+    .loc-btn-secondary { background:transparent; color:var(--muted); border:1px solid rgba(13,13,13,.15); }
+    .loc-btn-secondary:hover { color:var(--ink); border-color:var(--ink); }
+    .loc-matched-info { font-size:.72rem; color:var(--muted); letter-spacing:.06em; display:flex; align-items:center; gap:.4rem; }
+    .loc-matched-info strong { color:var(--gold); }
+
+    /* Suggestions pills */
+    .loc-pills { display:flex; gap:.5rem; flex-wrap:wrap; min-height:20px; }
+    .loc-pill { display:inline-flex; align-items:center; gap:.3rem; background:rgba(184,146,74,.08); border:1px solid rgba(184,146,74,.2); padding:.2rem .65rem; font-size:.67rem; color:var(--gold); letter-spacing:.05em; cursor:pointer; transition:background .15s; }
+    .loc-pill:hover { background:rgba(184,146,74,.18); }
+
+    /* Map */
+    #locMap { width:100%; height:300px; background:var(--sand); border:1px solid rgba(184,146,74,.2); }
+    .map-hint { font-size:.67rem; color:var(--muted); margin-top:.5rem; letter-spacing:.04em; line-height:1.5; }
+
+    /* Radius row */
+    .radius-row { display:flex; align-items:center; gap:1rem; }
+    .radius-slider { -webkit-appearance:none; flex:1; height:3px; background:linear-gradient(to right, var(--gold) 0%, var(--gold) var(--pct, 25%), rgba(184,146,74,.2) var(--pct, 25%)); outline:none; cursor:pointer; }
+    .radius-slider::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--gold); cursor:pointer; box-shadow:0 2px 6px rgba(184,146,74,.4); }
+    .radius-val { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); min-width:65px; font-weight:300; }
+
+    /* ── MARQUEE ── */
     .marquee-wrap { background:var(--gold); overflow:hidden; padding:.8rem 0; user-select:none; }
     .marquee-track { display:flex; gap:3rem; width:max-content; animation:marquee 28s linear infinite; }
     @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
     .marquee-item { display:flex; align-items:center; gap:1rem; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--white); white-space:nowrap; }
     .marquee-dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.5); }
+
+    /* ── SECTIONS ── */
     section { padding:90px 5vw; }
     .section-label { font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
     .section-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:300; line-height:1.15; color:var(--ink); }
@@ -96,7 +161,13 @@
     .filter-tabs { display:flex; gap:.5rem; flex-wrap:wrap; }
     .filter-tab { padding:.45rem 1.1rem; border:1px solid rgba(13,13,13,.15); background:transparent; font-family:'DM Sans',sans-serif; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:all .25s; color:var(--muted); }
     .filter-tab.active { border-color:var(--gold); background:var(--gold); color:var(--white); }
+
+    /* ── HOTEL GRID ── */
     .hotel-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:2rem; }
+    .empty-state { grid-column:1/-1; text-align:center; padding:4rem 2rem; }
+    .empty-state-icon { font-size:2.5rem; color:var(--gold); opacity:.3; margin-bottom:1.2rem; }
+    .empty-state-title { font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:var(--muted); margin-bottom:.5rem; }
+    .empty-state-sub { font-size:.78rem; color:var(--muted); }
     .loading-state { grid-column:1/-1; text-align:center; padding:4rem 2rem; }
     .loading-spinner { width:48px; height:48px; border:2px solid rgba(184,146,74,.2); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 1.2rem; }
     @keyframes spin { to{transform:rotate(360deg)} }
@@ -104,15 +175,12 @@
     .loading-sub { font-size:.75rem; color:var(--muted); margin-top:.4rem; letter-spacing:.05em; }
     .error-state { grid-column:1/-1; text-align:center; padding:3rem; background:rgba(231,76,60,.04); border:1px solid rgba(231,76,60,.2); }
     .error-state i { color:var(--red); font-size:1.5rem; margin-bottom:.8rem; display:block; }
-    .error-state p { font-size:.85rem; color:var(--muted); }
-    .error-state strong { color:var(--ink); display:block; margin-bottom:.4rem; }
     .hotel-card { background:var(--white); box-shadow:0 2px 20px rgba(0,0,0,.06); overflow:hidden; transition:transform .35s, box-shadow .35s; cursor:pointer; }
     .hotel-card:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,0,0,.13); }
     .hotel-img-wrap { position:relative; overflow:hidden; height:240px; }
     .hotel-img-wrap img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s; }
     .hotel-card:hover .hotel-img-wrap img { transform:scale(1.07); }
     .hotel-badge { position:absolute; top:1rem; left:1rem; background:var(--gold); color:var(--white); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; padding:.3rem .75rem; }
-    .hotel-badge.live { background:var(--green); }
     .hotel-wishlist { position:absolute; top:1rem; right:1rem; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.9); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .25s, transform .2s; }
     .hotel-wishlist:hover { background:var(--white); transform:scale(1.1); }
     .hotel-wishlist i { color:var(--muted); font-size:.85rem; transition:color .25s; }
@@ -138,6 +206,8 @@
     .hotel-book-btn:hover { background:var(--gold); }
     .avail-badge { display:inline-flex; align-items:center; gap:.3rem; font-size:.62rem; padding:.2rem .6rem; margin:0 1.4rem .6rem; }
     .avail-badge.available { background:rgba(39,174,96,.1); color:#1e7a44; }
+
+    /* ── STATS / EXP ── */
     .stats-bar { background:var(--ink); display:flex; justify-content:space-around; flex-wrap:wrap; gap:2rem; padding:60px 5vw; }
     .stat-item { text-align:center; }
     .stat-num { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; color:var(--gold); line-height:1; }
@@ -147,6 +217,8 @@
     .exp-chip-icon { font-size:1.6rem; color:var(--gold); margin-bottom:.8rem; }
     .exp-chip-title { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ink); margin-bottom:.3rem; }
     .exp-chip-sub { font-size:.75rem; color:var(--muted); line-height:1.6; }
+
+    /* ── MODAL ── */
     .modal-backdrop { position:fixed; inset:0; background:rgba(13,13,13,.6); z-index:400; display:flex; align-items:center; justify-content:center; padding:2rem; opacity:0; pointer-events:none; transition:opacity .3s; backdrop-filter:blur(4px); }
     .modal-backdrop.open { opacity:1; pointer-events:all; }
     .modal { background:var(--white); max-width:600px; width:100%; max-height:90vh; overflow-y:auto; transform:translateY(20px); transition:transform .35s; }
@@ -191,11 +263,15 @@
     .success-ref { font-size:.75rem; color:var(--muted); margin-bottom:1rem; }
     .success-ref span { color:var(--gold); font-weight:500; letter-spacing:.1em; }
     .success-details { background:var(--sand); padding:1.2rem; text-align:left; font-size:.8rem; color:var(--muted); line-height:1.8; }
+
+    /* ── TOAST ── */
     .toast { position:fixed; bottom:2rem; right:2rem; z-index:999; padding:1rem 1.5rem; font-size:.8rem; display:flex; align-items:center; gap:.7rem; opacity:0; transform:translateY(10px); transition:all .3s; pointer-events:none; max-width:320px; }
     .toast.show { opacity:1; transform:translateY(0); pointer-events:all; }
     .toast-success { background:var(--green); color:var(--white); }
     .toast-error { background:var(--red); color:var(--white); }
     .toast-info { background:var(--ink); color:var(--white); }
+
+    /* ── FOOTER ── */
     footer { background:#080808; color:rgba(255,255,255,.55); padding:60px 5vw 30px; }
     .footer-top { display:grid; grid-template-columns:1.8fr 1fr 1fr 1fr; gap:3rem; padding-bottom:3rem; border-bottom:1px solid rgba(255,255,255,.08); }
     .footer-brand-name { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--white); letter-spacing:.1em; margin-bottom:.8rem; }
@@ -209,139 +285,95 @@
     .footer-social a { width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.5); text-decoration:none; font-size:.85rem; transition:border-color .25s, color .25s; }
     .footer-social a:hover { border-color:var(--gold); color:var(--gold); }
     .footer-bottom { padding-top:1.8rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; font-size:.75rem; }
+
+    /* Leaflet overrides */
+    .leaflet-container { font-family:'DM Sans',sans-serif; }
+    .leaflet-popup-content-wrapper { border-radius:0; box-shadow:0 4px 20px rgba(0,0,0,.15); }
+    .leaflet-popup-content { font-size:.78rem; line-height:1.6; padding:.5rem .3rem; }
+    .leaflet-popup-content strong { color:var(--gold); display:block; }
+
+    /* ── REVEAL ── */
     .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s, transform .7s; }
     .reveal.visible { opacity:1; transform:translateY(0); }
-    @media(max-width:1100px){ .search-bar{grid-template-columns:1fr 1fr 1fr;} }
-    @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .search-bar{grid-template-columns:1fr 1fr;} .exp-strip{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr 1fr;} }
-    @media(max-width:600px){ section{padding:70px 5vw;} .hotel-grid{grid-template-columns:1fr;} .search-bar{grid-template-columns:1fr;} .modal-grid{grid-template-columns:1fr;} .modal-field.full{grid-column:span 1;} .footer-top{grid-template-columns:1fr;gap:2rem;} }
+
+    @media(max-width:1100px){ .loc-search-layout{grid-template-columns:1fr;} #locMap{height:240px;} .quick-search-grid{grid-template-columns:1fr 1fr 1fr;} }
+    @media(max-width:900px){ .nav-links{display:none;} .hamburger{display:flex;} .exp-strip{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr 1fr;} .loc-dropdowns{grid-template-columns:1fr;} .loc-dates-row{grid-template-columns:1fr 1fr;} }
+    @media(max-width:600px){ section{padding:70px 5vw;} .hotel-grid{grid-template-columns:1fr;} .quick-search-grid{grid-template-columns:1fr;} .modal-grid{grid-template-columns:1fr;} .modal-field.full{grid-column:span 1;} .footer-top{grid-template-columns:1fr;gap:2rem;} .loc-input-row{flex-direction:column;} .loc-action-row{flex-direction:column;} .loc-dates-row{grid-template-columns:1fr;} }
   </style>
-  
 </head>
 <body>
 
-<!-- SUPABASE + CONFIG -->
- <script src="/config.js"></script>
+<!-- Leaflet CSS (loaded dynamically if map tab opened) -->
+<link id="leafletCss" rel="stylesheet" href="" disabled>
+
+<!-- CONFIG + SUPABASE -->
+<script src="/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-
-
-  /* ══════════════════════════════════════════
-     STATE → DISTRICT DATA
-     Each district has: label, code (airport/region), priceBase
-  ══════════════════════════════════════════ */
   const DESTINATIONS = {
-    'KL': {
-      label: 'Kerala',
-      districts: [
-        { label:'Thiruvananthapuram', code:'TRV', base:18000 },
-        { label:'Kollam',             code:'KLM', base:12000 },
-        { label:'Pathanamthitta',     code:'PTA', base:10000 },
-        { label:'Alappuzha',          code:'ALP', base:14000 },
-        { label:'Kottayam',           code:'KTM', base:11000 },
-        { label:'Idukki',             code:'IDK', base:15000 },
-        { label:'Ernakulam (Kochi)',  code:'EKM', base:20000 },
-        { label:'Thrissur',           code:'TCR', base:13000 },
-        { label:'Palakkad',           code:'PKD', base:10000 },
-        { label:'Malappuram',         code:'MLP', base:9000  },
-        { label:'Kozhikode',          code:'CCJ', base:16000 },
-        { label:'Wayanad',            code:'WYD', base:17000 },
-        { label:'Kannur',             code:'CNN', base:12000 },
-        { label:'Kasaragod',          code:'KSD', base:11000 },
-      ]
-    },
-    'RJ': {
-      label: 'Rajasthan',
-      districts: [
-        { label:'Jaipur',       code:'JAI', base:25000 },
-        { label:'Udaipur',      code:'UDR', base:28000 },
-        { label:'Jodhpur',      code:'JDH', base:22000 },
-        { label:'Jaisalmer',    code:'JSA', base:18000 },
-        { label:'Pushkar',      code:'AJM', base:14000 },
-        { label:'Bikaner',      code:'BKB', base:12000 },
-        { label:'Mount Abu',    code:'ABU', base:16000 },
-        { label:'Ranthambore',  code:'SWM', base:20000 },
-      ]
-    },
-    'GA': {
-      label: 'Goa',
-      districts: [
-        { label:'North Goa',    code:'GOI_N', base:22000 },
-        { label:'South Goa',    code:'GOI_S', base:26000 },
-      ]
-    },
-    'DL': {
-      label: 'Delhi',
-      districts: [
-        { label:'New Delhi',            code:'DEL', base:30000 },
-        { label:'Aerocity / IGI Area',  code:'DEL_A', base:28000 },
-      ]
-    },
-    'MH': {
-      label: 'Maharashtra',
-      districts: [
-        { label:'Mumbai',        code:'BOM',   base:28000 },
-        { label:'Pune',          code:'PNQ',   base:18000 },
-        { label:'Nashik',        code:'ISK',   base:12000 },
-        { label:'Aurangabad',    code:'IXU',   base:14000 },
-        { label:'Mahabaleshwar', code:'MAB',   base:16000 },
-        { label:'Lonavala',      code:'LON',   base:14000 },
-      ]
-    },
-    'HP': {
-      label: 'Himachal Pradesh',
-      districts: [
-        { label:'Shimla',      code:'SHL', base:14000 },
-        { label:'Manali',      code:'KUU', base:16000 },
-        { label:'Dharamshala', code:'DHM', base:13000 },
-        { label:'Dalhousie',   code:'DAL', base:11000 },
-        { label:'Kasauli',     code:'KSL', base:10000 },
-      ]
-    },
-    'JK': {
-      label: 'Jammu & Kashmir / Ladakh',
-      districts: [
-        { label:'Srinagar',   code:'SXR', base:18000 },
-        { label:'Gulmarg',    code:'GUL', base:22000 },
-        { label:'Pahalgam',   code:'PAH', base:16000 },
-        { label:'Leh',        code:'IXL', base:20000 },
-        { label:'Nubra Valley', code:'NUB', base:15000 },
-        { label:'Jammu',      code:'IXJ', base:12000 },
-      ]
-    },
-    'TN': {
-      label: 'Tamil Nadu',
-      districts: [
-        { label:'Chennai',     code:'MAA', base:20000 },
-        { label:'Ooty (Nilgiris)', code:'CJB', base:14000 },
-        { label:'Coimbatore',  code:'CJB_C', base:12000 },
-        { label:'Madurai',     code:'IXM', base:11000 },
-        { label:'Kodaikanal',  code:'KDK', base:13000 },
-        { label:'Mahabalipuram', code:'MAH', base:16000 },
-      ]
-    },
-    'AN': {
-      label: 'Andaman & Nicobar',
-      districts: [
-        { label:'Port Blair',       code:'IXZ',   base:22000 },
-        { label:'Havelock Island',  code:'IXZ_H', base:18000 },
-        { label:'Neil Island',      code:'IXZ_N', base:16000 },
-      ]
-    },
-    'KA': {
-      label: 'Karnataka',
-      districts: [
-        { label:'Bengaluru',    code:'BLR',  base:22000 },
-        { label:'Mysuru',       code:'MYQ',  base:16000 },
-        { label:'Coorg (Kodagu)', code:'CRG', base:18000 },
-        { label:'Chikmagalur',  code:'CMG',  base:15000 },
-        { label:'Hampi (Bellary)', code:'HPT', base:12000 },
-        { label:'Udupi / Manipal', code:'IXE', base:13000 },
-        { label:'Dandeli',      code:'DDL',  base:11000 },
-      ]
-    },
+    'KL':{ label:'Kerala', districts:[
+      {label:'Thiruvananthapuram',code:'TRV',base:18000},{label:'Kollam',code:'KLM',base:12000},
+      {label:'Pathanamthitta',code:'PTA',base:10000},{label:'Alappuzha',code:'ALP',base:14000},
+      {label:'Kottayam',code:'KTM',base:11000},{label:'Idukki',code:'IDK',base:15000},
+      {label:'Ernakulam (Kochi)',code:'EKM',base:20000},{label:'Thrissur',code:'TCR',base:13000},
+      {label:'Palakkad',code:'PKD',base:10000},{label:'Malappuram',code:'MLP',base:9000},
+      {label:'Kozhikode',code:'CCJ',base:16000},{label:'Wayanad',code:'WYD',base:17000},
+      {label:'Kannur',code:'CNN',base:12000},{label:'Kasaragod',code:'KSD',base:11000}]},
+    'RJ':{ label:'Rajasthan', districts:[
+      {label:'Jaipur',code:'JAI',base:25000},{label:'Udaipur',code:'UDR',base:28000},
+      {label:'Jodhpur',code:'JDH',base:22000},{label:'Jaisalmer',code:'JSA',base:18000},
+      {label:'Pushkar',code:'AJM',base:14000},{label:'Bikaner',code:'BKB',base:12000},
+      {label:'Mount Abu',code:'ABU',base:16000},{label:'Ranthambore',code:'SWM',base:20000}]},
+    'GA':{ label:'Goa', districts:[
+      {label:'North Goa',code:'GOI_N',base:22000},{label:'South Goa',code:'GOI_S',base:26000}]},
+    'DL':{ label:'Delhi', districts:[
+      {label:'New Delhi',code:'DEL',base:30000},{label:'Aerocity / IGI Area',code:'DEL_A',base:28000}]},
+    'MH':{ label:'Maharashtra', districts:[
+      {label:'Mumbai',code:'BOM',base:28000},{label:'Pune',code:'PNQ',base:18000},
+      {label:'Nashik',code:'ISK',base:12000},{label:'Aurangabad',code:'IXU',base:14000},
+      {label:'Mahabaleshwar',code:'MAB',base:16000},{label:'Lonavala',code:'LON',base:14000}]},
+    'HP':{ label:'Himachal Pradesh', districts:[
+      {label:'Shimla',code:'SHL',base:14000},{label:'Manali',code:'KUU',base:16000},
+      {label:'Dharamshala',code:'DHM',base:13000},{label:'Dalhousie',code:'DAL',base:11000},
+      {label:'Kasauli',code:'KSL',base:10000}]},
+    'JK':{ label:'Jammu & Kashmir / Ladakh', districts:[
+      {label:'Srinagar',code:'SXR',base:18000},{label:'Gulmarg',code:'GUL',base:22000},
+      {label:'Pahalgam',code:'PAH',base:16000},{label:'Leh',code:'IXL',base:20000},
+      {label:'Nubra Valley',code:'NUB',base:15000},{label:'Jammu',code:'IXJ',base:12000}]},
+    'TN':{ label:'Tamil Nadu', districts:[
+      {label:'Chennai',code:'MAA',base:20000},{label:'Ooty (Nilgiris)',code:'CJB',base:14000},
+      {label:'Coimbatore',code:'CJB_C',base:12000},{label:'Madurai',code:'IXM',base:11000},
+      {label:'Kodaikanal',code:'KDK',base:13000},{label:'Mahabalipuram',code:'MAH',base:16000}]},
+    'AN':{ label:'Andaman & Nicobar', districts:[
+      {label:'Port Blair',code:'IXZ',base:22000},{label:'Havelock Island',code:'IXZ_H',base:18000},
+      {label:'Neil Island',code:'IXZ_N',base:16000}]},
+    'KA':{ label:'Karnataka', districts:[
+      {label:'Bengaluru',code:'BLR',base:22000},{label:'Mysuru',code:'MYQ',base:16000},
+      {label:'Coorg (Kodagu)',code:'CRG',base:18000},{label:'Chikmagalur',code:'CMG',base:15000},
+      {label:'Hampi (Bellary)',code:'HPT',base:12000},{label:'Udupi / Manipal',code:'IXE',base:13000},
+      {label:'Dandeli',code:'DDL',base:11000}]}
+  };
+
+  // District lat/lng centers for map centering (no DB column needed)
+  const DISTRICT_CENTERS = {
+    'KSD':[12.5,75.0],'TRV':[8.5,76.9],'KLM':[8.9,76.6],'ALP':[9.5,76.3],
+    'KTM':[9.6,76.5],'IDK':[9.9,77.1],'EKM':[10.0,76.3],'TCR':[10.5,76.2],
+    'PKD':[10.7,76.7],'MLP':[11.0,76.1],'CCJ':[11.2,75.8],'WYD':[11.6,76.1],
+    'CNN':[11.9,75.4],'PTA':[9.2,76.8],
+    'JAI':[26.9,75.8],'UDR':[24.6,73.7],'JDH':[26.3,73.0],'JSA':[26.9,70.9],
+    'GOI_N':[15.5,73.8],'GOI_S':[15.1,74.0],
+    'DEL':[28.6,77.2],'DEL_A':[28.55,77.1],
+    'BOM':[19.1,72.9],'PNQ':[18.5,73.9],'MAB':[17.9,73.7],'LON':[18.7,73.4],
+    'SHL':[31.1,77.2],'KUU':[32.2,77.2],'DHM':[32.2,76.3],
+    'SXR':[34.1,74.8],'GUL':[34.1,74.4],'IXL':[34.2,77.6],
+    'MAA':[13.1,80.3],'CJB':[11.4,76.7],'IXM':[9.9,78.1],
+    'IXZ':[11.7,92.7],'IXZ_H':[12.0,92.9],
+    'BLR':[12.9,77.6],'MYQ':[12.3,76.6],'CRG':[12.4,75.7],'CMG':[13.3,75.8]
   };
 </script>
 
+<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <button class="mobile-close" id="mobileClose">✕</button>
   <a href="index.html">Home</a><a href="kerala.html">Kerala</a>
@@ -357,91 +389,199 @@
     <li><a href="#">Experiences</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
-  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1800&q=80" alt="Luxury Hotel"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-    <p class="hero-tagline">Agoda · Real Hotels · Live Pricing</p>
+    <p class="hero-tagline">Live Database · Real Resorts · Smart Search</p>
     <h1 class="hero-title">Stay in <em>Pure</em><br>Luxury</h1>
-    <p class="hero-sub">Search real-time availability across India's finest five-star hotels and resorts — powered by Agoda global hotel inventory.</p>
+    <p class="hero-sub">Search by resort name, state, district — or drop a pin on the map to find luxury hotels near you.</p>
     <div class="hero-btns">
-      <a href="#hotels" class="btn-primary">Search Hotels <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-      <a href="#" class="btn-ghost">View Resorts</a>
+      <a href="#search-anchor" class="btn-primary">Find Your Stay <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <button class="btn-ghost" onclick="switchTab('map')"><i class="fas fa-map-marked-alt"></i> Map Search</button>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     SEARCH STRIP — State + District dropdowns
-═══════════════════════════════════════════ -->
-<div class="search-strip">
-  <div class="search-bar">
+<!-- ════════════════════════════════════════════
+     UNIFIED SEARCH PANEL
+════════════════════════════════════════════ -->
+<div class="search-panel" id="search-anchor">
 
-    <!-- 1 · STATE -->
-    <div class="search-field">
-      <label><i class="fas fa-map"></i> State</label>
-      <select id="searchState" onchange="onStateChange()">
-        <option value="" disabled selected>Select State</option>
-      </select>
-    </div>
-
-    <!-- 2 · DISTRICT (locked until state chosen) -->
-    <div class="search-field locked" id="districtField">
-      <label><i class="fas fa-map-marker-alt"></i> District</label>
-      <select id="searchDistrict" disabled onchange="onDistrictChange()">
-        <option value="" disabled selected>Select District</option>
-      </select>
-    </div>
-
-    <!-- 3 · CHECK IN -->
-    <div class="search-field">
-      <label><i class="fas fa-calendar-alt"></i> Check In</label>
-      <input type="date" id="searchCheckin">
-    </div>
-
-    <!-- 4 · CHECK OUT -->
-    <div class="search-field">
-      <label><i class="fas fa-calendar-alt"></i> Check Out</label>
-      <input type="date" id="searchCheckout">
-    </div>
-
-    <!-- 5 · GUESTS -->
-    <div class="search-field">
-      <label><i class="fas fa-user"></i> Guests</label>
-      <select id="searchGuests">
-        <option value="1">1 Guest</option>
-        <option value="2" selected>2 Guests</option>
-        <option value="3">3 Guests</option>
-        <option value="4">4 Guests</option>
-        <option value="5">5 Guests</option>
-        <option value="6">6 Guests</option>
-      </select>
-    </div>
-
-    <!-- SEARCH BTN -->
-    <button class="search-btn" id="searchBtn" onclick="runSearch()">
-      <i class="fas fa-search"></i> Search
+  <!-- Tab switcher -->
+  <div class="search-tabs">
+    <button class="search-tab active" id="tabQuick" onclick="switchTab('quick')">
+      <i class="fas fa-search"></i> Search Resorts
+    </button>
+    <button class="search-tab" id="tabMap" onclick="switchTab('map')">
+      <i class="fas fa-map-marked-alt"></i> Map &amp; Location
     </button>
   </div>
 
-  <!-- Breadcrumb: State → District -->
-  <div class="dest-crumb" id="destCrumb">
-    <span class="crumb-pill" id="crumbState"></span>
-    <span class="crumb-sep">›</span>
-    <span class="crumb-pill" id="crumbDistrict"></span>
-    <button class="crumb-clear" onclick="clearDestination()" title="Clear destination">✕ Clear</button>
+  <!-- ── TAB 1: Quick Search ── -->
+  <div class="tab-content active" id="tabContentQuick">
+    <div class="quick-search-grid">
+      <!-- Name / keyword search -->
+      <div class="qs-field name-search-wrap">
+        <label><i class="fas fa-search"></i> Resort or Location Name</label>
+        <input type="text" id="nameInput" placeholder="e.g. Taj Bekal, Kasaragod, Beach…" 
+               autocomplete="off"
+               oninput="onNameInput()" 
+               onkeydown="if(event.key==='Enter'){ hideSuggestions(); runQuickSearch(); }">
+        <div class="name-suggestions" id="nameSuggestions"></div>
+      </div>
+      <!-- State -->
+      <div class="qs-field">
+        <label><i class="fas fa-map"></i> State</label>
+        <select id="qsState" onchange="onQsStateChange()">
+          <option value="">All States</option>
+        </select>
+      </div>
+      <!-- District -->
+      <div class="qs-field locked" id="qsDistrictField">
+        <label><i class="fas fa-map-marker-alt"></i> District</label>
+        <select id="qsDistrict" disabled onchange="onQsDistrictChange()">
+          <option value="">All Districts</option>
+        </select>
+      </div>
+      <!-- Check-in -->
+      <div class="qs-field">
+        <label><i class="fas fa-calendar-alt"></i> Check In</label>
+        <input type="date" id="qsCheckin" onchange="syncDates()">
+      </div>
+      <!-- Check-out -->
+      <div class="qs-field">
+        <label><i class="fas fa-calendar-alt"></i> Check Out</label>
+        <input type="date" id="qsCheckout">
+      </div>
+      <button class="qs-search-btn" id="qsSearchBtn" onclick="runQuickSearch()">
+        <i class="fas fa-search"></i> Search
+      </button>
+    </div>
   </div>
 
-  <div class="api-status">
-    <div class="api-dot" id="apiDot"></div>
-    <span id="apiStatusText">Ready</span>
+  <!-- ── TAB 2: Map & Location Search ── -->
+  <div class="tab-content" id="tabContentMap">
+    <div class="loc-search-layout">
+
+      <!-- LEFT: Controls -->
+      <div class="loc-controls">
+
+        <!-- Name/keyword -->
+        <div>
+          <p class="loc-section-title"><i class="fas fa-search"></i> Search by Name or Place</p>
+          <div class="loc-input-row">
+            <input type="text" class="loc-text-input" id="locTextInput"
+              placeholder="e.g. Taj, Bekal, Nileshwar, Beach resort…"
+              oninput="onLocTextInput()"
+              onkeydown="if(event.key==='Enter') applyLocFilters()">
+            <button class="loc-btn loc-btn-secondary" onclick="clearLocText()"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="loc-pills" id="locSuggestions" style="margin-top:.6rem;"></div>
+        </div>
+
+        <!-- State + District -->
+        <div>
+          <p class="loc-section-title"><i class="fas fa-filter"></i> Filter by State / District</p>
+          <div class="loc-dropdowns">
+            <select class="loc-select" id="locState" onchange="onLocStateChange()">
+              <option value="">All States</option>
+            </select>
+            <select class="loc-select" id="locDistrict" onchange="applyLocFilters()">
+              <option value="">All Districts</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dates + Guests -->
+        <div>
+          <p class="loc-section-title"><i class="fas fa-calendar-alt"></i> Dates &amp; Guests</p>
+          <div class="loc-dates-row">
+            <div class="loc-date-field">
+              <label>Check In</label>
+              <input type="date" id="locCheckin">
+            </div>
+            <div class="loc-date-field">
+              <label>Check Out</label>
+              <input type="date" id="locCheckout">
+            </div>
+            <div class="loc-date-field">
+              <label>Guests</label>
+              <select id="locGuests">
+                <option value="1">1 Guest</option><option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option><option value="4">4 Guests</option>
+                <option value="5">5 Guests</option><option value="6">6 Guests</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Radius (only when pin dropped) -->
+        <div id="radiusSection" style="display:none;">
+          <p class="loc-section-title"><i class="fas fa-circle-notch"></i> Search Radius from Pin</p>
+          <div class="radius-row">
+            <input type="range" class="radius-slider" id="radiusSlider"
+              min="10" max="300" step="10" value="100"
+              oninput="onRadiusChange(this.value)">
+            <div class="radius-val"><span id="radiusVal">100</span> km</div>
+          </div>
+          <p style="font-size:.68rem;color:var(--muted);margin-top:.4rem;">Filtering by district codes within approximate radius</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="loc-action-row">
+          <button class="loc-btn loc-btn-primary" onclick="applyLocFilters()">
+            <i class="fas fa-search"></i> Find Resorts
+          </button>
+          <button class="loc-btn loc-btn-secondary" onclick="clearLocFilter()">
+            <i class="fas fa-undo"></i> Reset
+          </button>
+          <button class="loc-btn loc-btn-secondary" onclick="useMyLocation()">
+            <i class="fas fa-location-arrow"></i> My Location
+          </button>
+        </div>
+
+        <!-- Match count -->
+        <div id="locMatchedRow" style="display:none;">
+          <p class="loc-matched-info"><i class="fas fa-check-circle" style="color:var(--green);"></i> <strong id="locMatchedCount">0</strong> resorts found</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: Map -->
+      <div>
+        <p class="loc-section-title"><i class="fas fa-map"></i> Click Map to Center Search by Area</p>
+        <div id="locMap"></div>
+        <p class="map-hint"><i class="fas fa-info-circle" style="color:var(--gold);"></i> Click a region on the map · The nearest district will be selected automatically · No GPS coordinates needed</p>
+      </div>
+
+    </div>
   </div>
+
+  <!-- Active search status bar -->
+  <div class="active-search-info hidden" id="activeSearchInfo">
+    <span id="activeSearchBadges"></span>
+    <div class="api-status">
+      <div class="api-dot connected" id="apiDot"></div>
+      <span id="apiStatusText">Ready</span>
+    </div>
+  </div>
+
+  <!-- Always-visible status -->
+  <div style="padding:.6rem 5vw; border-top:1px solid rgba(184,146,74,.08); display:flex; align-items:center; gap:.8rem; flex-wrap:wrap;">
+    <div class="api-status" style="margin-left:0;">
+      <div class="api-dot" id="apiDot2"></div>
+      <span id="apiStatusText2">Connecting…</span>
+    </div>
+  </div>
+
 </div>
 
+<!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
     <div class="marquee-item"><i class="fas fa-star" style="font-size:.55rem;"></i><span>Live Availability</span><span class="marquee-dot"></span></div>
@@ -463,12 +603,13 @@
   </div>
 </div>
 
+<!-- HOTELS SECTION -->
 <section id="hotels" style="background:var(--cream);">
   <div class="section-header reveal">
     <div>
-      <p class="section-label">Live from Agoda</p>
+      <p class="section-label">Live from Supabase</p>
       <h2 class="section-title">Luxury Hotels<br>& <em>Resorts</em></h2>
-      <p class="section-sub" id="hotelsSubText">Select a state and district above to search live hotel availability.</p>
+      <p class="section-sub" id="hotelsSubText">Search by name, state, or drop a pin on the map above.</p>
     </div>
     <div class="filter-tabs">
       <button class="filter-tab active" onclick="filterCards('all',this)">All</button>
@@ -478,17 +619,17 @@
     </div>
   </div>
   <div class="hotel-grid" id="hotelGrid">
-    <div style="grid-column:1/-1;text-align:center;padding:4rem 2rem;">
-      <i class="fas fa-map-marked-alt" style="font-size:2rem;color:var(--gold);opacity:.4;margin-bottom:1.2rem;display:block;"></i>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--muted);">Choose a State → District and your dates to search live hotel availability</p>
-      <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">Powered by Agoda · Real-time pricing · Enquiry saved to database</p>
+    <div class="empty-state">
+      <div class="empty-state-icon"><i class="fas fa-map-marked-alt"></i></div>
+      <p class="empty-state-title">Search for your perfect stay</p>
+      <p class="empty-state-sub">Type a resort name, select a state &amp; district, or use Map Search to explore by location</p>
     </div>
   </div>
 </section>
 
 <div class="stats-bar">
-  <div class="stat-item reveal"><div class="stat-num">500k+</div><div class="stat-label">Global Properties</div></div>
-  <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-label">Real-time Pricing</div></div>
+  <div class="stat-item reveal"><div class="stat-num">299+</div><div class="stat-label">Listed Resorts</div></div>
+  <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-label">Real-time Data</div></div>
   <div class="stat-item reveal"><div class="stat-num">Instant</div><div class="stat-label">Confirmation</div></div>
   <div class="stat-item reveal"><div class="stat-num">9.5</div><div class="stat-label">Avg. Guest Rating</div></div>
 </div>
@@ -517,13 +658,14 @@
         <div class="booking-step"><div class="step-num" id="step2num">2</div><div class="step-label">Guest Info</div></div>
         <div class="booking-step"><div class="step-num" id="step3num">3</div><div class="step-label">Confirm</div></div>
       </div>
-
       <div class="step-panel active" id="stepPanel1">
         <div class="modal-grid">
           <div class="modal-field"><label>Check In</label><input type="date" id="modalCheckin" onchange="calcPrice()"></div>
           <div class="modal-field"><label>Check Out</label><input type="date" id="modalCheckout" onchange="calcPrice()"></div>
-          <div class="modal-field"><label>Guests</label><select id="modalGuests"><option value="1">1 Guest</option><option value="2" selected>2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option></select></div>
-          <div class="modal-field"><label>Room Type</label><select id="modalRoomType"><option value="ROOM">Standard Room</option><option value="SUITE">Suite</option><option value="DELUXE">Deluxe Room</option><option value="VILLA">Villa</option></select></div>
+          <div class="modal-field"><label>Guests</label>
+            <select id="modalGuests"><option value="1">1 Guest</option><option value="2" selected>2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option></select></div>
+          <div class="modal-field"><label>Room Type</label>
+            <select id="modalRoomType"><option value="ROOM">Standard Room</option><option value="SUITE">Suite</option><option value="DELUXE">Deluxe Room</option><option value="VILLA">Villa</option></select></div>
         </div>
         <div class="price-breakdown" id="priceBreakdown" style="display:none;">
           <div class="price-row"><span>Room rate</span><span id="pricePerNight">—</span></div>
@@ -533,14 +675,14 @@
         </div>
         <button class="modal-btn" onclick="goStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
       </div>
-
       <div class="step-panel" id="stepPanel2">
         <div class="modal-grid">
           <div class="modal-field"><label>First Name *</label><input type="text" id="guestFirst" placeholder="Arjun"></div>
           <div class="modal-field"><label>Last Name *</label><input type="text" id="guestLast" placeholder="Menon"></div>
           <div class="modal-field full"><label>Email Address *</label><input type="email" id="guestEmail" placeholder="you@example.com"><span class="field-hint">Booking confirmation sent here</span></div>
           <div class="modal-field"><label>Phone Number *</label><input type="tel" id="guestPhone" placeholder="+91 98765 43210"></div>
-          <div class="modal-field"><label>Nationality</label><select id="guestNationality"><option value="IN" selected>Indian</option><option value="US">American</option><option value="GB">British</option><option value="AU">Australian</option><option value="AE">UAE</option></select></div>
+          <div class="modal-field"><label>Nationality</label>
+            <select id="guestNationality"><option value="IN" selected>Indian</option><option value="US">American</option><option value="GB">British</option><option value="AU">Australian</option><option value="AE">UAE</option></select></div>
           <div class="modal-field full"><label>Special Requests</label><input type="text" id="guestSpecial" placeholder="Anniversary setup, early check-in, dietary needs…"></div>
         </div>
         <div style="display:flex;gap:.8rem;margin-top:.5rem;">
@@ -548,7 +690,6 @@
           <button class="modal-btn" onclick="goStep(3)" style="flex:2;">Review Booking <i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
-
       <div class="step-panel" id="stepPanel3">
         <div style="background:var(--sand);padding:1.4rem;margin-bottom:1.2rem;">
           <p style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem;">Booking Summary</p>
@@ -560,14 +701,13 @@
           <div class="price-row"><span>Taxes &amp; fees (18% GST)</span><span id="confirmTax">—</span></div>
           <div class="price-row total"><span>Total Due</span><span id="confirmTotal">—</span></div>
         </div>
-        <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;"><i class="fas fa-info-circle" style="color:var(--gold);margin-right:.3rem;"></i>No payment required now. Our team will contact you within 2 hours to confirm and process payment.</p>
+        <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;"><i class="fas fa-info-circle" style="color:var(--gold);margin-right:.3rem;"></i>No payment required now. Our team will contact you within 2 hours.</p>
         <div style="display:flex;gap:.8rem;">
           <button class="modal-btn secondary" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
           <button class="modal-btn" id="confirmBtn" onclick="submitBooking()" style="flex:2;"><i class="fas fa-check-circle"></i> Confirm Reservation</button>
         </div>
         <p class="modal-note">Enquiry saved to database · Our team contacts you within 2 hours</p>
       </div>
-
       <div class="step-panel" id="stepPanel4">
         <div class="booking-success">
           <div class="success-icon"><i class="fas fa-check"></i></div>
@@ -587,7 +727,7 @@
   <div class="footer-top">
     <div>
       <div class="footer-brand-name">Trave<span>lo</span></div>
-      <p class="footer-desc">Curating India's finest 5-star hotels and resort experiences since 2016. Powered by Agoda.</p>
+      <p class="footer-desc">Curating India's finest 5-star hotels and resort experiences. Powered by Supabase.</p>
       <div class="footer-social">
         <a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook"></i></a>
         <a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-pinterest"></i></a>
@@ -599,609 +739,735 @@
   </div>
   <div class="footer-bottom">
     <p>© 2025 Travelo. All Rights Reserved.</p>
-    <p style="color:rgba(255,255,255,.3);font-size:.7rem;letter-spacing:.1em;">POWERED BY AGODA · EXCLUSIVELY 5-STAR</p>
+    <p style="color:rgba(255,255,255,.3);font-size:.7rem;letter-spacing:.1em;">SUPABASE · EXCLUSIVELY 5-STAR</p>
   </div>
 </footer>
 
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════ -->
 <script>
-/* ══════════════════════════════════════════════════
-   SUPABASE CLIENT
-══════════════════════════════════════════════════ */
+/* ── Supabase ── */
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-/* ══════════════════════════════════════════════════
-   POPULATE STATE DROPDOWN ON LOAD
-══════════════════════════════════════════════════ */
-(function initStates() {
-  var stateEl = document.getElementById('searchState');
-  Object.keys(DESTINATIONS).sort(function(a,b){
-    return DESTINATIONS[a].label.localeCompare(DESTINATIONS[b].label);
-  }).forEach(function(code) {
-    var opt = document.createElement('option');
-    opt.value = code;
-    opt.textContent = DESTINATIONS[code].label;
-    stateEl.appendChild(opt);
-  });
-})();
+/* ── Global state ── */
+let allResorts    = [];
+let currentResults= [];
+let mapPin        = null;  // {lat, lng, distCode} — derived from click, no DB lat/lng needed
+let radiusKm      = 100;
+let locMap        = null;
+let mapMarker     = null;
+let mapCircle     = null;
+let mapLoaded     = false;
+let modalOfferId  = '', modalTotal=0, modalNights=0, modalPerNight=0, currentStep=1;
 
-/* ══════════════════════════════════════════════════
-   STATE CHANGE → POPULATE DISTRICTS
-══════════════════════════════════════════════════ */
-function onStateChange() {
-  var stateCode = document.getElementById('searchState').value;
-  var distEl    = document.getElementById('searchDistrict');
-  var distField = document.getElementById('districtField');
+/* ── Helpers ── */
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmt(d){ return d.toISOString().split('T')[0]; }
 
-  // Reset district
-  distEl.innerHTML = '<option value="" disabled selected>Select District</option>';
-  distEl.disabled = true;
-  distField.classList.add('locked');
-  hideCrumb();
-
-  if (!stateCode || !DESTINATIONS[stateCode]) return;
-
-  // Populate districts
-  DESTINATIONS[stateCode].districts.forEach(function(d) {
-    var opt = document.createElement('option');
-    opt.value = d.code;
-    opt.dataset.base = d.base;
-    opt.dataset.label = d.label;
-    opt.textContent = d.label;
-    distEl.appendChild(opt);
-  });
-
-  // Unlock
-  distEl.disabled = false;
-  distField.classList.remove('locked');
-  showToast('Select a district in ' + DESTINATIONS[stateCode].label, 'info');
+function showToast(msg, type='info'){
+  const t = document.getElementById('toast');
+  t.innerHTML = '<i class="fas fa-'+(type==='success'?'check-circle':type==='error'?'exclamation-circle':'info-circle')+'"></i> '+msg;
+  t.className = 'toast toast-'+type+' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), 3500);
 }
 
-/* ══════════════════════════════════════════════════
-   DISTRICT CHANGE → SHOW CRUMB
-══════════════════════════════════════════════════ */
-function onDistrictChange() {
-  var stateCode  = document.getElementById('searchState').value;
-  var distEl     = document.getElementById('searchDistrict');
-  var distOpt    = distEl.options[distEl.selectedIndex];
-  if (!distOpt || !distOpt.value) return;
-
-  document.getElementById('crumbState').innerHTML =
-    '<i class="fas fa-map" style="font-size:.6rem;"></i> ' + DESTINATIONS[stateCode].label;
-  document.getElementById('crumbDistrict').innerHTML =
-    '<i class="fas fa-map-marker-alt" style="font-size:.6rem;"></i> ' + distOpt.dataset.label;
-  document.getElementById('destCrumb').classList.add('show');
+function setStatus(txt, state='connected'){
+  ['apiDot','apiDot2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.className='api-dot '+state; });
+  ['apiStatusText','apiStatusText2'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=txt; });
 }
 
-function hideCrumb() {
-  document.getElementById('destCrumb').classList.remove('show');
+function getCheckin(){ return document.getElementById('qsCheckin').value || document.getElementById('locCheckin').value; }
+function getCheckout(){ return document.getElementById('qsCheckout').value || document.getElementById('locCheckout').value; }
+function getNights(){
+  const ci=getCheckin(), co=getCheckout();
+  if(!ci||!co) return 1;
+  return Math.max(1, Math.round((new Date(co)-new Date(ci))/86400000));
 }
 
-function clearDestination() {
-  document.getElementById('searchState').value = '';
-  var distEl = document.getElementById('searchDistrict');
-  distEl.innerHTML = '<option value="" disabled selected>Select District</option>';
-  distEl.disabled = true;
-  document.getElementById('districtField').classList.add('locked');
-  hideCrumb();
+function getSeasonalPrice(low,high,checkin){
+  if(!checkin) return low;
+  const m=new Date(checkin).getMonth();
+  if([9,10,11,0,1].includes(m)) return high;
+  if([2,8].includes(m)) return Math.round((low+high)/2/500)*500;
+  return low;
 }
-
-
-/* ══════════════════════════════════════════════════
-   SEASONAL PRICE HELPER
-   Returns the correct per-night price based on
-   check-in month using price_low / price_high
-   stored in Supabase.
-
-   Peak    (Oct–Feb) → price_high
-   Shoulder(Mar,Sep) → midpoint
-   Off-peak(Apr–Aug) → price_low
-══════════════════════════════════════════════════ */
-function getSeasonalPrice(priceLow, priceHigh, checkin) {
-  if (!checkin) return priceLow;
-  var month = new Date(checkin).getMonth(); // 0 = Jan … 11 = Dec
-  var peak     = [9,10,11,0,1];  // Oct–Feb
-  var shoulder = [2,8];          // Mar, Sep
-  if (peak.indexOf(month) !== -1)     return priceHigh;
-  if (shoulder.indexOf(month) !== -1) return Math.round((priceLow + priceHigh) / 2 / 500) * 500;
-  return priceLow;               // Apr–Aug off-peak
-}
-
-/* ══════════════════════════════════════════════════
-   AMENITY MAPS  (shared by buildCard)
-══════════════════════════════════════════════════ */
-var AMENITY_ICONS = {
-  'wifi':'fa-wifi','swimming-pool':'fa-swimming-pool','spa':'fa-spa',
-  'utensils':'fa-utensils','concierge-bell':'fa-concierge-bell','car':'fa-car',
-  'child':'fa-child','water':'fa-water','hiking':'fa-hiking','leaf':'fa-leaf',
-  'biking':'fa-biking','campground':'fa-campground','umbrella-beach':'fa-umbrella-beach',
-  'om':'fa-om','boat':'fa-ship','fish':'fa-fish','gamepad':'fa-gamepad',
-  'home':'fa-home','tree':'fa-tree','mountain':'fa-mountain','paw':'fa-paw',
-  'landmark':'fa-landmark','parking':'fa-parking'
-};
-var AMENITY_LABELS = {
-  'wifi':'WiFi','swimming-pool':'Pool','spa':'Spa','utensils':'Dining',
-  'concierge-bell':'Concierge','car':'Transfers','child':'Kid-Friendly',
-  'water':'Waterfront','hiking':'Trekking','leaf':'Eco-Resort','biking':'Cycling',
-  'campground':'Camping','umbrella-beach':'Beach','om':'Yoga / Ayurveda',
-  'boat':'Boat Rides','fish':'Fishing','gamepad':'Activities','home':'Private Villa',
-  'tree':'Nature','mountain':'Hill View','paw':'Pet-Friendly',
-  'landmark':'Heritage','parking':'Parking'
-};
-
-/* ══════════════════════════════════════════════════
-   RUN SEARCH  →  SUPABASE LIVE QUERY
-   Flow:
-     1. Validate inputs
-     2. Query Supabase resorts table by district_code
-     3. Apply seasonal pricing per row
-     4. Render cards via buildCard()
-   Falls back to generic mock if district has no DB rows.
-══════════════════════════════════════════════════ */
-async function runSearch() {
-  var stateCode = document.getElementById('searchState').value;
-  var distEl    = document.getElementById('searchDistrict');
-  var distCode  = distEl.value;
-  var distOpt   = distEl.options[distEl.selectedIndex];
-  var checkin   = document.getElementById('searchCheckin').value;
-  var checkout  = document.getElementById('searchCheckout').value;
-
-  /* ── validation ── */
-  if (!stateCode) { showToast('Please select a state','error');            return; }
-  if (!distCode)  { showToast('Please select a district','error');         return; }
-  if (!checkin)   { showToast('Please select a check-in date','error');    return; }
-  if (!checkout)  { showToast('Please select a check-out date','error');   return; }
-  if (new Date(checkout) <= new Date(checkin)) {
-    showToast('Check-out must be after check-in','error'); return;
-  }
-
-  var nights    = Math.max(1, Math.round((new Date(checkout) - new Date(checkin)) / 86400000));
-  var stateName = DESTINATIONS[stateCode].label;
-  var distName  = distOpt ? distOpt.dataset.label : distCode;
-  var basePrice = distOpt ? parseInt(distOpt.dataset.base) : 15000;
-  var fullLabel = distName + ', ' + stateName;
-
-  var btn  = document.getElementById('searchBtn');
-  var grid = document.getElementById('hotelGrid');
-
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching\u2026';
-  grid.innerHTML = '<div class="loading-state"><div class="loading-spinner"></div>'
-    + '<p class="loading-text">Searching Supabase\u2026</p>'
-    + '<p class="loading-sub">Loading resorts in ' + fullLabel + '</p></div>';
-  setApiStatus('connected', 'Querying database for ' + fullLabel + '\u2026');
-  document.getElementById('hotelsSubText').textContent =
-    'Showing resorts in ' + fullLabel + ' \u00b7 ' + nights + ' night' + (nights > 1 ? 's' : '');
-
-  try {
-    /* ── SUPABASE QUERY ── */
-    var { data: resorts, error } = await db
-      .from('resorts')
-      .select('*')
-      .eq('district_code', distCode)
-      .eq('is_active', true)
-      .order('rating', { ascending: false });
-
-    if (error) throw error;
-
-    grid.innerHTML = '';
-
-    if (resorts && resorts.length > 0) {
-      /* ── Map DB row → card data object, apply seasonal price ── */
-      resorts.forEach(function(row, idx) {
-        var perNight = getSeasonalPrice(row.price_low, row.price_high, checkin);
-        var h = {
-          name:       row.name,
-          location:   row.location,
-          type:       row.type,
-          badge:      row.badge,
-          rating:     String(row.rating),
-          ratingWord: row.rating_word,
-          reviews:    row.review_count || 'New',
-          perNight:   perNight,
-          priceLow:   row.price_low,
-          priceHigh:  row.price_high,
-          phone:      row.phone,
-          amenities:  row.amenities || [],
-          desc:       row.description,
-          img:        row.image_url
-        };
-        buildCard(h, idx, fullLabel, nights, grid);
-      });
-
-      document.querySelectorAll('#hotelGrid .reveal').forEach(function(r){ io.observe(r); });
-      showToast('Found ' + resorts.length + ' properties in ' + distName, 'success');
-      setApiStatus('connected', 'live \u00b7 ' + resorts.length + ' properties in ' + distName);
-      document.getElementById('hotels').scrollIntoView({ behavior:'smooth', block:'start' });
-
-    } else {
-      /* ── No rows for this district yet → generic mock fallback ── */
-      renderMockFallback(distName, stateName, fullLabel, basePrice, nights, grid);
-    }
-
-  } catch(err) {
-    console.error('[Supabase Search]', err);
-    grid.innerHTML = '<div class="error-state">'
-      + '<i class="fas fa-exclamation-triangle"></i>'
-      + '<p><strong>Database error</strong><br>' + esc(err.message) + '</p></div>';
-    setApiStatus('error', err.message.slice(0, 60));
-    showToast('DB error: ' + err.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-search"></i> Search';
-  }
-}
-
-/* ══════════════════════════════════════════════════
-   MOCK FALLBACK
-   Used when a district has no rows in Supabase yet.
-   Generates 8 generic placeholder cards so the UI
-   never shows an empty state for any district.
-══════════════════════════════════════════════════ */
-function renderMockFallback(distName, stateName, fullLabel, basePrice, nights, grid) {
-  var types  = ['RESORT','HOTEL','BOUTIQUE','RESORT','HOTEL','RESORT','HOTEL','RESORT'];
-  var badges = ["Editor's Choice",'Beach Resort','Heritage Hotel','Forest Retreat',
-                'Beachfront','Mountain Hotel','Eco Resort','Palace Hotel'];
-  var imgs   = [
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80',
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80',
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=700&q=80',
-    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700&q=80',
-    'https://images.unsplash.com/photo-1582610285985-a42d9193f2fd?w=700&q=80',
-    'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&q=80',
-    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=700&q=80',
-    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=700&q=80'
-  ];
-  var names = [
-    'The Grand ' + distName + ' Palace', 'Taj Luxury Resort ' + distName,
-    'Heritage Grand Hotel', 'Forest & Spa Retreat', 'Beachfront Paradise',
-    'Mountain View Inn', 'Eco Luxury Villas', 'Royal Palace & Gardens'
-  ];
-  grid.innerHTML = '';
-  names.forEach(function(hName, idx) {
-    var v = idx % 3 === 0 ? 1.4 : idx % 3 === 1 ? 1.1 : 0.85;
-    var p = Math.round(basePrice * v / 500) * 500;
-    buildCard({
-      name: hName, location: distName, type: types[idx], badge: badges[idx],
-      rating: '4.' + (5 + idx % 5), ratingWord: 'Exceptional', reviews: 'Coming soon',
-      perNight: p, priceLow: p, priceHigh: Math.round(p * 1.6),
-      phone: null, amenities: ['wifi','swimming-pool','spa','utensils'],
-      desc: 'Luxury ' + types[idx].toLowerCase() + ' \u00b7 Free cancellation \u00b7 Breakfast included',
-      img: imgs[idx]
-    }, idx, fullLabel, nights, grid);
-  });
-  document.querySelectorAll('#hotelGrid .reveal').forEach(function(r){ io.observe(r); });
-  showToast('Showing preview for ' + distName + ' \u00b7 Add real data to Supabase', 'info');
-  setApiStatus('connected', 'Preview mode \u00b7 Add ' + distName + ' resorts to DB');
-  document.getElementById('hotels').scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-/* ══════════════════════════════════════════════════
-   BUILD CARD
-   Accepts a normalised hotel object (h) and renders
-   a full card DOM element into the grid.
-   h.perNight is already seasonal-adjusted by caller.
-══════════════════════════════════════════════════ */
-function buildCard(h, idx, fullLabel, nights, grid) {
-  var perNight   = h.perNight;
-  var total      = perNight * nights;
-  var tax        = Math.round(total * 0.18);
-  var grandTotal = total + tax;
-  var offerId    = 'PROP_' + idx + '_' + Date.now();
-  var fallbacks  = [
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80',
-    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80'
-  ];
-
-  var card = document.createElement('div');
-  card.className = 'hotel-card reveal';
-  card.dataset.type = h.type;
-
-  /* ── image ── */
-  var imgWrap = document.createElement('div'); imgWrap.className = 'hotel-img-wrap';
-  var img = document.createElement('img'); img.src = h.img || fallbacks[idx % 2];
-  img.alt = h.name; img.loading = 'lazy';
-  img.onerror = function(){ this.src = fallbacks[idx % fallbacks.length]; };
-  imgWrap.appendChild(img);
-
-  /* ── type badge ── */
-  var bdg = document.createElement('div'); bdg.className = 'hotel-badge';
-  bdg.style.background = h.type==='BOUTIQUE' ? '#6b4c9a' : h.type==='HOTEL' ? '#2c7a7b' : 'var(--gold)';
-  bdg.textContent = h.badge || h.type;
-  imgWrap.appendChild(bdg);
-
-  /* ── rating overlay ── */
-  var rBdg = document.createElement('div');
-  rBdg.style.cssText = 'position:absolute;bottom:1rem;left:1rem;background:rgba(13,13,13,.75);'
-    + 'backdrop-filter:blur(8px);padding:.3rem .8rem;display:flex;align-items:center;gap:.5rem;';
-  rBdg.innerHTML = '<i class="fas fa-star" style="color:var(--gold);font-size:.55rem;"></i>'
-    + '<span style="color:#fff;font-size:.72rem;font-weight:500;">' + esc(String(h.rating)) + '</span>'
-    + '<span style="color:rgba(255,255,255,.55);font-size:.62rem;">' + esc(h.ratingWord) + '</span>'
-    + '<span style="color:rgba(255,255,255,.35);font-size:.58rem;">(' + esc(String(h.reviews)) + ')</span>';
-  imgWrap.appendChild(rBdg);
-
-  /* ── seasonal price tag (only if price range available) ── */
-  if (h.priceLow && h.priceHigh && h.priceLow !== h.priceHigh) {
-    var sPill = document.createElement('div');
-    sPill.style.cssText = 'position:absolute;top:1rem;right:3.2rem;background:rgba(184,146,74,.9);'
-      + 'color:#fff;font-size:.58rem;letter-spacing:.08em;padding:.2rem .55rem;';
-    sPill.textContent = 'Seasonal pricing';
-    imgWrap.appendChild(sPill);
-  }
-
-  /* ── wishlist ── */
-  var wish = document.createElement('button'); wish.className = 'hotel-wishlist';
-  wish.innerHTML = '<i class="far fa-heart"></i>';
-  wish.addEventListener('click', function(){ toggleWish(this); });
-  imgWrap.appendChild(wish);
-  card.appendChild(imgWrap);
-
-  /* ── stars ── */
-  var sd = document.createElement('div'); sd.className = 'hotel-stars';
-  sd.innerHTML = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>'
-    + '<i class="fas fa-star"></i><i class="fas fa-star"></i>';
-  card.appendChild(sd);
-
-  /* ── body ── */
-  var body = document.createElement('div'); body.className = 'hotel-body';
-  var phoneHtml = h.phone
-    ? ' &nbsp;<span style="font-size:.62rem;color:var(--gold);"><i class="fas fa-phone" style="font-size:.58rem;"></i> ' + esc(h.phone) + '</span>'
-    : '';
-  body.innerHTML = '<p class="hotel-location"><i class="fas fa-map-marker-alt"></i> '
-    + esc(h.location) + phoneHtml + '</p>'
-    + '<h3 class="hotel-name">' + esc(h.name) + '</h3>'
-    + '<p class="hotel-desc">' + esc(h.desc || '') + '</p>';
-  card.appendChild(body);
-
-  /* ── amenities ── */
-  var am = document.createElement('div'); am.className = 'hotel-amenities';
-  (h.amenities || []).forEach(function(a) {
-    var icon  = AMENITY_ICONS[a] || ('fa-' + a);
-    var label = AMENITY_LABELS[a] || a;
-    am.innerHTML += '<span class="amenity"><i class="fas ' + icon + '"></i> ' + label + '</span>';
-  });
-  card.appendChild(am);
-
-  /* ── availability badge ── */
-  var av = document.createElement('div'); av.className = 'avail-badge available';
-  av.innerHTML = '<i class="fas fa-check-circle"></i> Available &middot; '
-    + nights + ' night' + (nights > 1 ? 's' : '')
-    + ' &middot; Total \u20b9' + grandTotal.toLocaleString('en-IN');
-  card.appendChild(av);
-
-  /* ── price footer ── */
-  var ft = document.createElement('div'); ft.className = 'hotel-footer';
-  var priceNote = (h.priceLow && h.priceHigh && h.priceLow !== h.priceHigh)
-    ? '\u20b9' + h.priceLow.toLocaleString('en-IN') + ' \u2013 \u20b9' + h.priceHigh.toLocaleString('en-IN')
-    : '+ 18% GST';
-  ft.innerHTML = '<div class="hotel-price">'
-    + '<p class="hotel-price-label">Per night (' + getSeasonLabel(checkinMonthFromGrid()) + ')</p>'
-    + '<p class="hotel-price-num">\u20b9' + perNight.toLocaleString('en-IN') + '</p>'
-    + '<p class="hotel-price-per" style="font-size:.6rem;">' + esc(priceNote) + '</p></div>'
-    + '<div class="hotel-rating"><div class="rating-score">' + esc(String(h.rating)) + '</div>'
-    + '<div class="rating-label">' + esc(h.ratingWord)
-    + '<br><span style="color:var(--gold);">' + esc(String(h.reviews)) + '</span></div></div>';
-  card.appendChild(ft);
-
-  /* ── book button ── */
-  var bb = document.createElement('button'); bb.className = 'hotel-book-btn';
-  bb.innerHTML = '<i class="fas fa-calendar-check"></i> Book This Stay';
-  (function(n, c, pn, oid, gt, ni) {
-    bb.addEventListener('click', function(){ openModal(n, c, pn, oid, gt, ni); });
-  })(h.name, fullLabel, perNight, offerId, grandTotal, nights);
-  card.appendChild(bb);
-
-  grid.appendChild(card);
-}
-
-/* helper: read checkin month from the search input for the price label */
-function checkinMonthFromGrid() {
-  return document.getElementById('searchCheckin').value || '';
-}
-function getSeasonLabel(checkin) {
-  if (!checkin) return 'per night';
-  var m = new Date(checkin).getMonth();
-  if ([9,10,11,0,1].indexOf(m) !== -1) return 'peak season';
-  if ([2,8].indexOf(m) !== -1)          return 'shoulder season';
+function getSeasonLabel(checkin){
+  if(!checkin) return 'per night';
+  const m=new Date(checkin).getMonth();
+  if([9,10,11,0,1].includes(m)) return 'peak season';
+  if([2,8].includes(m)) return 'shoulder season';
   return 'off-peak';
 }
 
+/* ── Sync dates between tabs ── */
+function syncDates(){
+  const ci = document.getElementById('qsCheckin').value;
+  const co = document.getElementById('qsCheckout').value;
+  if(ci) document.getElementById('locCheckin').value = ci;
+  if(co) document.getElementById('locCheckout').value = co;
+}
 
+/* ── Tab switching ── */
+function switchTab(tab){
+  document.getElementById('tabQuick').classList.toggle('active', tab==='quick');
+  document.getElementById('tabMap').classList.toggle('active', tab==='map');
+  document.getElementById('tabContentQuick').classList.toggle('active', tab==='quick');
+  document.getElementById('tabContentMap').classList.toggle('active', tab==='map');
+  if(tab==='map' && !mapLoaded) initMap();
+}
 
+/* ── Init state/district dropdowns ── */
+(function initDropdowns(){
+  const states = Object.keys(DESTINATIONS).sort((a,b)=>DESTINATIONS[a].label.localeCompare(DESTINATIONS[b].label));
+  ['qsState','locState'].forEach(id=>{
+    const el = document.getElementById(id);
+    states.forEach(code=>{
+      const o=document.createElement('option'); o.value=code; o.textContent=DESTINATIONS[code].label; el.appendChild(o);
+    });
+  });
+})();
 
+function onQsStateChange(){
+  const sc = document.getElementById('qsState').value;
+  const distEl = document.getElementById('qsDistrict');
+  const distField = document.getElementById('qsDistrictField');
+  distEl.innerHTML = '<option value="">All Districts</option>';
+  if(sc && DESTINATIONS[sc]){
+    DESTINATIONS[sc].districts.forEach(d=>{ const o=document.createElement('option'); o.value=d.code; o.dataset.label=d.label; o.dataset.base=d.base; o.textContent=d.label; distEl.appendChild(o); });
+    distEl.disabled=false; distField.classList.remove('locked');
+  } else {
+    distEl.disabled=true; distField.classList.add('locked');
+  }
+}
+function onQsDistrictChange(){ /* nothing extra needed */ }
 
-/* ══════════════════════════════════════════════════
-   FILTER · WISHLIST
-══════════════════════════════════════════════════ */
-function filterCards(type, btn) {
-  document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
-  btn.classList.add('active');
-  document.querySelectorAll('.hotel-card').forEach(function(card) {
-    card.style.display = (type === 'all' || (card.dataset.type || '').includes(type)) ? '' : 'none';
+function onLocStateChange(){
+  const sc = document.getElementById('locState').value;
+  const distEl = document.getElementById('locDistrict');
+  distEl.innerHTML = '<option value="">All Districts</option>';
+  if(sc && DESTINATIONS[sc]){
+    DESTINATIONS[sc].districts.forEach(d=>{ const o=document.createElement('option'); o.value=d.code; o.textContent=d.label; distEl.appendChild(o); });
+  }
+  applyLocFilters();
+}
+
+/* ── Name input: live suggestions from allResorts ── */
+function onNameInput(){
+  const q = document.getElementById('nameInput').value.toLowerCase().trim();
+  const box = document.getElementById('nameSuggestions');
+  if(!q || q.length < 2){ box.classList.remove('open'); return; }
+
+  const matches = allResorts.filter(r=>
+    (r.name||'').toLowerCase().includes(q) ||
+    (r.location||'').toLowerCase().includes(q) ||
+    (r.district_code||'').toLowerCase().includes(q) ||
+    (r.state_code||'').toLowerCase().includes(q)
+  ).slice(0,8);
+
+  if(matches.length===0){ box.classList.remove('open'); return; }
+
+  box.innerHTML = matches.map(r=>`
+    <div class="name-suggestion-item" onclick="selectNameSuggestion('${esc(r.name)}')">
+      <i class="fas fa-hotel"></i>
+      <div>
+        <div>${esc(r.name)}</div>
+        <div class="sug-loc">${esc(r.location||r.district_code||'')} · <span class="sug-type">${esc(r.type||'')}</span></div>
+      </div>
+    </div>
+  `).join('');
+  box.classList.add('open');
+}
+
+function selectNameSuggestion(name){
+  document.getElementById('nameInput').value = name;
+  hideSuggestions();
+  runQuickSearch();
+}
+
+function hideSuggestions(){ document.getElementById('nameSuggestions').classList.remove('open'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('.name-search-wrap')) hideSuggestions(); });
+
+/* ═══════════════════════════════════════
+   QUICK SEARCH (Tab 1)
+   Queries DB by name, state, district — NO latitude needed
+═══════════════════════════════════════ */
+async function runQuickSearch(){
+  const name     = document.getElementById('nameInput').value.trim();
+  const stateCode= document.getElementById('qsState').value;
+  const distEl   = document.getElementById('qsDistrict');
+  const distCode = distEl.value;
+  const checkin  = document.getElementById('qsCheckin').value;
+  const checkout = document.getElementById('qsCheckout').value;
+  const nights   = getNights();
+
+  if(!name && !stateCode){ showToast('Enter a resort name or select a state','error'); return; }
+  if(checkin && checkout && new Date(checkout)<=new Date(checkin)){ showToast('Check-out must be after check-in','error'); return; }
+
+  const btn  = document.getElementById('qsSearchBtn');
+  const grid = document.getElementById('hotelGrid');
+
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Searching…';
+  grid.innerHTML='<div class="loading-state"><div class="loading-spinner"></div><p class="loading-text">Searching resorts…</p><p class="loading-sub">Querying live database</p></div>';
+  setStatus('Searching…','loading');
+
+  try {
+    let query = db.from('resorts').select('*').eq('is_active',true);
+
+    // Name/keyword filter — use ilike for partial match on name or location
+    if(name){
+      query = query.or(`name.ilike.%${name}%,location.ilike.%${name}%,district_code.ilike.%${name}%`);
+    }
+    // State filter
+    if(stateCode) query = query.eq('state_code', stateCode);
+    // District filter
+    if(distCode)  query = query.eq('district_code', distCode);
+
+    query = query.order('rating', {ascending:false});
+
+    const {data:resorts, error} = await query;
+    if(error) throw error;
+
+    // Cache
+    if(resorts) resorts.forEach(r=>{ if(!allResorts.find(x=>x.id===r.id)) allResorts.push(r); });
+
+    if(resorts && resorts.length > 0){
+      currentResults = resorts;
+      renderResorts(resorts, nights, checkin, buildSearchLabel(name, stateCode, distCode, distEl));
+      setStatus('Live · '+resorts.length+' properties found','connected');
+    } else {
+      renderMockFallback(stateCode, distCode, distEl, nights, checkin, grid);
+    }
+  } catch(e){
+    grid.innerHTML=`<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p><strong>Database error</strong><br>${esc(e.message)}</p></div>`;
+    setStatus('Error: '+e.message.slice(0,50),'error');
+    showToast('DB error: '+e.message,'error');
+  } finally {
+    btn.disabled=false; btn.innerHTML='<i class="fas fa-search"></i> Search';
+  }
+}
+
+function buildSearchLabel(name, stateCode, distCode, distEl){
+  const parts=[];
+  if(name) parts.push('"'+name+'"');
+  if(stateCode && DESTINATIONS[stateCode]) parts.push(DESTINATIONS[stateCode].label);
+  if(distCode && distEl){
+    const opt = distEl.options[distEl.selectedIndex];
+    if(opt && opt.dataset.label) parts.push(opt.dataset.label);
+  }
+  return parts.join(' · ') || 'All Resorts';
+}
+
+/* ═══════════════════════════════════════
+   LOC TEXT INPUT suggestions
+═══════════════════════════════════════ */
+function onLocTextInput(){
+  const q = (document.getElementById('locTextInput').value||'').toLowerCase().trim();
+  const box = document.getElementById('locSuggestions');
+  if(!q || allResorts.length===0){ box.innerHTML=''; return; }
+  const locs = [...new Set(
+    allResorts
+      .filter(r=>(r.name||'').toLowerCase().includes(q)||(r.location||'').toLowerCase().includes(q)||(r.district_code||'').toLowerCase().includes(q))
+      .map(r=>r.location||r.district_code)
+  )].slice(0,7);
+  box.innerHTML = locs.map(loc=>`<span class="loc-pill" onclick="selectLocPill('${esc(loc)}')">`+
+    `<i class="fas fa-map-marker-alt" style="font-size:.6rem;"></i> ${esc(loc)}</span>`).join('');
+}
+
+function selectLocPill(loc){
+  document.getElementById('locTextInput').value = loc;
+  document.getElementById('locSuggestions').innerHTML='';
+  applyLocFilters();
+}
+
+function clearLocText(){
+  document.getElementById('locTextInput').value='';
+  document.getElementById('locSuggestions').innerHTML='';
+  applyLocFilters();
+}
+
+/* ═══════════════════════════════════════
+   APPLY LOC FILTERS (Tab 2)
+   Uses ONLY name, state_code, district_code — no latitude column
+═══════════════════════════════════════ */
+async function applyLocFilters(){
+  const q         = (document.getElementById('locTextInput').value||'').toLowerCase().trim();
+  const stateCode = document.getElementById('locState').value;
+  const distCode  = document.getElementById('locDistrict').value;
+  const checkin   = document.getElementById('locCheckin').value;
+  const checkout  = document.getElementById('locCheckout').value;
+  const nights    = (checkin&&checkout) ? Math.max(1,Math.round((new Date(checkout)-new Date(checkin))/86400000)) : 1;
+
+  if(!q && !stateCode && !distCode && !mapPin){ showToast('Enter a name, select a state, or click the map','info'); return; }
+
+  const grid = document.getElementById('hotelGrid');
+  grid.innerHTML='<div class="loading-state"><div class="loading-spinner"></div><p class="loading-text">Searching…</p></div>';
+  setStatus('Searching…','loading');
+
+  try {
+    let query = db.from('resorts').select('*').eq('is_active',true);
+
+    if(q) query = query.or(`name.ilike.%${q}%,location.ilike.%${q}%,district_code.ilike.%${q}%`);
+    if(stateCode) query = query.eq('state_code', stateCode);
+
+    // Map pin: find districts within approximate radius using DISTRICT_CENTERS
+    if(mapPin && !distCode){
+      const nearDists = Object.entries(DISTRICT_CENTERS)
+        .filter(([code,[lat,lng]])=> haversine(mapPin.lat,mapPin.lng,lat,lng) <= radiusKm)
+        .map(([code])=>code);
+      if(nearDists.length > 0){
+        query = query.in('district_code', nearDists);
+      }
+    } else if(distCode){
+      query = query.eq('district_code', distCode);
+    }
+
+    query = query.order('rating', {ascending:false});
+    const {data:resorts, error} = await query;
+    if(error) throw error;
+
+    if(resorts) resorts.forEach(r=>{ if(!allResorts.find(x=>x.id===r.id)) allResorts.push(r); });
+
+    const matched = document.getElementById('locMatchedRow');
+    const count   = document.getElementById('locMatchedCount');
+    if(resorts && resorts.length > 0){
+      matched.style.display='flex';
+      count.textContent = resorts.length;
+      currentResults = resorts;
+      renderResorts(resorts, nights, checkin, buildLocLabel(q,stateCode,distCode));
+      setStatus('Live · '+resorts.length+' properties found','connected');
+    } else {
+      matched.style.display='none';
+      grid.innerHTML='<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-search"></i></div><p class="empty-state-title">No resorts found</p><p class="empty-state-sub">Try different filters or adjust the radius</p></div>';
+      setStatus('No results found','connected');
+    }
+  } catch(e){
+    grid.innerHTML=`<div class="error-state"><i class="fas fa-exclamation-triangle"></i><p><strong>Database error</strong><br>${esc(e.message)}</p></div>`;
+    setStatus('Error','error');
+  }
+}
+
+function buildLocLabel(q,stateCode,distCode){
+  const parts=[];
+  if(q) parts.push('"'+q+'"');
+  if(stateCode && DESTINATIONS[stateCode]) parts.push(DESTINATIONS[stateCode].label);
+  if(distCode){
+    for(const s of Object.values(DESTINATIONS)){
+      const d=s.districts.find(x=>x.code===distCode);
+      if(d){ parts.push(d.label); break; }
+    }
+  }
+  if(mapPin) parts.push('Near pin ('+radiusKm+'km radius)');
+  return parts.join(' · ')||'Location Search';
+}
+
+function clearLocFilter(){
+  document.getElementById('locTextInput').value='';
+  document.getElementById('locState').value='';
+  document.getElementById('locDistrict').innerHTML='<option value="">All Districts</option>';
+  document.getElementById('locSuggestions').innerHTML='';
+  document.getElementById('locMatchedRow').style.display='none';
+  mapPin=null;
+  if(mapMarker&&locMap){ locMap.removeLayer(mapMarker); mapMarker=null; }
+  if(mapCircle&&locMap){ locMap.removeLayer(mapCircle); mapCircle=null; }
+  document.getElementById('radiusSection').style.display='none';
+  currentResults=[];
+  document.getElementById('hotelGrid').innerHTML=`<div class="empty-state"><div class="empty-state-icon"><i class="fas fa-undo"></i></div><p class="empty-state-title">Filters cleared</p><p class="empty-state-sub">Use the search above to find resorts</p></div>`;
+  document.getElementById('hotelsSubText').textContent='Search by name, state, or drop a pin on the map above.';
+  setStatus('Ready · '+allResorts.length+' resorts in DB','connected');
+}
+
+/* ── haversine (for map pin, using DISTRICT_CENTERS — no DB lat/lng) ── */
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371, dLat=(lat2-lat1)*Math.PI/180, dLon=(lon2-lon1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+/* ── My Location ── */
+function useMyLocation(){
+  if(!navigator.geolocation){ showToast('Geolocation not supported','error'); return; }
+  showToast('Getting your location…','info');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    if(!mapLoaded){ switchTab('map'); }
+    setTimeout(()=>{
+      locMap.setView([pos.coords.latitude,pos.coords.longitude],9);
+      dropPin(pos.coords.latitude, pos.coords.longitude);
+      showToast('Location set · Finding nearby resorts','success');
+    }, 400);
+  }, err=>showToast('Location error: '+err.message,'error'));
+}
+
+/* ═══════════════════════════════════════
+   MAP  (Leaflet — loaded lazily)
+   Map click → sets approximate district via DISTRICT_CENTERS
+   NO latitude/longitude DB column used
+═══════════════════════════════════════ */
+function initMap(){
+  if(mapLoaded) return;
+  // Load Leaflet dynamically
+  const css = document.createElement('link');
+  css.rel='stylesheet'; css.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+  document.head.appendChild(css);
+
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+  script.onload = () => {
+    mapLoaded = true;
+    locMap = L.map('locMap').setView([10.85,75.97],6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution:'© <a href="https://www.openstreetmap.org/copyright">OSM</a>', maxZoom:18
+    }).addTo(locMap);
+
+    // Plot district center dots
+    plotDistrictMarkers();
+
+    locMap.on('click', e=>{ dropPin(e.latlng.lat, e.latlng.lng); });
+  };
+  document.head.appendChild(script);
+}
+
+function plotDistrictMarkers(){
+  if(!locMap) return;
+  // Plot all known district centres as subtle dots with labels
+  Object.entries(DISTRICT_CENTERS).forEach(([code,[lat,lng]])=>{
+    // Find district label
+    let distLabel = code;
+    for(const s of Object.values(DESTINATIONS)){
+      const d=s.districts.find(x=>x.code===code);
+      if(d){ distLabel=d.label; break; }
+    }
+    const icon = L.divIcon({
+      html:`<div style="width:8px;height:8px;border-radius:50%;background:rgba(184,146,74,0.5);border:1.5px solid #b8924a;"></div>`,
+      iconSize:[8,8],iconAnchor:[4,4],className:''
+    });
+    const m = L.marker([lat,lng],{icon}).addTo(locMap);
+    m.bindTooltip(distLabel,{permanent:false,direction:'top',className:'',opacity:.9});
+    m.on('click',()=>{ dropPin(lat,lng,code); });
   });
 }
 
-function toggleWish(btn) {
-  btn.classList.toggle('liked');
-  var icon = btn.querySelector('i');
-  icon.classList.toggle('far'); icon.classList.toggle('fas');
-  showToast(btn.classList.contains('liked') ? 'Added to wishlist' : 'Removed from wishlist', 'info');
-}
+function dropPin(lat,lng,knownDistCode){
+  mapPin = {lat,lng};
 
-/* ══════════════════════════════════════════════════
-   MODAL
-══════════════════════════════════════════════════ */
-var modalOfferId = '', modalTotal = 0, modalNights = 0, modalPerNight = 0, currentStep = 1;
+  if(mapMarker) locMap.removeLayer(mapMarker);
+  if(mapCircle) locMap.removeLayer(mapCircle);
 
-function openModal(name, city, pricePerNight, hotelId, totalPrice, nights) {
-  document.getElementById('modalHotelName').textContent = name + (city ? ' · ' + city : '');
-  document.getElementById('modalHotelPrice').textContent = '₹' + parseInt(pricePerNight).toLocaleString('en-IN') + ' per night';
-  modalOfferId = hotelId; modalPerNight = parseInt(pricePerNight);
-  modalNights = parseInt(nights) || 1; modalTotal = parseInt(totalPrice) || modalPerNight * modalNights;
-  var ci = document.getElementById('searchCheckin').value;
-  var co = document.getElementById('searchCheckout').value;
-  if (ci) document.getElementById('modalCheckin').value = ci;
-  if (co) document.getElementById('modalCheckout').value = co;
-  calcPrice(); goStep(1);
-  document.getElementById('bookingSteps').style.display = '';
-  document.getElementById('modalBackdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+  const icon = L.divIcon({
+    html:`<div style="width:22px;height:22px;border-radius:50% 50% 50% 0;background:#b8924a;border:2.5px solid #fff;transform:rotate(-45deg);box-shadow:0 3px 12px rgba(184,146,74,.7);"></div>`,
+    iconSize:[22,22],iconAnchor:[11,22],className:''
+  });
+  mapMarker = L.marker([lat,lng],{icon,draggable:true}).addTo(locMap);
+  mapMarker.on('dragend',e=>{ const p=e.target.getLatLng(); dropPin(p.lat,p.lng); });
 
-function closeModal() {
-  document.getElementById('modalBackdrop').classList.remove('open');
-  document.body.style.overflow = '';
-}
+  mapCircle = L.circle([lat,lng],{
+    radius:radiusKm*1000, color:'#b8924a', fillColor:'#b8924a',
+    fillOpacity:.06, weight:1.5, dashArray:'6 4'
+  }).addTo(locMap);
 
-function calcPrice() {
-  var ci = document.getElementById('modalCheckin').value;
-  var co = document.getElementById('modalCheckout').value;
-  if (!ci || !co) return;
-  var n = Math.max(1, Math.round((new Date(co) - new Date(ci)) / 86400000));
-  modalNights = n;
-  var base = modalPerNight * n, tax = Math.round(base * 0.18), total = base + tax;
-  modalTotal = total;
-  document.getElementById('priceBreakdown').style.display = 'block';
-  document.getElementById('pricePerNight').textContent = '₹' + modalPerNight.toLocaleString('en-IN');
-  document.getElementById('priceNightsLabel').textContent = n + ' night' + (n > 1 ? 's' : '');
-  document.getElementById('priceTax').textContent = '₹' + tax.toLocaleString('en-IN');
-  document.getElementById('priceTotal').textContent = '₹' + total.toLocaleString('en-IN');
-  document.getElementById('confirmRate').textContent = '₹' + modalPerNight.toLocaleString('en-IN');
-  document.getElementById('confirmNights').textContent = n + ' night' + (n > 1 ? 's' : '');
-  document.getElementById('confirmTax').textContent = '₹' + tax.toLocaleString('en-IN');
-  document.getElementById('confirmTotal').textContent = '₹' + total.toLocaleString('en-IN');
-}
+  document.getElementById('radiusSection').style.display='block';
+  updateRadiusSlider();
 
-function goStep(n) {
-  if (n === 3) {
-    var first = document.getElementById('guestFirst').value.trim();
-    var last  = document.getElementById('guestLast').value.trim();
-    var email = document.getElementById('guestEmail').value.trim();
-    var phone = document.getElementById('guestPhone').value.trim();
-    if (!first || !last || !email || !phone) { showToast('Please fill all required fields', 'error'); return; }
-    if (!/\S+@\S+\.\S+/.test(email)) { showToast('Enter a valid email address', 'error'); return; }
-    var ci = document.getElementById('modalCheckin').value;
-    var co = document.getElementById('modalCheckout').value;
-    document.getElementById('summaryContent').innerHTML =
-      '<b style="color:var(--ink);display:block;margin-bottom:.3rem;">'
-      + document.getElementById('modalHotelName').textContent + '</b>'
-      + 'Check In: ' + ci + '<br>Check Out: ' + co + '<br>'
-      + 'Room: ' + document.getElementById('modalRoomType').value + '<br>'
-      + 'Guests: ' + document.getElementById('modalGuests').value + '<br>'
-      + 'Name: ' + first + ' ' + last + '<br>Email: ' + email;
-  }
-  currentStep = n;
-  for (var i = 1; i <= 4; i++) {
-    var panel = document.getElementById('stepPanel' + i);
-    if (panel) panel.classList.toggle('active', i === n);
-    var num = document.getElementById('step' + i + 'num');
-    if (num) { num.classList.remove('active', 'done'); if (i < n) num.classList.add('done'); else if (i === n) num.classList.add('active'); }
-  }
-  document.getElementById('bookingModal').scrollTop = 0;
-}
-
-/* ══════════════════════════════════════════════════
-   SUBMIT BOOKING → SUPABASE
-══════════════════════════════════════════════════ */
-async function submitBooking() {
-  var btn = document.getElementById('confirmBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving enquiry…';
-
-  var first   = document.getElementById('guestFirst').value.trim();
-  var last    = document.getElementById('guestLast').value.trim();
-  var email   = document.getElementById('guestEmail').value.trim();
-  var phone   = document.getElementById('guestPhone').value.trim();
-  var special = document.getElementById('guestSpecial').value.trim();
-  var hotel   = document.getElementById('modalHotelName').textContent;
-  var ci      = document.getElementById('modalCheckin').value;
-  var co      = document.getElementById('modalCheckout').value;
-  var room    = document.getElementById('modalRoomType').value;
-  var guests  = document.getElementById('modalGuests').value;
-  var ref     = 'TRV' + Math.random().toString(36).substr(2, 8).toUpperCase();
-
-  try {
-    var { error } = await db.from('hotel_enquiries').insert({
-      reference: ref, hotel_name: hotel, hotel_id: modalOfferId,
-      guest_name: first + ' ' + last, email: email, phone: phone,
-      room_type: room, guests: parseInt(guests), special_requests: special,
-      checkin: ci, checkout: co, nights: modalNights, total_inr: modalTotal,
-      status: 'pending', submitted_at: new Date().toISOString()
+  // Find nearest district
+  if(!knownDistCode){
+    let nearest=null, nearDist=Infinity;
+    Object.entries(DISTRICT_CENTERS).forEach(([code,[clat,clng]])=>{
+      const d=haversine(lat,lng,clat,clng);
+      if(d<nearDist){ nearDist=d; nearest=code; }
     });
-    if (error) throw error;
-  } catch(e) {
-    console.error('[Supabase]', e.message);
-    showToast('Could not save enquiry: ' + e.message, 'error');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Reservation';
-    return;
+    knownDistCode=nearest;
   }
 
-  document.getElementById('bookingRef').textContent = ref;
-  document.getElementById('successDetails').innerHTML =
-    '<b style="color:var(--ink);">Enquiry Saved to Database</b><br>'
-    + hotel + '<br>Check In: ' + ci + '<br>Check Out: ' + co + '<br>'
-    + 'Room: ' + room + '<br>Guests: ' + guests + '<br>'
-    + 'Name: ' + first + ' ' + last + '<br>Email: ' + email + '<br>'
-    + 'Total: ₹' + modalTotal.toLocaleString('en-IN') + '<br><br>'
-    + '<span style="color:var(--green);">✓ Our team will contact you within 2 hours to confirm and process payment.</span>';
+  // Auto-set state/district dropdowns in loc tab
+  if(knownDistCode){
+    for(const [sc,sv] of Object.entries(DESTINATIONS)){
+      const found=sv.districts.find(x=>x.code===knownDistCode);
+      if(found){
+        document.getElementById('locState').value=sc;
+        onLocStateChange();
+        setTimeout(()=>{
+          document.getElementById('locDistrict').value=knownDistCode;
+        },50);
+        showToast('Nearest area: '+found.label,'info');
+        break;
+      }
+    }
+  }
 
-  document.getElementById('bookingSteps').style.display = 'none';
-  goStep(4);
-  showToast('Enquiry saved! We will contact you shortly.', 'success');
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm Reservation';
+  applyLocFilters();
 }
 
-/* ══════════════════════════════════════════════════
-   HELPERS
-══════════════════════════════════════════════════ */
-function showToast(msg, type) {
-  var t = document.getElementById('toast');
-  var icons = { success:'fa-check', error:'fa-exclamation-circle', info:'fa-info-circle' };
-  t.innerHTML = '<i class="fas ' + (icons[type] || 'fa-info-circle') + '"></i> ' + msg;
-  t.className = 'toast toast-' + type + ' show';
-  clearTimeout(t._timer);
-  t._timer = setTimeout(function() { t.classList.remove('show'); }, 3500);
+function onRadiusChange(val){
+  radiusKm=parseInt(val);
+  document.getElementById('radiusVal').textContent=val;
+  if(mapCircle) mapCircle.setRadius(radiusKm*1000);
+  updateRadiusSlider();
+  applyLocFilters();
 }
 
-function setApiStatus(state, text) {
-  document.getElementById('apiDot').className = 'api-dot ' + state;
-  document.getElementById('apiStatusText').textContent = text;
+function updateRadiusSlider(){
+  const sl=document.getElementById('radiusSlider');
+  const pct=((radiusKm-parseInt(sl.min))/(parseInt(sl.max)-parseInt(sl.min)))*100;
+  sl.style.setProperty('--pct',pct+'%');
+  sl.value=radiusKm;
 }
 
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+/* ═══════════════════════════════════════
+   RENDER RESORTS
+═══════════════════════════════════════ */
+function renderResorts(resorts, nights, checkin, label){
+  const grid = document.getElementById('hotelGrid');
+  grid.innerHTML='';
+  resorts.forEach((row,idx)=>{
+    const perNight = getSeasonalPrice(row.price_low||15000, row.price_high||25000, checkin);
+    buildCard({
+      name:row.name, location:row.location||row.district_code,
+      type:row.type||'RESORT', badge:row.badge||row.type,
+      rating:String(row.rating||4.5), ratingWord:row.rating_word||'Excellent',
+      reviews:row.review_count||'New', perNight,
+      priceLow:row.price_low, priceHigh:row.price_high,
+      phone:row.phone, amenities:row.amenities||[],
+      desc:row.description, img:row.image_url
+    }, idx, label, nights, grid);
+  });
+  document.querySelectorAll('#hotelGrid .reveal').forEach(r=>io.observe(r));
+  document.getElementById('hotelsSubText').textContent =
+    resorts.length+' resort'+(resorts.length!==1?'s':'')+' · '+label+' · '+nights+' night'+(nights>1?'s':'');
+  showToast(resorts.length+' resort'+(resorts.length!==1?'s':'')+' found','success');
+  document.getElementById('hotels').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-/* ══════════════════════════════════════════════════
-   NAV · REVEAL · DATES · INIT
-══════════════════════════════════════════════════ */
-var menu   = document.getElementById('mobileMenu');
-var burger = document.getElementById('hamburger');
-var closeB = document.getElementById('mobileClose');
-burger.addEventListener('click', function() { menu.classList.add('open'); });
-closeB.addEventListener('click', function() { menu.classList.remove('open'); });
-menu.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { menu.classList.remove('open'); }); });
+/* ── Mock fallback ── */
+function renderMockFallback(stateCode, distCode, distEl, nights, checkin, grid){
+  let basePrice = 15000;
+  let label = 'Preview';
+  if(distCode && distEl){
+    const opt=distEl.options[distEl.selectedIndex];
+    if(opt && opt.dataset.base){ basePrice=parseInt(opt.dataset.base); label=opt.dataset.label||distCode; }
+  } else if(stateCode && DESTINATIONS[stateCode]){
+    label = DESTINATIONS[stateCode].label;
+    basePrice = DESTINATIONS[stateCode].districts[0]?.base||15000;
+  }
+  const types=['RESORT','HOTEL','BOUTIQUE','RESORT','HOTEL','RESORT'];
+  const badges=["Editor's Choice",'Beach Resort','Heritage Hotel','Forest Retreat','Beachfront','Mountain Hotel'];
+  const imgs=['https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80','https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80','https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=700&q=80','https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=700&q=80','https://images.unsplash.com/photo-1582610285985-a42d9193f2fd?w=700&q=80','https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=700&q=80'];
+  const names=['The Grand '+label+' Palace','Taj Luxury Resort '+label,'Heritage Grand Hotel','Forest & Spa Retreat','Beachfront Paradise','Mountain View Inn'];
+  grid.innerHTML='';
+  names.forEach((hName,idx)=>{
+    const v=idx%3===0?1.4:idx%3===1?1.1:0.85;
+    const p=Math.round(basePrice*v/500)*500;
+    buildCard({name:hName,location:label,type:types[idx],badge:badges[idx],rating:'4.'+(5+idx%5),ratingWord:'Exceptional',reviews:'Coming soon',perNight:p,priceLow:p,priceHigh:Math.round(p*1.6),phone:null,amenities:['wifi','swimming-pool','spa','utensils'],desc:'Luxury '+types[idx].toLowerCase()+' · Free cancellation · Breakfast included',img:imgs[idx]},idx,label,nights,grid);
+  });
+  document.querySelectorAll('#hotelGrid .reveal').forEach(r=>io.observe(r));
+  showToast('Preview mode · Add real data to Supabase for '+label,'info');
+  setStatus('Preview · Add resorts to DB for '+label,'connected');
+  document.getElementById('hotels').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
-var reveals = document.querySelectorAll('.reveal');
-var io = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-}, { threshold:0.08 });
-reveals.forEach(function(r) { io.observe(r); });
+/* ── Amenity maps ── */
+const AMENITY_ICONS={wifi:'fa-wifi','swimming-pool':'fa-swimming-pool',spa:'fa-spa',utensils:'fa-utensils','concierge-bell':'fa-concierge-bell',car:'fa-car',child:'fa-child',water:'fa-water',hiking:'fa-hiking',leaf:'fa-leaf',biking:'fa-biking',campground:'fa-campground','umbrella-beach':'fa-umbrella-beach',om:'fa-om',boat:'fa-ship',fish:'fa-fish',gamepad:'fa-gamepad',home:'fa-home',tree:'fa-tree',mountain:'fa-mountain',paw:'fa-paw',landmark:'fa-landmark',parking:'fa-parking'};
+const AMENITY_LABELS={wifi:'WiFi','swimming-pool':'Pool',spa:'Spa',utensils:'Dining','concierge-bell':'Concierge',car:'Transfers',child:'Kid-Friendly',water:'Waterfront',hiking:'Trekking',leaf:'Eco-Resort',biking:'Cycling',campground:'Camping','umbrella-beach':'Beach',om:'Yoga/Ayurveda',boat:'Boat Rides',fish:'Fishing',gamepad:'Activities',home:'Private Villa',tree:'Nature',mountain:'Hill View',paw:'Pet-Friendly',landmark:'Heritage',parking:'Parking'};
 
-(function() {
-  var today = new Date();
-  var t1 = new Date(today); t1.setDate(today.getDate() + 1);
-  var t2 = new Date(today); t2.setDate(today.getDate() + 2);
-  var fmt = function(d) { return d.toISOString().split('T')[0]; };
-  document.getElementById('searchCheckin').value  = fmt(t1);
-  document.getElementById('searchCheckout').value = fmt(t2);
-  document.getElementById('searchCheckin').min    = fmt(today);
-  document.getElementById('searchCheckout').min   = fmt(t1);
+/* ── Build card ── */
+function buildCard(h, idx, fullLabel, nights, grid){
+  const perNight=h.perNight, total=perNight*nights, tax=Math.round(total*.18), grandTotal=total+tax;
+  const offerId='PROP_'+idx+'_'+Date.now();
+  const fallbacks=['https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80','https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=700&q=80'];
+  const checkin=getCheckin();
+
+  const card=document.createElement('div');
+  card.className='hotel-card reveal'; card.dataset.type=h.type;
+
+  const imgWrap=document.createElement('div'); imgWrap.className='hotel-img-wrap';
+  const img=document.createElement('img'); img.src=h.img||fallbacks[idx%2]; img.alt=h.name; img.loading='lazy';
+  img.onerror=function(){ this.src=fallbacks[idx%fallbacks.length]; };
+  imgWrap.appendChild(img);
+
+  const bdg=document.createElement('div'); bdg.className='hotel-badge';
+  bdg.style.background=h.type==='BOUTIQUE'?'#6b4c9a':h.type==='HOTEL'?'#2c7a7b':'var(--gold)';
+  bdg.textContent=h.badge||h.type; imgWrap.appendChild(bdg);
+
+  const rBdg=document.createElement('div');
+  rBdg.style.cssText='position:absolute;bottom:1rem;left:1rem;background:rgba(13,13,13,.75);backdrop-filter:blur(8px);padding:.3rem .8rem;display:flex;align-items:center;gap:.5rem;';
+  rBdg.innerHTML='<i class="fas fa-star" style="color:var(--gold);font-size:.55rem;"></i><span style="color:#fff;font-size:.72rem;font-weight:500;">'+esc(String(h.rating))+'</span><span style="color:rgba(255,255,255,.55);font-size:.62rem;">'+esc(h.ratingWord)+'</span>';
+  imgWrap.appendChild(rBdg);
+
+  const wish=document.createElement('button'); wish.className='hotel-wishlist';
+  wish.innerHTML='<i class="far fa-heart"></i>';
+  wish.addEventListener('click',function(e){ e.stopPropagation(); toggleWish(this); });
+  imgWrap.appendChild(wish);
+  card.appendChild(imgWrap);
+
+  const sd=document.createElement('div'); sd.className='hotel-stars';
+  sd.innerHTML='<i class="fas fa-star"></i>'.repeat(5); card.appendChild(sd);
+
+  const body=document.createElement('div'); body.className='hotel-body';
+  const phoneHtml=h.phone?` &nbsp;<span style="font-size:.62rem;color:var(--gold);"><i class="fas fa-phone" style="font-size:.58rem;"></i> ${esc(h.phone)}</span>`:'';
+  body.innerHTML='<p class="hotel-location"><i class="fas fa-map-marker-alt"></i> '+esc(h.location)+phoneHtml+'</p>'
+    +'<h3 class="hotel-name">'+esc(h.name)+'</h3>'
+    +'<p class="hotel-desc">'+esc(h.desc||'')+'</p>';
+  card.appendChild(body);
+
+  const am=document.createElement('div'); am.className='hotel-amenities';
+  (h.amenities||[]).forEach(a=>{
+    const icon=AMENITY_ICONS[a]||('fa-'+a), label2=AMENITY_LABELS[a]||a;
+    am.innerHTML+=`<span class="amenity"><i class="fas ${icon}"></i> ${label2}</span>`;
+  });
+  card.appendChild(am);
+
+  const av=document.createElement('div'); av.className='avail-badge available';
+  av.innerHTML='<i class="fas fa-check-circle"></i> Available · '+nights+' night'+(nights>1?'s':'')+' · Total ₹'+grandTotal.toLocaleString('en-IN');
+  card.appendChild(av);
+
+  const ft=document.createElement('div'); ft.className='hotel-footer';
+  const priceNote=(h.priceLow&&h.priceHigh&&h.priceLow!==h.priceHigh)?'₹'+h.priceLow.toLocaleString('en-IN')+' – ₹'+h.priceHigh.toLocaleString('en-IN'):'+ 18% GST';
+  ft.innerHTML='<div class="hotel-price"><p class="hotel-price-label">Per night ('+getSeasonLabel(checkin)+')</p><p class="hotel-price-num">₹'+perNight.toLocaleString('en-IN')+'</p><p class="hotel-price-per" style="font-size:.6rem;">'+esc(priceNote)+'</p></div>'
+    +'<div class="hotel-rating"><div class="rating-score">'+esc(String(h.rating))+'</div>'
+    +'<div class="rating-label">'+esc(h.ratingWord)+'<br><span style="color:var(--gold);">'+esc(String(h.reviews))+'</span></div></div>';
+  card.appendChild(ft);
+
+  const bb=document.createElement('button'); bb.className='hotel-book-btn';
+  bb.innerHTML='<i class="fas fa-calendar-check"></i> Book This Stay';
+  (function(n,c,pn,oid,gt,ni){
+    bb.addEventListener('click',function(){ openModal(n,c,pn,oid,gt,ni); });
+  })(h.name,fullLabel,perNight,offerId,grandTotal,nights);
+  card.appendChild(bb);
+  grid.appendChild(card);
+}
+
+/* ── Filter by type ── */
+function filterCards(type,btn){
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.hotel-card').forEach(c=>{
+    c.style.display=(type==='all'||(c.dataset.type||'').includes(type))?'':'none';
+  });
+}
+
+function toggleWish(btn){
+  btn.classList.toggle('liked');
+  const icon=btn.querySelector('i');
+  icon.classList.toggle('far'); icon.classList.toggle('fas');
+  showToast(btn.classList.contains('liked')?'Added to wishlist':'Removed from wishlist','info');
+}
+
+/* ── Booking modal ── */
+function openModal(name,city,pricePerNight,hotelId,totalPrice,nights){
+  document.getElementById('modalHotelName').textContent=name+(city?' · '+city:'');
+  document.getElementById('modalHotelPrice').textContent='₹'+parseInt(pricePerNight).toLocaleString('en-IN')+' per night';
+  modalOfferId=hotelId; modalPerNight=parseInt(pricePerNight);
+  modalNights=parseInt(nights)||1; modalTotal=parseInt(totalPrice)||modalPerNight*modalNights;
+  const ci=getCheckin(), co=getCheckout();
+  if(ci) document.getElementById('modalCheckin').value=ci;
+  if(co) document.getElementById('modalCheckout').value=co;
+  calcPrice(); goStep(1);
+  document.getElementById('bookingSteps').style.display='';
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){ document.getElementById('modalBackdrop').classList.remove('open'); document.body.style.overflow=''; }
+
+function calcPrice(){
+  const ci=document.getElementById('modalCheckin').value, co=document.getElementById('modalCheckout').value;
+  if(!ci||!co) return;
+  const n=Math.max(1,Math.round((new Date(co)-new Date(ci))/86400000));
+  modalNights=n;
+  const base=modalPerNight*n, tax=Math.round(base*.18), total=base+tax; modalTotal=total;
+  document.getElementById('priceBreakdown').style.display='block';
+  document.getElementById('pricePerNight').textContent='₹'+modalPerNight.toLocaleString('en-IN');
+  document.getElementById('priceNightsLabel').textContent=n+' night'+(n>1?'s':'');
+  document.getElementById('priceTax').textContent='₹'+tax.toLocaleString('en-IN');
+  document.getElementById('priceTotal').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('confirmRate').textContent='₹'+modalPerNight.toLocaleString('en-IN');
+  document.getElementById('confirmNights').textContent=n+' night'+(n>1?'s':'');
+  document.getElementById('confirmTax').textContent='₹'+tax.toLocaleString('en-IN');
+  document.getElementById('confirmTotal').textContent='₹'+total.toLocaleString('en-IN');
+}
+
+function goStep(n){
+  if(n===3){
+    const first=document.getElementById('guestFirst').value.trim();
+    const last=document.getElementById('guestLast').value.trim();
+    const email=document.getElementById('guestEmail').value.trim();
+    const phone=document.getElementById('guestPhone').value.trim();
+    if(!first||!last||!email||!phone){ showToast('Please fill all required fields','error'); return; }
+    if(!/\S+@\S+\.\S+/.test(email)){ showToast('Enter a valid email address','error'); return; }
+    const ci=document.getElementById('modalCheckin').value, co=document.getElementById('modalCheckout').value;
+    document.getElementById('summaryContent').innerHTML='<b style="color:var(--ink);display:block;margin-bottom:.3rem;">'+document.getElementById('modalHotelName').textContent+'</b>'
+      +'Check In: '+ci+'<br>Check Out: '+co+'<br>Room: '+document.getElementById('modalRoomType').value+'<br>Guests: '+document.getElementById('modalGuests').value+'<br>Name: '+first+' '+last+'<br>Email: '+email;
+  }
+  currentStep=n;
+  for(let i=1;i<=4;i++){
+    const panel=document.getElementById('stepPanel'+i);
+    if(panel) panel.classList.toggle('active',i===n);
+    const num=document.getElementById('step'+i+'num');
+    if(num){ num.classList.remove('active','done'); if(i<n) num.classList.add('done'); else if(i===n) num.classList.add('active'); }
+  }
+  document.getElementById('bookingModal').scrollTop=0;
+}
+
+async function submitBooking(){
+  const btn=document.getElementById('confirmBtn');
+  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving…';
+  const first=document.getElementById('guestFirst').value.trim();
+  const last=document.getElementById('guestLast').value.trim();
+  const email=document.getElementById('guestEmail').value.trim();
+  const phone=document.getElementById('guestPhone').value.trim();
+  const special=document.getElementById('guestSpecial').value.trim();
+  const hotel=document.getElementById('modalHotelName').textContent;
+  const ci=document.getElementById('modalCheckin').value;
+  const co=document.getElementById('modalCheckout').value;
+  const room=document.getElementById('modalRoomType').value;
+  const guests=document.getElementById('modalGuests').value;
+  const ref='TRV'+Math.random().toString(36).substr(2,8).toUpperCase();
+  try {
+    const {error}=await db.from('hotel_enquiries').insert({reference:ref,hotel_name:hotel,hotel_id:modalOfferId,guest_name:first+' '+last,email,phone,room_type:room,guests:parseInt(guests),special_requests:special,checkin:ci,checkout:co,nights:modalNights,total_inr:modalTotal,status:'pending',submitted_at:new Date().toISOString()});
+    if(error) throw error;
+  } catch(e){ showToast('Could not save: '+e.message,'error'); btn.disabled=false; btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm Reservation'; return; }
+  document.getElementById('bookingRef').textContent=ref;
+  document.getElementById('successDetails').innerHTML='<b style="color:var(--ink);">Enquiry Saved</b><br>'+hotel+'<br>Check In: '+ci+'<br>Check Out: '+co+'<br>Room: '+room+'<br>Guests: '+guests+'<br>Name: '+first+' '+last+'<br>Email: '+email+'<br>Total: ₹'+modalTotal.toLocaleString('en-IN')+'<br><br><span style="color:var(--green);">✓ Our team will contact you within 2 hours.</span>';
+  document.getElementById('bookingSteps').style.display='none'; goStep(4);
+  showToast('Enquiry saved! We will contact you shortly.','success');
+  btn.disabled=false; btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm Reservation';
+}
+
+/* ── Nav ── */
+const menu=document.getElementById('mobileMenu');
+document.getElementById('hamburger').addEventListener('click',()=>menu.classList.add('open'));
+document.getElementById('mobileClose').addEventListener('click',()=>menu.classList.remove('open'));
+menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+
+/* ── Reveal observer ── */
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});},{threshold:.08});
+reveals.forEach(r=>io.observe(r));
+
+/* ── Date defaults ── */
+(function(){
+  const today=new Date();
+  const t1=new Date(today); t1.setDate(today.getDate()+1);
+  const t2=new Date(today); t2.setDate(today.getDate()+2);
+  const fmtDate=d=>d.toISOString().split('T')[0];
+  ['qsCheckin','locCheckin'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.value=fmtDate(t1); el.min=fmtDate(today); } });
+  ['qsCheckout','locCheckout'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.value=fmtDate(t2); el.min=fmtDate(t1); } });
 })();
 
-setApiStatus('connected', TEST_MODE ? 'Test Mode · Mock data ready' : 'Agoda · Ready to search');
+/* ── Load all resorts on init (for name suggestions) ── */
+async function loadAllResorts(){
+  try {
+    const {data,error}=await db.from('resorts')
+      .select('id,name,location,district_code,state_code,type,price_low,price_high,rating,rating_word,review_count,amenities,description,image_url,badge,phone,is_active')
+      .eq('is_active',true);
+    if(error) throw error;
+    allResorts=data||[];
+    setStatus('Ready · '+allResorts.length+' resorts in DB','connected');
+  } catch(e){
+    setStatus('DB error: '+e.message,'error');
+  }
+}
+loadAllResorts();
 </script>
 </body>
 </html>
